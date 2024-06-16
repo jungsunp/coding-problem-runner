@@ -1,5 +1,3 @@
-using CodingPractice; // Import the CodingPractice namespace
-
 namespace CodingPractice.Tests
 {
     public class UnitTest1
