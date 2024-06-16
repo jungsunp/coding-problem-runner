@@ -1,0 +1,14 @@
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/bin/Debug/netcoreapp2.1/Problems.deps.json
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/bin/Debug/netcoreapp2.1/Problems.runtimeconfig.json
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/bin/Debug/netcoreapp2.1/Problems.runtimeconfig.dev.json
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/bin/Debug/netcoreapp2.1/Problems.dll
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/bin/Debug/netcoreapp2.1/Problems.pdb
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/obj/Debug/netcoreapp2.1/Problems.csproj.AssemblyReference.cache
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/obj/Debug/netcoreapp2.1/Problems.GeneratedMSBuildEditorConfig.editorconfig
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/obj/Debug/netcoreapp2.1/Problems.AssemblyInfoInputs.cache
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/obj/Debug/netcoreapp2.1/Problems.AssemblyInfo.cs
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/obj/Debug/netcoreapp2.1/Problems.csproj.CoreCompileInputs.cache
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/obj/Debug/netcoreapp2.1/Problems.sourcelink.json
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/obj/Debug/netcoreapp2.1/Problems.dll
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/obj/Debug/netcoreapp2.1/Problems.pdb
+/Users/clicksun/Code/Projects/coding-problem-runner/src/Problems/obj/Debug/netcoreapp2.1/Problems.genruntimeconfig.cache

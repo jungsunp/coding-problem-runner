@@ -1,0 +1,14 @@
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/bin/Debug/netcoreapp2.1/CodingPractice.deps.json
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/bin/Debug/netcoreapp2.1/CodingPractice.runtimeconfig.json
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/bin/Debug/netcoreapp2.1/CodingPractice.runtimeconfig.dev.json
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/bin/Debug/netcoreapp2.1/CodingPractice.dll
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/bin/Debug/netcoreapp2.1/CodingPractice.pdb
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/obj/Debug/netcoreapp2.1/CodingPractice.csproj.AssemblyReference.cache
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/obj/Debug/netcoreapp2.1/CodingPractice.GeneratedMSBuildEditorConfig.editorconfig
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/obj/Debug/netcoreapp2.1/CodingPractice.AssemblyInfoInputs.cache
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/obj/Debug/netcoreapp2.1/CodingPractice.AssemblyInfo.cs
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/obj/Debug/netcoreapp2.1/CodingPractice.csproj.CoreCompileInputs.cache
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/obj/Debug/netcoreapp2.1/CodingPractice.sourcelink.json
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/obj/Debug/netcoreapp2.1/CodingPractice.dll
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/obj/Debug/netcoreapp2.1/CodingPractice.pdb
+/Users/clicksun/Code/Projects/coding-problem-runner/src/CodingPractice/obj/Debug/netcoreapp2.1/CodingPractice.genruntimeconfig.cache
