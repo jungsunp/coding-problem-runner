@@ -1,0 +1,5 @@
+is_global = true
+build_property.RootNamespace = runner
+build_property.ProjectDir = /Users/clicksun/Code/Projects/coding-problem-runner/src/runner/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
