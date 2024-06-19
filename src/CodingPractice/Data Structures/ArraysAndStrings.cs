@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CodingPractice
 {
@@ -28,5 +29,70 @@ namespace CodingPractice
 			}
 			return true;
 		}
+
+		// #1.2
+		// Time: O(n)
+		// Space: O(n)
+		// To reduce speed, use sorting algorithm which will have time O(n log n)
+		public static bool CheckPermutation(string strOne, string strTwo)
+		{
+			if (strOne.Length != strTwo.Length)
+			{
+				return false;
+			}
+
+			var dictOne = ConvertStringToDict(strOne);
+			var dictTwo = ConvertStringToDict(strTwo);
+
+			foreach(char character in dictOne.Keys)
+			{
+				if (!dictTwo.ContainsKey(character) || dictOne[character] != dictTwo[character])
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		// #1.4
+		// Time: O(n)
+		// Space: O(n)
+		public static bool PalindromePermutation(string input){
+			var dict = ConvertStringToDict(input);
+
+			int numOddChar = 0;
+			foreach(int num in dict.Values)
+			{
+				if (num % 2 == 1) {
+					numOddChar++;
+
+					if (numOddChar > 1) {
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+
+		private static Dictionary<char, int> ConvertStringToDict (string str)
+			{
+				var dict = new Dictionary<char, int>();
+				for (int i = 0; i < str.Length; i++)
+				{
+					char character = str[i];
+					if (Char.IsWhiteSpace(character)) {
+						continue;
+					}
+					if (!dict.ContainsKey(character)) {
+						dict[character] = 1;
+					} else {
+						dict[character]++;
+					}
+				}
+
+				return dict;
+			}
 	}
 }
