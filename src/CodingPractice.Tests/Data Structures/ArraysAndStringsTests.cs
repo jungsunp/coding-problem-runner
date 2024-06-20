@@ -135,4 +135,39 @@ public class ArraysAndStringsTests
 		// Assert
 		Assert.True(result);
 	}
+
+	[Theory]
+	[InlineData(0)]
+	[InlineData(1)]
+	[InlineData(3)]
+	[InlineData(4)]
+	[InlineData(10)]
+	public void RotateMatrix_RotatesCorrectly(int size)
+	{
+		// Arrange
+		int[,] input = new int[size, size];
+		int[,] expected = new int[size, size];
+
+		// Fill the matrices
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				input[i, j] = i * size + j + 1;
+				expected[j, size - i - 1] = i * size + j + 1;
+			}
+		}
+
+		// Act
+		var result = ArraysAndStrings.RotateMatrix(input);
+
+		// Assert
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				Assert.True(expected[i, j] == result[i, j], $"Assertion failed at row {i} and column {j}");
+			}
+		}
+	}
 }

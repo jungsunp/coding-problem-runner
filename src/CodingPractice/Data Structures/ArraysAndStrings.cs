@@ -94,5 +94,44 @@ namespace CodingPractice
 
 				return dict;
 			}
+
+		// #1.7
+		// Time: O(n^2)
+		// Space: O(1)
+		public static int[,] RotateMatrix(int[,] matrix)
+		{
+			if (matrix.GetLength(0) < 2)
+			{
+				return matrix; // don't need to rotate
+			}
+
+			return RotateMatrix(matrix, 0);
+		}
+
+		private static int[,] RotateMatrix(int[,] matrix, int layer)
+		{
+			int n = matrix.GetLength(0); // Assume n * n matrix
+			if (layer >= n / 2)
+			{
+				return matrix; // we are done rotating
+			}
+
+			// rotate outer layer
+			for (int i = layer; i < n-1-layer; i++)
+			{
+				int tempOne = matrix[n-2-i, n-1-layer];
+				matrix[n-2-i, n-1-layer] = matrix[layer, i];
+
+				int tempTwo = matrix[n-1-layer, n-1-i];
+				matrix[n-1-layer, n-1-i] = tempOne;
+
+				tempOne = matrix[n-1-i, layer];
+				matrix[n-1-i, layer] = tempTwo;
+
+				matrix[layer, i] = tempOne;
+			}
+
+			return RotateMatrix(matrix, layer + 1);
+		}
 	}
 }
