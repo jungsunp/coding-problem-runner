@@ -105,33 +105,30 @@ namespace CodingPractice
 				return matrix; // don't need to rotate
 			}
 
-			return RotateMatrix(matrix, 0);
-		}
-
-		private static int[,] RotateMatrix(int[,] matrix, int layer)
-		{
 			int n = matrix.GetLength(0); // Assume n * n matrix
-			if (layer >= n / 2)
+			for (int layer = 0; layer < n / 2; layer++)
 			{
-				return matrix; // we are done rotating
+				// rotate each layer
+				for (int i = layer; i < n-1-layer; i++)
+				{
+					// top > right
+					int tempOne = matrix[i, n-1-layer];
+					matrix[i, n-1-layer] = matrix[layer, i];
+
+					// right > bottom
+					int tempTwo = matrix[n-1-layer, n-1-i];
+					matrix[n-1-layer, n-1-i] = tempOne;
+
+					// bottom > left
+					tempOne = matrix[n-1-i, layer];
+					matrix[n-1-i, layer] = tempTwo;
+
+					// left > top
+					matrix[layer, i] = tempOne;
+				}
 			}
 
-			// rotate outer layer
-			for (int i = layer; i < n-1-layer; i++)
-			{
-				int tempOne = matrix[n-2-i, n-1-layer];
-				matrix[n-2-i, n-1-layer] = matrix[layer, i];
-
-				int tempTwo = matrix[n-1-layer, n-1-i];
-				matrix[n-1-layer, n-1-i] = tempOne;
-
-				tempOne = matrix[n-1-i, layer];
-				matrix[n-1-i, layer] = tempTwo;
-
-				matrix[layer, i] = tempOne;
-			}
-
-			return RotateMatrix(matrix, layer + 1);
+			return matrix;
 		}
 	}
 }

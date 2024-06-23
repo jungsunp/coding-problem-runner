@@ -1,9 +1,17 @@
 ﻿namespace CodingPractice.Tests;
 using Xunit;
+using Xunit.Abstractions;
 using CodingPractice;
 
 public class ArraysAndStringsTests
 {
+	private readonly ITestOutputHelper outputHelper;
+
+	public ArraysAndStringsTests(ITestOutputHelper outputHelper)
+	{
+		this.outputHelper = outputHelper;
+	}
+
 	[Fact]
 	public void IsUnique_WithUniqueChars_ReturnsTrue()
 	{
@@ -158,8 +166,16 @@ public class ArraysAndStringsTests
 			}
 		}
 
+		this.outputHelper.WriteLine("Input Matrix:");
+		this.outputHelper.WriteLine(MatrixToString(input));
+		this.outputHelper.WriteLine("Expected Matrix:");
+		this.outputHelper.WriteLine(MatrixToString(expected));
+
 		// Act
 		var result = ArraysAndStrings.RotateMatrix(input);
+
+		this.outputHelper.WriteLine("Result Matrix:");
+		this.outputHelper.WriteLine(MatrixToString(result));
 
 		// Assert
 		for (int i = 0; i < size; i++)
@@ -169,5 +185,23 @@ public class ArraysAndStringsTests
 				Assert.True(expected[i, j] == result[i, j], $"Assertion failed at row {i} and column {j}");
 			}
 		}
+	}
+
+	 private string MatrixToString(int[,] matrix)
+	{
+		int rows = matrix.GetLength(0);
+		int cols = matrix.GetLength(1);
+		System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+		for (int i = 0; i < rows; i++)
+		{
+			for (int j = 0; j < cols; j++)
+			{
+				sb.Append(matrix[i, j] + "\t");
+			}
+			sb.AppendLine();
+		}
+
+		return sb.ToString();
 	}
 }
