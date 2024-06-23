@@ -65,5 +65,27 @@ namespace CodingPractice
 				nodeTwo = nodeOne.Next;
 			}
 		}
+
+		// #2.2
+		// Time: O(k)
+		// Space: O(1)
+		// Assumption: Last is not knwon. k <= list length
+		public static int? KthToLast(LinkedList<int> list, int k)
+		{
+			var p1 = list.First;
+			var p2 = list.First;
+			for (int i = 0; i < k; i++)
+			{
+				p2 = p2.Next;
+			}
+
+			while (p2 != null)
+			{
+				p1 = p1.Next;
+				p2 = p2.Next;
+			}
+
+			return p1?.Value;
+		}
 	}
 }
