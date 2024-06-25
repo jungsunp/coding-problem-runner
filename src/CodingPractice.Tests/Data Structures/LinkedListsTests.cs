@@ -45,4 +45,101 @@ public class LinkedListsTests
 		var result = LinkedLists.KthToLast(list, k);
 		Assert.Equal(expected, result);
 	}
+
+	[Fact]
+	public void Intersection_WithNullNodes_ReturnsNull()
+	{
+		// Arrange
+		CustomLinkedListNode<int>? node1 = null;
+		CustomLinkedListNode<int>? node2 = null;
+
+		// Act
+		var result = LinkedLists.Intersection(node1, node2);
+
+		// Assert
+		Assert.Null(result);
+	}
+
+	[Fact]
+	public void Intersection_WithEqualSingleNode_ReturnsNode()
+	{
+		// Arrange
+		var node = new CustomLinkedListNode<int>(1);
+
+		// Act
+		var result = LinkedLists.Intersection(node, node);
+
+		// Assert
+		Assert.Equal(node, result);
+	}
+
+	[Fact]
+	public void Intersection_WithDifferentSingleNodes_ReturnsNull()
+	{
+		// Arrange
+		var node1 = new CustomLinkedListNode<int>(1);
+		var node2 = new CustomLinkedListNode<int>(2);
+
+		// Act
+		var result = LinkedLists.Intersection(node1, node2);
+
+		// Assert
+		Assert.Null(result);
+	}
+
+	[Fact]
+	public void Intersection_WithNoIntersection_ReturnsNull()
+	{
+		// Arrange
+		var list1 = new CustomLinkedList<int>();
+		var node1 = list1.AddLast(1);
+		list1.AddLast(2);
+		var list2 = new CustomLinkedList<int>();
+		var node2 = list2.AddLast(3);
+		list2.AddLast(4);
+
+		// Act
+		var result = LinkedLists.Intersection(node1, node2);
+
+		// Assert
+		Assert.Null(result);
+	}
+
+	[Fact]
+	public void Intersection_SameListLength_WithIntersection_ReturnsNode()
+	{
+		// Arrange
+		var list1 = new CustomLinkedList<int>();
+		var list2 = new CustomLinkedList<int>();
+		var node1 = list1.AddLast(1);
+		var sharedNode = list1.AddLast(2);
+		var node2 = list2.AddLast(3);
+		list2.AddLast(sharedNode);
+
+		// Act
+		var result = LinkedLists.Intersection(node1, node2);
+
+		// Assert
+		Assert.Equal(sharedNode, result);
+	}
+
+	[Fact]
+	public void Intersection_DiffListLength_WithIntersection_ReturnsNode()
+	{
+		// Arrange
+		var list1 = new CustomLinkedList<int>();
+		var list2 = new CustomLinkedList<int>();
+		var node1 = list1.AddLast(1);
+		var sharedNode = list1.AddLast(2);
+		sharedNode.Next = new CustomLinkedListNode<int>(3);
+		var node2 = list2.AddLast(4);
+		list2.AddLast(5);
+		list2.AddLast(sharedNode);
+
+		// Act
+		var result = LinkedLists.Intersection(node1, node2);
+
+		// Assert
+		Assert.Equal(sharedNode, result);
+	}
 }

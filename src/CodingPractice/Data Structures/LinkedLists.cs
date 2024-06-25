@@ -69,7 +69,7 @@ namespace CodingPractice
 		// #2.2
 		// Time: O(k)
 		// Space: O(1)
-		// Assumption: Last is not knwon. k <= list length
+		// Assumption: Last is not known. k <= list length
 		public static int? KthToLast(LinkedList<int> list, int k)
 		{
 			var p1 = list.First;
@@ -86,6 +86,123 @@ namespace CodingPractice
 			}
 
 			return p1?.Value;
+		}
+
+		// #2.7
+		// Time: O(m + n)
+		// Space: O(1)
+		public static CustomLinkedListNode<int> Intersection(CustomLinkedListNode<int> n1, CustomLinkedListNode<int> n2)
+		{
+			// Get length for linked list 1
+			int listLength1 = 0;
+			var tail1 = n1;
+			while (tail1 != null)
+			{
+				listLength1++;
+				tail1 = tail1.Next;
+			}
+
+			// Get length for linked list 2
+			int listLength2 = 0;
+			var tail2 = n2;
+			while (tail2 != null)
+			{
+				listLength2++;
+				tail2 = tail2.Next;
+			}
+
+			if (tail1 != tail2)
+			{
+				return null; // if tails are different, they don't have intersection
+			}
+
+			// Move pointer on longer list using the difference
+			if (listLength1 < listLength2)
+			{
+				for (int i = 0; i < listLength2 - listLength1; i++)
+				{
+					n2 = n2.Next;
+				}
+			}
+			else
+			{
+				for (int i = 0; i < listLength1 - listLength2; i++)
+				{
+					n1 = n1.Next;
+				}
+			}
+
+			while (n1 != null)
+			{
+				if (n1 == n2)
+				{
+					return n1;
+				}
+
+				n1 = n1.Next;
+				n2 = n2.Next;
+			}
+
+			return null;
+		}
+	}
+
+
+	// Custom linked list to allow shared node in the list
+	public class CustomLinkedListNode<T>
+	{
+		public T Value { get; set; }
+		public CustomLinkedListNode<T> Next { get; set; }
+
+		public CustomLinkedListNode(T value)
+		{
+			Value = value;
+			Next = null;
+		}
+	}
+
+	public class CustomLinkedList<T>
+	{
+
+		public CustomLinkedListNode<T> Head { get; private set; }
+
+		public CustomLinkedListNode<T> AddLast(T value)
+		{
+			CustomLinkedListNode<T> node;
+			if (Head == null)
+			{
+				node = new CustomLinkedListNode<T>(value);
+				Head = node;
+			}
+			else
+			{
+				CustomLinkedListNode<T> current = Head;
+				while (current.Next != null)
+				{
+					current = current.Next;
+				}
+				node = new CustomLinkedListNode<T>(value);
+				current.Next = node;
+			}
+
+			return node;
+		}
+
+		public void AddLast(CustomLinkedListNode<T> node)
+		{
+			if (Head == null)
+			{
+				Head = node;
+			}
+			else
+			{
+				CustomLinkedListNode<T> current = Head;
+				while (current.Next != null)
+				{
+					current = current.Next;
+				}
+				current.Next = node;
+			}
 		}
 	}
 }
