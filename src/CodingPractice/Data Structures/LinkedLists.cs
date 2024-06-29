@@ -145,10 +145,43 @@ namespace CodingPractice
 
 			return null;
 		}
+
+		// #2.8
+		// Time: O(n)
+		// Space: O(1)
+		public static CustomLinkedListNode<int> LoopDetection(CustomLinkedList<int> list)
+		{
+			var slow = list.Head;
+			var fast = list.Head;
+
+			while (fast != null)
+			{
+				slow = slow.Next; // fast runner moves twice as fast
+				fast = fast.Next?.Next;
+
+				if (fast == null)
+				{
+					return null; // no lopp detected
+				}
+
+				if (slow == fast)
+				{
+					break; // exit loop when 2 pointers collide
+				}
+			}
+
+			slow = list.Head; // move slow runner to head of list
+			while (slow != fast)
+			{
+				slow = slow.Next; // both runners move at same pace
+				fast = fast.Next;
+			}
+
+			return slow; // runners will collide at start of loop
+		}
 	}
 
-
-	// Custom linked list to allow shared node in the list
+	// Custom singly linked list to allow shared node in the list
 	public class CustomLinkedListNode<T>
 	{
 		public T Value { get; set; }

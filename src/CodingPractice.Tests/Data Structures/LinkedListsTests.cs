@@ -142,4 +142,69 @@ public class LinkedListsTests
 		// Assert
 		Assert.Equal(sharedNode, result);
 	}
+
+	[Fact]
+	public void LoopDetection_EmptyList_ReturnsNull()
+	{
+		var list = new CustomLinkedList<int>();
+
+		var result = LinkedLists.LoopDetection(list);
+
+		Assert.Null(result);
+	}
+
+	[Fact]
+	public void LoopDetection_SingleNode_ReturnsNull()
+	{
+		var list = new CustomLinkedList<int>();
+		list.AddLast(1);
+
+		var result = LinkedLists.LoopDetection(list);
+
+		Assert.Null(result);
+	}
+
+	[Fact]
+	public void LoopDetection_TwoNodes_ReturnsCorrectNode()
+	{
+		var list = new CustomLinkedList<int>();
+		var startLoop = new CustomLinkedListNode<int>(1);
+		list.AddLast(startLoop);
+		list.AddLast(2);
+		list.AddLast(startLoop);
+
+		var result = LinkedLists.LoopDetection(list);
+
+		Assert.Equal(startLoop, result);
+	}
+
+	[Theory]
+	[InlineData(1)]
+	[InlineData(2)]
+	[InlineData(3)]
+	[InlineData(4)]
+	[InlineData(5)]
+	[InlineData(6)]
+	[InlineData(7)]
+	[InlineData(8)]
+	[InlineData(9)]
+	[InlineData(10)]
+	public void LoopDetection_LoopStartsAtVariousNodes_ReturnsCorrectStartingNode(int loopStartIndex)
+	{
+		// Create a 10-node linked list
+		var list = new CustomLinkedList<int>();
+		var nodes = new CustomLinkedListNode<int>[10];
+		for (int i = 0; i < 10; i++)
+		{
+			nodes[i] = new CustomLinkedListNode<int>(i + 1);
+			list.AddLast(nodes[i]);
+		}
+
+		// Create a loop starting at the specified node index (1-indexed for readability)
+		list.AddLast(nodes[loopStartIndex - 1]); // Adjust for 0-indexed array
+
+		var result = LinkedLists.LoopDetection(list);
+
+		Assert.Equal(nodes[loopStartIndex - 1], result);
+	}
 }
