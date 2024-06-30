@@ -1,0 +1,24 @@
+﻿<Properties StartupConfiguration="{AA0F0360-3348-415B-AAA1-BA357E9D27FF}|Default">
+  <MonoDevelop.Ide.ItemProperties.CodingPractice.Tests PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="coding-problem-runner" expanded="True">
+            <Node name="CodingPractice" expanded="True" />
+            <Node name="CodingPractice.Tests" expanded="True">
+              <Node name="Data Structures" expanded="True" />
+              <Node name="Xunit" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
