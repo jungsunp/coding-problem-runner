@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CodingPractice
 {
@@ -7,77 +8,45 @@ namespace CodingPractice
 
 	}
 
-
 	// #3.2
 	// Time: O(1) for all push, pop, min
-	public class StackMin
+	public class StackMin : Stack<int>
 	{
-		private class StackMinNode
-		{
-			public int Value;
-			public StackMinNode Next;
-			public StackMinNode SubStackMinNode;
+		private Stack<int> subMinStack;
 
-			public StackMinNode(int value)
-			{
-				this.Value = value;
-			}
+		public StackMin()
+		{
+			subMinStack = new Stack<int>();
 		}
 
-		private StackMinNode top;
-
-		private StackMinNode minNode;
-
-		public void Push(int value)
+		public new void Push(int value)
 		{
-			var node = new StackMinNode(value);
-
-			if (top != null)
+			if (value < this.Min())
 			{
-				node.Next = top;
+				subMinStack.Push(value);
 			}
 
-			if (minNode != null)
-			{
-				if (minNode.Value > node.Value)
-				{
-					minNode = node;
-				}
-			}
-			else
-			{
-				minNode = node;
-			}
-
-			node.SubStackMinNode = minNode; // each node stores min of substack
-
-			top = node;
+			base.Push(value);
 		}
 
-		public int Pop()
+		public new int Pop()
 		{
-			if (top == null)
+			if (this.Peek() <= this.Min())
 			{
-				throw new InvalidOperationException("Empty Stack");
+				subMinStack.Pop();
 			}
 
-			if (top.Value == this.minNode.Value)
-			{
-				this.minNode = top.Next.SubStackMinNode;
-			}
-
-			var ret = top;
-			top = top.Next;
-			return ret.Value;
+			return base.Pop();
 		}
 
 		public int Min()
 		{
-			if (minNode == null)
+			if (subMinStack.Count < 1)
 			{
-				throw new InvalidOperationException("Stack is empty");
+				return int.MaxValue;
 			}
-			return this.minNode.Value;
+
+			return subMinStack.Peek();
 		}
 	}
 }

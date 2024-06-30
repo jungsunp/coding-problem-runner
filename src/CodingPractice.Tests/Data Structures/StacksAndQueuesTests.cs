@@ -48,10 +48,10 @@ public class StacksAndQueuesTests
 	}
 
 	[Fact]
-	public void StackMin_EmptyStack_ThrowsException()
+	public void StackMin_EmptyStack_ThrowsMaxInt()
 	{
 		var stack = new StackMin();
 
-		Assert.Throws<InvalidOperationException>(() => stack.Min());
+		Assert.Equal(int.MaxValue, stack.Min());
 	}
 }
