@@ -99,4 +99,45 @@ public class StacksAndQueuesTests
 		Assert.Equal(7, setOfStacks.Pop());
 		Assert.Equal(3, setOfStacks.Count);
 	}
+
+	[Fact]
+	public void SortStack_EmptyStack_StackRemainsEmpty()
+	{
+		var stack = new Stack<int>();
+		StacksAndQueues.SortStack(stack); // Adjust this to call your actual SortStack method
+		Assert.Empty(stack);
+	}
+
+	[Fact]
+	public void SortStack_SingleElement_StackUnchanged()
+	{
+		var stack = new Stack<int>(new[] { 1 });
+		StacksAndQueues.SortStack(stack);
+		Assert.Single(stack);
+		Assert.Equal(1, stack.Peek());
+	}
+
+	[Fact]
+	public void SortStack_SortedStackWithTenElements_StackUnchanged()
+	{
+		var stack = new Stack<int>(new[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 });
+		StacksAndQueues.SortStack(stack);
+		Assert.Equal(10, stack.Count);
+		for (int expected = 1; expected <= 10; expected++)
+		{
+			Assert.Equal(expected, stack.Pop());
+		}
+	}
+
+	[Fact]
+	public void SortStack_UnsortedStackWithTenElements_StackSorted()
+	{
+		var stack = new Stack<int>(new[] { 4, 1, 3, 10, 7, 2, 8, 6, 5, 9 });
+		StacksAndQueues.SortStack(stack);
+		Assert.Equal(10, stack.Count);
+		for (int expected = 1; expected <= 10; expected++)
+		{
+			Assert.Equal(expected, stack.Pop());
+		}
+	}
 }

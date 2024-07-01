@@ -4,14 +4,39 @@ using System.ComponentModel;
 
 namespace CodingPractice
 {
-	public class StacksAndQueues
+	public static class StacksAndQueues
 	{
+		// #3.5
+		// Time: O(n^2)
+		// Space: O(n)
+		public static void SortStack(Stack<int> stack)
+		{
+			var tmpStack = new Stack<int>();
 
+			// Sort stack into tmpStack
+			while (stack.Count > 0)
+			{
+				int tmpVal = stack.Pop();
+
+				while(tmpStack.Count > 0 && tmpStack.Peek() > tmpVal)
+				{
+					stack.Push(tmpStack.Pop());
+				}
+
+				tmpStack.Push(tmpVal);
+			}
+
+			// Move elements back from tmpStack to stack
+			while (tmpStack.Count > 0)
+			{
+				stack.Push(tmpStack.Pop());
+			}
+		}
 	}
 
 	// #3.2
 	// Time: O(1) for all push, pop, min
-	public class StackMin : Stack<int>
+	public class StackMin: Stack<int>
 	{
 		private Stack<int> subMinStack;
 
@@ -52,7 +77,7 @@ namespace CodingPractice
 	}
 
 	// #3.3
-	public class SetOfStacks<T> : Stack<T>
+	public class SetOfStacks<T>: Stack<T>
 	{
 		private readonly int maxPlates;
 		private readonly Stack<Stack<T>> stacks;
