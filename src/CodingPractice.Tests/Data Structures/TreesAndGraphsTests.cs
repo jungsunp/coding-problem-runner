@@ -115,7 +115,8 @@ public class TreesAndGraphsTests
 		// Assert
 		Assert.NotNull(result);
 		Assert.Equal(1, result.Root.Value); // Assuming the tree nodes have a Value property
-		Assert.Empty(result.Root.Children);
+		Assert.Null(result.Root.Left);
+		Assert.Null(result.Root.Right);
 	}
 
 	[Fact]
@@ -130,12 +131,12 @@ public class TreesAndGraphsTests
 		// Assert
 		Assert.NotNull(result);
 		Assert.Equal(4, result.Root.Value);
-		Assert.Equal(2, result.Root.Children[0].Value);
-		Assert.Equal(6, result.Root.Children[1].Value);
-		Assert.Equal(1, result.Root.Children[0].Children[0].Value);
-		Assert.Equal(3, result.Root.Children[0].Children[1].Value);
-		Assert.Equal(5, result.Root.Children[1].Children[0].Value);
-		Assert.Equal(7, result.Root.Children[1].Children[1].Value);
+		Assert.Equal(2, result.Root.Left.Value);
+		Assert.Equal(6, result.Root.Right.Value);
+		Assert.Equal(1, result.Root.Left.Left.Value);
+		Assert.Equal(3, result.Root.Left.Right.Value);
+		Assert.Equal(5, result.Root.Right.Left.Value);
+		Assert.Equal(7, result.Root.Right.Right.Value);
 	}
 
 	[Fact]
@@ -150,12 +151,12 @@ public class TreesAndGraphsTests
 		// Assert
 		Assert.NotNull(result);
 		Assert.Equal(5, result.Root.Value);
-		Assert.Equal(3, result.Root.Children[0].Value);
-		Assert.Equal(7, result.Root.Children[1].Value);
-		Assert.Equal(2, result.Root.Children[0].Children[0].Value);
-		Assert.Equal(4, result.Root.Children[0].Children[1].Value);
-		Assert.Equal(6, result.Root.Children[1].Children[0].Value);
-		Assert.Equal(8, result.Root.Children[1].Children[1].Value);
-		Assert.Equal(1, result.Root.Children[0].Children[0].Children[0].Value);
+		Assert.Equal(3, result.Root.Left.Value);
+		Assert.Equal(7, result.Root.Right.Value);
+		Assert.Equal(2, result.Root.Left.Left.Value);
+		Assert.Equal(4, result.Root.Left.Right.Value);
+		Assert.Equal(6, result.Root.Right.Left.Value);
+		Assert.Equal(8, result.Root.Right.Right.Value);
+		Assert.Equal(1, result.Root.Left.Left.Left.Value);
 	}
 }

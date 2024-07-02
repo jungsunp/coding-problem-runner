@@ -45,8 +45,8 @@ namespace CodingPractice
 
 		// #4.2
 		// Time: O(n)
-		// Space: O(n)
-		public static Tree<int> MinimalTree(int[] sortedArray)
+		// Space: O(n) (Call stack: O(log n))
+		public static BinaryTree<int> MinimalTree(int[] sortedArray)
 		{
 			if (sortedArray == null || sortedArray.Length == 0)
 			{
@@ -55,10 +55,10 @@ namespace CodingPractice
 
 			var root = MinimalTreeNode(sortedArray, 0, sortedArray.Length - 1);
 
-			return new Tree<int>(root);
+			return new BinaryTree<int>(root);
 		}
 
-		private static TreeNode<int> MinimalTreeNode(int[] sortedArray, int start, int end)
+		private static BinaryTreeNode<int> MinimalTreeNode(int[] sortedArray, int start, int end)
 		{
 			if (start > end)
 			{
@@ -66,19 +66,9 @@ namespace CodingPractice
 			}
 
 			int index = (start + end + 1) / 2;
-			var parent = new TreeNode<int>(sortedArray[index]);
-			var leftChild = MinimalTreeNode(sortedArray, start, index -1);
-			var rightChild = MinimalTreeNode(sortedArray, index + 1, end);
-
-			if (leftChild != null)
-			{
-				parent.AddChild(leftChild);
-			}
-
-			if (rightChild != null)
-			{
-				parent.AddChild(rightChild);
-			}
+			var parent = new BinaryTreeNode<int>(sortedArray[index]);
+			parent.Left = MinimalTreeNode(sortedArray, start, index -1);
+			parent.Right = MinimalTreeNode(sortedArray, index + 1, end);
 
 			return parent;
 		}
@@ -145,6 +135,30 @@ namespace CodingPractice
 			this.Root = new TreeNode<T>(rootVal);
 		}
 		public Tree(TreeNode<T> root)
+		{
+			this.Root = root;
+		}
+	}
+
+
+	public class BinaryTreeNode<T>
+	{
+		public T Value;
+		public BinaryTreeNode<T> Left;
+		public BinaryTreeNode<T> Right;
+		public BinaryTreeNode(T value)
+		{
+			this.Value = value;
+		}
+	}
+
+	public class BinaryTree<T>{
+		public BinaryTreeNode<T> Root;
+		public BinaryTree(T rootVal)
+		{
+			this.Root = new BinaryTreeNode<T>(rootVal);
+		}
+		public BinaryTree(BinaryTreeNode<T> root)
 		{
 			this.Root = root;
 		}
