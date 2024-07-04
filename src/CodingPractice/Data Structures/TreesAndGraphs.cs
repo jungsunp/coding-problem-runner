@@ -72,6 +72,55 @@ namespace CodingPractice
 
 			return parent;
 		}
+
+		// #4.4
+		// Time: O(n)
+		// Space: O(h) - h: height of tree
+		public static bool CheckBalanced<T>(BinaryTree<T> tree)
+		{
+			if (tree == null ||tree.Root == null)
+			{
+				throw new InvalidOperationException();
+			}
+
+			int leftSubHeight = GetSubTreeHeight(tree.Root.Left);
+			if (leftSubHeight < 0)
+			{
+				return false; // left subtree unbalanced. no need to check further
+			}
+
+			int rightSubHeight = GetSubTreeHeight(tree.Root.Right);
+			if (rightSubHeight < 0 || Math.Abs(leftSubHeight - rightSubHeight) > 1)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+
+		// Returns -1 if tree is unbalanced
+		private static int GetSubTreeHeight<T>(BinaryTreeNode<T> node)
+		{
+			if (node == null)
+			{
+				return 0;
+			}
+
+			int leftSubHeight = GetSubTreeHeight(node.Left);
+			if (leftSubHeight < 0)
+			{
+				return -1; // left subtree unbalanced. no need to check further
+			}
+
+			int rightSubHeight = GetSubTreeHeight(node.Right);
+			if (rightSubHeight < 0 || Math.Abs(leftSubHeight - rightSubHeight) > 1)
+			{
+				return -1;
+			}
+
+			return Math.Max(leftSubHeight, rightSubHeight) + 1;
+		}
 	}
 
 	public class Node

@@ -159,4 +159,76 @@ public class TreesAndGraphsTests
 		Assert.Equal(8, result.Root.Right.Right.Value);
 		Assert.Equal(1, result.Root.Left.Left.Left.Value);
 	}
+
+	[Fact]
+	public void CheckBalanced_EmptyTree_ReturnsTrue()
+	{
+		// Arrange
+		BinaryTree<int>? tree = null;
+
+		// Act & Assert
+		Assert.Throws<InvalidOperationException>(() => TreesAndGraphs.CheckBalanced(tree));
+
+	}
+
+	[Fact]
+	public void CheckBalanced_SingleNode_ReturnsTrue()
+	{
+		// Arrange
+		BinaryTree<int> tree = new BinaryTree<int>(1);
+
+		// Act
+		bool result = TreesAndGraphs.CheckBalanced(tree);
+
+		// Assert
+		Assert.True(result);
+	}
+
+	[Fact]
+	public void CheckBalanced_SameSubTreeHeight_ReturnsTrue()
+	{
+		// Arrange
+		BinaryTree<int> tree = new BinaryTree<int>(1);
+		tree.Root.Left = new BinaryTreeNode<int>(2);
+		tree.Root.Right = new BinaryTreeNode<int>(3);
+
+		// Act
+		bool result = TreesAndGraphs.CheckBalanced(tree);
+
+		// Assert
+		Assert.True(result);
+	}
+
+	[Fact]
+	public void CheckBalanced_OneOffSubTreeHeight_ReturnsTrue()
+	{
+		// Arrange
+		BinaryTree<int> tree = new BinaryTree<int>(1);
+		tree.Root.Left = new BinaryTreeNode<int>(2);
+		tree.Root.Right = new BinaryTreeNode<int>(3);
+		tree.Root.Left.Left = new BinaryTreeNode<int>(4);
+
+		// Act
+		bool result = TreesAndGraphs.CheckBalanced(tree);
+
+		// Assert
+		Assert.True(result);
+	}
+
+	[Fact]
+	public void CheckBalanced_UnbalancedTree_ReturnsFalse()
+	{
+		// Arrange
+		BinaryTree<int> tree = new BinaryTree<int>(1);
+		tree.Root.Left = new BinaryTreeNode<int>(2);
+		tree.Root.Right = new BinaryTreeNode<int>(3);
+		tree.Root.Right.Right = new BinaryTreeNode<int>(4);
+		tree.Root.Right.Right.Right = new BinaryTreeNode<int>(5);
+
+		// Act
+		bool result = TreesAndGraphs.CheckBalanced(tree);
+
+		// Assert
+		Assert.False(result);
+	}
 }
