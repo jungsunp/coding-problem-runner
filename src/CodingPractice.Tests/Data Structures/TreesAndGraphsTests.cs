@@ -1,16 +1,24 @@
 ﻿namespace CodingPractice.Tests;
 using CodingPractice;
 using Xunit;
+using Xunit.Abstractions;
 
 public class TreesAndGraphsTests
 {
+	private readonly ITestOutputHelper outputHelper;
+
+	public TreesAndGraphsTests(ITestOutputHelper helper)
+	{
+		this.outputHelper = helper;
+	}
+
 	[Fact]
 	public void RouteExists_DirectRoute_ReturnsTrue()
 	{
 		// Arrange
 		var graph = new Graph(); // Assuming you have a Graph class
-		var nodeA = new Node("A");
-		var nodeB = new Node("B");
+		var nodeA = new GraphNode("A");
+		var nodeB = new GraphNode("B");
 		graph.AddNode(nodeA);
 		graph.AddNode(nodeB);
 		graph.AddEdge(nodeA, nodeB);
@@ -27,8 +35,8 @@ public class TreesAndGraphsTests
 	{
 		// Arrange
 		var graph = new Graph();
-		var nodeA = new Node("A");
-		var nodeC = new Node("C");
+		var nodeA = new GraphNode("A");
+		var nodeC = new GraphNode("C");
 		graph.AddNode(nodeA);
 		graph.AddNode(nodeC);
 		// No edge added between A and C
@@ -45,9 +53,9 @@ public class TreesAndGraphsTests
 	{
 		// Arrange
 		var graph = new Graph();
-		var nodeA = new Node("A");
-		var nodeB = new Node("B");
-		var nodeC = new Node("C");
+		var nodeA = new GraphNode("A");
+		var nodeB = new GraphNode("B");
+		var nodeC = new GraphNode("C");
 		graph.AddNode(nodeA);
 		graph.AddNode(nodeB);
 		graph.AddNode(nodeC);
@@ -66,8 +74,8 @@ public class TreesAndGraphsTests
 	{
 		// Arrange
 		var graph = new Graph();
-		var nodeA = new Node("A");
-		var nodeC = new Node("C");
+		var nodeA = new GraphNode("A");
+		var nodeC = new GraphNode("C");
 
 		// Act
 		bool result = TreesAndGraphs.RouteBetweenNodes(nodeA, nodeC);
@@ -80,8 +88,8 @@ public class TreesAndGraphsTests
 	public void NodesAreNull_ReturnsFalse()
 	{
 		// Arrange
-		Node nodeA = null;
-		Node nodeC = null;
+		GraphNode nodeA = null;
+		GraphNode nodeC = null;
 
 		// Act
 		bool result = TreesAndGraphs.RouteBetweenNodes(nodeA, nodeC);
@@ -230,5 +238,69 @@ public class TreesAndGraphsTests
 
 		// Assert
 		Assert.False(result);
+	}
+
+	[Fact]
+	public void BuildOrder_WithGivenDependencies_ReturnsValidOrder()
+	{
+		// Arrange
+		string[] projects = { "a", "b", "c", "d", "e", "f" };
+		string[][] dependencies =
+		{
+			["a", "d"],
+			["f", "b"],
+			["b", "d"],
+			["f", "a"],
+			["d", "c"]
+		};
+
+		// Act
+		string result = TreesAndGraphs.BuildOrder(projects, dependencies);
+		this.outputHelper.WriteLine("Build Order: " + result);
+
+		// Assert
+		Assert.True(IsBuildOrderValid(result, dependencies));
+	}
+
+
+	[Fact]
+	public void BuildOrder_WithCircularDependencies_ThrowsException()
+	{
+		// Arrange
+		string[] projects = { "a", "b", "c", "d", "e", "f" };
+		string[][] dependencies =
+		{
+			["a", "d"],
+			["f", "b"],
+			["b", "d"],
+			["f", "a"],
+			["d", "c"],
+			["d", "f"]
+		};
+
+		// Act & Assert
+		Assert.Throws<Exception>(() => TreesAndGraphs.BuildOrder(projects, dependencies));
+	}
+
+	private static bool IsBuildOrderValid(string buildOrder, string[][] dependencies)
+	{
+		var indexMap = new Dictionary<string, int>();
+		var orderArray = buildOrder.Split(", ");
+		for (int i = 0; i < orderArray.Length; i++)
+		{
+			indexMap[orderArray[i]] = i;
+		}
+
+		foreach (var dependency in dependencies)
+		{
+			string first = dependency[0];
+			string second = dependency[1];
+			if (indexMap[first] >= indexMap[second])
+			{
+				return false; // Dependency order is not respected
+			}
+		}
+
+		return true;
 	}
 }

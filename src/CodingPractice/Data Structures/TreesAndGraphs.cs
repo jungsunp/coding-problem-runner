@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 namespace CodingPractice
 {
 	public static class TreesAndGraphs
 	{
 		// #4.1
-		public static bool RouteBetweenNodes(Node n1, Node n2)
+		public static bool RouteBetweenNodes(GraphNode n1, GraphNode n2)
 		{
 			if (n1 == null || n2 == null)
 			{
@@ -18,7 +20,7 @@ namespace CodingPractice
 				return true;
 			}
 
-			Queue<Node> queue = new Queue<Node>();
+			Queue<GraphNode> queue = new Queue<GraphNode>();
 			n1.Visited = true;
 			queue.Enqueue(n1);
 
@@ -121,42 +123,110 @@ namespace CodingPractice
 
 			return Math.Max(leftSubHeight, rightSubHeight) + 1;
 		}
-	}
 
-	public class Node
-	{
-		public object Value { get; set; }
-		public  List<Node> Adjacent { get; set; }
-		public bool Visited = false;
-
-		public Node(object value)
+		// #4.7
+		// Time: O(P + D)
+		// Space: O(P + D)
+		public static string BuildOrder(string[] projects, string[][] dependencies)
 		{
-			this.Value = value;
-			Adjacent = new List<Node>();
+			ProjectGraph graph = BuildProjectGraph(projects, dependencies);
+
+			Stack<Project> stack = GetBuildOrderStack(graph);
+
+			string ret = "";
+			while(stack.Count > 0)
+			{
+				if (ret != "")
+				{
+					ret += ", ";
+				}
+				ret += stack.Pop().Name;
+			}
+
+			return ret;
 		}
 
-		 public void AddAdjacent(Node node)
+		private static ProjectGraph BuildProjectGraph(string[] projects, string[][] dependencies)
+		{
+			var graph = new ProjectGraph();
+			foreach(string proj in projects)
+			{
+				graph.AddProject(proj);
+			}
+
+			foreach(string[] dep in dependencies)
+			{
+				graph.AddDependency(dep[0], dep[1]);
+			}
+
+			return graph;
+		}
+
+		private static Stack<Project> GetBuildOrderStack(ProjectGraph graph)
+		{
+			var stack = new Stack<Project>();
+
+			foreach (Project proj in graph.Projects)
+			{
+				RunDfsOnProject(proj, stack);
+			}
+
+			return stack;
+		}
+
+		private static void RunDfsOnProject(Project project, Stack<Project> stack)
+		{
+			if (project.Status == ProjectStatus.InProgress)
+			{
+				throw new Exception("Build Error: Circular Dependency!");
+			}
+
+			if (project.Status == ProjectStatus.NotStarted)
+			{
+				project.Status = ProjectStatus.InProgress;
+				foreach(Project dep in project.BuildBeforeList)
+				{
+					RunDfsOnProject(dep, stack);
+				}
+				project.Status = ProjectStatus.Completed;
+				stack.Push(project);
+			}
+		}
+	}
+
+	public class GraphNode
+	{
+		public object Value { get; set; }
+		public  List<GraphNode> Adjacent { get; set; }
+		public bool Visited = false;
+
+		public GraphNode(object value)
+		{
+			this.Value = value;
+			Adjacent = new List<GraphNode>();
+		}
+
+		 public void AddAdjacent(GraphNode node)
 		{
 			Adjacent.Add(node);
 		}
 	}
 
-
 	public class Graph
 	{
-		public List<Node> Nodes { get; private set; }
+		public List<GraphNode> Nodes { get; private set; }
 
 		public Graph()
 		{
-			Nodes = new List<Node>();
+			Nodes = new List<GraphNode>();
 		}
 
-		public void AddNode(Node node)
+		public void AddNode(GraphNode node)
 		{
 			Nodes.Add(node);
 		}
 
-		public void AddEdge(Node from, Node to)
+		public void AddEdge(GraphNode from, GraphNode to)
 		{
 			from.AddAdjacent(to);
 		}
@@ -211,5 +281,59 @@ namespace CodingPractice
 		{
 			this.Root = root;
 		}
+	}
+
+	public class Project
+	{
+		public string Name { get; private set; }
+		public List<Project> BuildBeforeList { get; private set; }
+		public ProjectStatus Status { get; set; }
+
+		public Project(string name)
+		{
+			this.Name = name;
+			this.BuildBeforeList = new List<Project>();
+			this.Status = ProjectStatus.NotStarted;
+		}
+
+		public void AddToBuildBeforeList(Project proj)
+		{
+			this.BuildBeforeList.Add(proj);
+		}
+	}
+
+	public class ProjectGraph
+	{
+		public List<Project> Projects { get; private set; }
+		public Dictionary<string, Project> Map { get; }
+
+		public ProjectGraph()
+		{
+			this.Projects = new List<Project>();
+			this.Map = new Dictionary<string, Project>();
+		}
+
+		public void AddProject(string name)
+		{
+			var proj = new Project(name);
+			Projects.Add(proj);
+			Map.Add(name, proj);
+		}
+
+		// P1 needs to be built before P2 (i.e P2 depends on P1)
+		public void AddDependency(string p1, string p2)
+		{
+			var proj1 = Map[p1];
+			var proj2 = Map[p2];
+
+			proj1.AddToBuildBeforeList(proj2);
+		}
+	}
+
+	public enum ProjectStatus
+	{
+		NotStarted,
+		InProgress,
+		Completed
 	}
 }
