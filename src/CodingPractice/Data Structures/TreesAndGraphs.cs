@@ -259,7 +259,6 @@ namespace CodingPractice
 		}
 	}
 
-
 	public class BinaryTreeNode<T>
 	{
 		public T Value;
@@ -336,4 +335,123 @@ namespace CodingPractice
 		InProgress,
 		Completed
 	}
+
+	// #4.11
+	public class RandomBinaryTree
+	{
+		public RandomNode Root { get; private set; }
+
+		// Time: O(log n)
+		// Space: O(log n)
+		public void Insert(int val)
+		{
+			if (Root == null)
+			{
+				this.Root = new RandomNode(val);
+				return;
+			}
+
+			this.Root.Insert(val);
+		}
+
+
+
+		// Time: O(log n)
+		// Space: O(log n)
+		public RandomNode Find(int val)
+		{
+			return this.Root.Find(val);
+		}
+
+		// Time: O(log n)
+		// Space: O(log n)
+		public RandomNode GetRandomNode()
+		{
+			if (this.Root == null)
+			{
+				return null;
+			}
+
+			Random rnd = new Random();
+			// Note: generating random number can be expensive
+			int randomNumber = rnd.Next(0, this.Root.Size);
+
+			return this.Root.GetNodeAtIndex(randomNumber);
+		}
+	}
+
+	public class RandomNode
+	{
+		public int Value { get; private set; }
+		public int Size = 0;
+		public RandomNode Left;
+		public RandomNode Right;
+		public RandomNode(int val)
+		{
+			this.Value = val;
+		}
+
+		public void Insert(int val)
+		{
+			if (this.Value >= val)
+			{
+				if (this.Left == null)
+				{
+					this.Left = new RandomNode(val);
+				}
+				else
+				{
+					this.Left.Insert(val);
+				}
+			}
+			else
+			{
+				if (this.Right == null)
+				{
+					this.Right = new RandomNode(val);
+				}
+				else
+				{
+					this.Right.Insert(val)
+				}
+			}
+
+			this.Size++;
+		}
+
+		public RandomNode Find(int val)
+		{
+			if (this.Value == val)
+			{
+				return this;
+			}
+			else if (this.Value > val)
+			{
+				return this.Left.Find(val);
+			}
+			else // parent.value < val
+			{
+				return this.Right.Find(val);
+			}
+		}
+
+		public RandomNode GetNodeAtIndex(int index)
+		{
+			int leftSize = this.Left == null ? 0 : this.Left.Size;
+
+			if (index < leftSize)
+			{
+				return this.Left.GetNodeAtIndex(index);
+			}
+			else if (index == leftSize)
+			{
+				return this;
+			}
+			else
+			{
+				return this.Right.GetNodeAtIndex(index - leftSize - 1);
+			}
+		}
+	}
+
 }
