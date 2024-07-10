@@ -412,7 +412,7 @@ namespace CodingPractice
 				}
 				else
 				{
-					this.Right.Insert(val)
+					this.Right.Insert(val);
 				}
 			}
 
