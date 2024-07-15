@@ -83,6 +83,66 @@ namespace CodingPractice.Concepts
 
 				return MagicIndex(arr, start, arr[mid]);
 			}
+		}
+
+		// #8.8
+		// Time: O(n!)
+		// Space: O(n!)
+		public static List<string> PermutationsWithDups(string str)
+		{
+			var result = new List<string>();
+			if (String.IsNullOrEmpty(str))
+			{
+				return result;
+			}
+
+			var charDict = new Dictionary<char, int>();
+			foreach (char c in str)
+			{
+				if (charDict.ContainsKey(c))
+				{
+					charDict[c]++;
+				}
+				else
+				{
+					charDict.Add(c, 1);
+				}
+			}
+
+			GetSubStringPermutation("", charDict, result);
+			return result;
+		}
+
+		private static void GetSubStringPermutation(string prefix, Dictionary<char, int> charDict, List<string> result)
+		{
+			if (charDict.Count == 0)
+			{
+				result.Add(prefix);
+				return;
+			}
+
+			foreach(char c in new List<char>(charDict.Keys)) // Create a copy of the keys to iterate over
+			{
+				if (charDict[c] == 1)
+				{
+					charDict.Remove(c);
+				}
+				else
+				{
+					charDict[c]--;
+				}
+
+				GetSubStringPermutation($"{prefix}{c}", charDict, result);
+
+				if (!charDict.ContainsKey(c))
+				{
+					charDict.Add(c, 1);
+				}
+				else
+				{
+					charDict[c]++;
+				}
+			}
 
 		}
 	}
