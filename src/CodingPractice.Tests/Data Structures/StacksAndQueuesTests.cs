@@ -1,4 +1,4 @@
-﻿namespace CodingPractice.Tests;
+﻿namespace CodingPractice.Tests.DataStructure;
 using Xunit;
 using CodingPractice;
 
