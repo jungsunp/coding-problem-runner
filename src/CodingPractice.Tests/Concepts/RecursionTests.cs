@@ -66,5 +66,82 @@ namespace CodingPractice.Tests.Concepts
 			// Assert
 			Assert.Equal(expected, result);
 		}
+
+		[Fact]
+		public void PermutationsWithDups_EmptyString_ReturnsEmptyList()
+		{
+			// Arrange
+			var input = "";
+
+			// Act
+			var result = Recursion.PermutationsWithDups(input);
+
+			// Assert
+			Assert.Empty(result);
+		}
+
+		[Fact]
+		public void PermutationsWithDups_SingleCharacter_ReturnsSinglePermutation()
+		{
+			// Arrange
+			var input = "a";
+
+			// Act
+			var result = Recursion.PermutationsWithDups(input);
+
+			// Assert
+			var expected = new List<string> { "a" };
+			Assert.Equal(expected, result);
+		}
+
+		[Fact]
+		public void PermutationsWithDups_UniqueCharacters_ReturnsAllPermutations()
+		{
+			// Arrange
+			var input = "abc";
+
+			// Act
+			var result = Recursion.PermutationsWithDups(input);
+
+			// Assert
+			var expected = new List<string> { "abc", "acb", "bac", "bca", "cab", "cba" };
+			Assert.Equal(expected.Count, result.Count);
+			foreach (var permutation in expected)
+			{
+				Assert.Contains(permutation, result);
+			}
+		}
+
+		[Fact]
+		public void PermutationsWithDups_DuplicateCharacters_ReturnsUniquePermutations()
+		{
+			// Arrange
+			var input = "aabb";
+
+			// Act
+			var result = Recursion.PermutationsWithDups(input);
+
+			// Assert
+			var expected = new List<string> { "aabb", "abab", "abba", "baab", "baba", "bbaa" };
+			Assert.Equal(expected.Count, result.Count);
+			foreach (var permutation in expected)
+			{
+				Assert.Contains(permutation, result);
+			}
+		}
+
+		[Fact]
+		public void PermutationsWithDups_Aaaaaabbcc_ReturnsCorrectPermutationCount()
+		{
+			// Arrange
+			var input = "aaaaaabbcc";
+			var expectedCount = 1260; // 10!/(6! * 2! * 2!)
+
+			// Act
+			var result = Recursion.PermutationsWithDups(input);
+
+			// Assert
+			Assert.Equal(expectedCount, result.Count);
+		}
 	}
 }
