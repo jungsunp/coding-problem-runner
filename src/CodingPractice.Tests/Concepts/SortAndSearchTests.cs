@@ -88,4 +88,86 @@ public class SortAndSearchTests
 		Assert.Equal(6, A[5]);
 		Assert.Equal(7, A[6]);
 	}
+
+	[Fact]
+	public void SearchInRotatedArray_SingleElement_Found()
+	{
+		// Arrange
+		int[] arr = { 5 };
+		int x = 5;
+
+		// Act
+		int result = SortAndSearch.SearchInRotatedArray(arr, x);
+
+		// Assert
+		Assert.Equal(0, result);
+	}
+
+	[Fact]
+	public void SearchInRotatedArray_TwoElements_Found()
+	{
+		// Arrange
+		int[] arr = { 2, 1 };
+		int x = 1;
+
+		// Act
+		int result = SortAndSearch.SearchInRotatedArray(arr, x);
+
+		// Assert
+		Assert.Equal(1, result);
+	}
+
+	[Fact]
+	public void SearchInRotatedArray_FiveUniqueElements_Found()
+	{
+		// Arrange
+		int[] arr = { 3, 4, 5, 1, 2 };
+		int x = 4;
+
+		// Act
+		int result = SortAndSearch.SearchInRotatedArray(arr, x);
+
+		// Assert
+		Assert.Equal(1, result);
+	}
+
+	[Fact]
+	public void SearchInRotatedArray_EightElementsWithDuplicates_Found()
+	{
+		// Arrange
+		int[] arr = { 4, 4, 5, 5, 6, 1, 2, 4 };
+		int x = 6;
+
+		// Act
+		int result = SortAndSearch.SearchInRotatedArray(arr, x);
+
+		// Assert
+		Assert.Equal(4, result);
+	}
+
+	[Fact]
+	public void SearchInRotatedArray_EightElementsAllDuplicates_Found()
+	{
+		// Arrange
+		int[] arr = { 4, 6, 4, 4, 4, 4, 4, 4 };
+		int x = 6;
+
+		// Act
+		int result = SortAndSearch.SearchInRotatedArray(arr, x);
+
+		// Assert
+		Assert.Equal(1, result);
+	}
+
+	[Fact]
+	public void SearchInRotatedArray_EightElementsWithDuplicates_NotFound()
+	{
+		// Arrange
+		int[] arr = { 4, 4, 5, 5, 6, 1, 2, 4 };
+		int x = 3;
+
+		// Act & Assert
+		var ex = Assert.Throws<Exception>(() => SortAndSearch.SearchInRotatedArray(arr, x));
+		Assert.Equal("value not found in arr", ex.Message);
+	}
 }
