@@ -170,4 +170,88 @@ public class SortAndSearchTests
 		var ex = Assert.Throws<Exception>(() => SortAndSearch.SearchInRotatedArray(arr, x));
 		Assert.Equal("value not found in arr", ex.Message);
 	}
+
+	[Fact]
+	public void SparseSearch_EmptyArray_ReturnsNotFound()
+	{
+		// Arrange
+		string[] arr = { };
+		string target = "test";
+
+		// Act
+		int result = SortAndSearch.SparseSearch(target, arr);
+
+		// Assert
+		Assert.Equal(-1, result);
+	}
+
+	[Fact]
+	public void SparseSearch_SingleElement_Found()
+	{
+		// Arrange
+		string[] arr = { "test" };
+		string target = "test";
+
+		// Act
+		int result = SortAndSearch.SparseSearch(target, arr);
+
+		// Assert
+		Assert.Equal(0, result);
+	}
+
+	[Fact]
+	public void SparseSearch_ArrayWithOnlyEmptyStrings_ReturnsNotFound()
+	{
+		// Arrange
+		string[] arr = { "", "", "", "" };
+		string target = "test";
+
+		// Act
+		int result = SortAndSearch.SparseSearch(target, arr);
+
+		// Assert
+		Assert.Equal(-1, result);
+	}
+
+	[Fact]
+	public void SparseSearch_ArrayWithoutEmptyStrings_Found()
+	{
+		// Arrange
+		string[] arr = { "apple", "banana", "cherry", "date" };
+		string target = "cherry";
+
+		// Act
+		int result = SortAndSearch.SparseSearch(target, arr);
+
+		// Assert
+		Assert.Equal(2, result);
+	}
+
+	[Fact]
+	public void SparseSearch_ArrayWithSomeEmptyStrings_Found()
+	{
+		// Arrange
+		string[] arr = { "apple", "", "", "banana", "", "cherry", "date", "", "" };
+		string target = "cherry";
+
+		// Act
+		int result = SortAndSearch.SparseSearch(target, arr);
+
+		// Assert
+		Assert.Equal(5, result);
+	}
+
+	[Fact]
+	public void SparseSearch_ArrayWithSomeEmptyStrings_NotFound()
+	{
+		// Arrange
+		string[] arr = { "apple", "", "", "banana", "", "cherry", "date", "", "" };
+		string target = "fig";
+
+		// Act
+		int result = SortAndSearch.SparseSearch(target, arr);
+
+		// Assert
+		Assert.Equal(-1, result);
+	}
 }

@@ -10,7 +10,7 @@ namespace CodingPractice
 		// Assumes A has large enough buffter at then end ot hold B
 		public static void SortedMerge(int[] A, int[] B)
 		{
-			 int indexA = A.Length - B.Length - 1; // Last actual element in A
+			int indexA = A.Length - B.Length - 1; // Last actual element in A
 			int indexB = B.Length - 1;
 			int mergedIndex = A.Length - 1;
 
@@ -89,6 +89,39 @@ namespace CodingPractice
 			throw new Exception("value not found in arr");
 		}
 
+		// # 10.5
+		// Time: O(log n) - worst O(n)
+		// Space: O(log n)
+		public static int SparseSearch(string input, string[] sortedArr)
+		{
+			return SparseSearch(input, sortedArr, 0, sortedArr.Length - 1);
+		}
 
+		private static int SparseSearch(string input, string[] sortedArr, int low, int high)
+		{
+			if (low > high) { return -1; } // not found
+
+			int mid = (low + high) / 2;
+			while (mid > 0 && sortedArr[mid] == "")
+			{
+				mid--;
+			}
+
+			if (sortedArr[mid] == input)
+			{
+				return mid;
+			}
+
+			if (sortedArr[mid] == "" || string.Compare(sortedArr[mid], input) < 0)
+			{
+				// searhch right half
+				return SparseSearch(input, sortedArr, (low + high) / 2 + 1, high);
+			}
+			else
+			{
+				// searhch left half
+				return SparseSearch(input, sortedArr, low, (low + high) / 2 - 1);
+			}
+		}
 	}
 }
