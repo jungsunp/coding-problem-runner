@@ -73,7 +73,7 @@ namespace CodingPractice
 				}
 				else // arr[low] == arr[mid] duplicate values
 				{
-					if (arr[mid] != arr[high]) // left half must be all euqal
+					if (arr[mid] != arr[high]) // left half must be all equal
 					{
 						low = mid + 1; // search right half
 					}
@@ -88,5 +88,7 @@ namespace CodingPractice
 
 			throw new Exception("value not found in arr");
 		}
+
+
 	}
 }
