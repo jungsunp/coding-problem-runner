@@ -3,6 +3,7 @@ using System;
 namespace CodingPractice.Leetcode {
 	public class TwoPointers {
 
+		// #283. Move Zeroes
 		// Time: O(n)
 		// Space: O(1)
 		public void MoveZeroes(int[] nums) {
@@ -37,7 +38,8 @@ namespace CodingPractice.Leetcode {
 			}
 		}
 
-		  // Time: O(n)
+		// #11. Container With Most Water
+		// Time: O(n)
 		// Space: O(1)
 		public int MaxArea(int[] height) {
 			int left = 0;

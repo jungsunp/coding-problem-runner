@@ -5,6 +5,7 @@ namespace CodingPractice.Leetcode
 {
 	public class ArrayString {
 
+		// #1768. Merge Strings Alternately
 		// Time: O(m + n)
 		// Space: O(m + n)
 		public string MergeAlternately(string word1, string word2) {
@@ -30,6 +31,7 @@ namespace CodingPractice.Leetcode
 		}
 
 
+		// #1071. Greatest Common Divisor of Strings
 		// Time: O(m + n)
 		// Space: O(1)
 		public string GcdOfStrings(string str1, string str2) {
@@ -54,6 +56,7 @@ namespace CodingPractice.Leetcode
 			return -1; // gcd not found;
 		}
 
+		// #151. Reverse Words in a String
 		// Time: O(n)
 		// Space: O(n)
 		public string ReverseWords(string s) {
