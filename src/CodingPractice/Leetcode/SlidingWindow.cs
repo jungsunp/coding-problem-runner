@@ -31,7 +31,7 @@ namespace CodingPractice.Leetcode
 		// #1456. Maximum Number of Vowels in a Substring of Given Length
 		// Time: O(n)
 		// Space: O(1)
-		private HashSet<char> vowelHash = new HashSet<char> () { 'a', 'e', 'i', 'o', 'u' };
+		private readonly HashSet<char> vowelHash = new HashSet<char> () { 'a', 'e', 'i', 'o', 'u' };
 
 		public int MaxVowels(string s, int k) {
 			int numVowels = 0;
