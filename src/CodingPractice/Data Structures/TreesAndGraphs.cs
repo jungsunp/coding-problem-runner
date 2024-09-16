@@ -80,7 +80,7 @@ namespace CodingPractice
 		// Space: O(h) - h: height of tree
 		public static bool CheckBalanced<T>(BinaryTree<T> tree)
 		{
-			if (tree == null ||tree.Root == null)
+			if (tree == null || tree.Root == null)
 			{
 				throw new InvalidOperationException();
 			}
