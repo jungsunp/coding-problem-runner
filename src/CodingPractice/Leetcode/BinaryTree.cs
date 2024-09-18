@@ -76,5 +76,15 @@ namespace CodingPractice.Leetcode
 
 			return ret;
 		}
+
+		// #700. Search in a Binary Search Tree
+		// Time: O(h) - height of BST (i.e O(log n) in average, O(n) worst)
+		// Space: O(h)
+		public TreeNode SearchBST(TreeNode root, int val) {
+			if (root == null) { return null; }
+			if (root.val == val) { return root; }
+			else if (root.val > val) { return SearchBST(root.left, val); }
+			else { return SearchBST(root.right, val); }
+		}
 	}
 }
