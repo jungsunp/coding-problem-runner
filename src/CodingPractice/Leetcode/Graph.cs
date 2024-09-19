@@ -68,5 +68,44 @@ namespace CodingPractice.Leetcode
 
 			return numProvinces;
 		}
+
+		// #1926. Nearest Exit from Entrance in Maze
+		// Time: O(m * n)
+		// Space: O(m * n)
+		public int NearestExit(char[][] maze, int[] entrance) {
+			int rowCount = maze.Length;
+			int colCount = maze[0].Length;
+
+			Queue<int[]> toVisit = new Queue<int[]>();
+			toVisit.Enqueue([entrance[0], entrance[1], 0]); // coodrinates & number of steps
+
+			while(toVisit.Count > 0) // Run BFS
+			{
+				int[] current = toVisit.Dequeue();
+				int row = current[0];
+				int col = current[1];
+				int steps = current[2];
+
+				if (row < 0 || col < 0 || row >= rowCount || col >= colCount || maze[row][col] == '+')
+				{
+					continue;
+				}
+
+				// check if exit
+				if ((row == 0 || col == 0 || row == rowCount - 1  || col == colCount - 1) && steps > 0)
+				{
+					return steps;
+				}
+
+				maze[row][col] = '+'; // mark as visited (replace in place to reduce additional space)
+
+				toVisit.Enqueue([row - 1, col, steps + 1]); // move top
+				toVisit.Enqueue([row, col - 1, steps + 1]); // move left
+				toVisit.Enqueue([row + 1, col, steps + 1]); // move bottom
+				toVisit.Enqueue([row, col + 1, steps + 1]); // move right
+			}
+
+			return -1;
+		}
 	}
 }
