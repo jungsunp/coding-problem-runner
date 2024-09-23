@@ -23,5 +23,37 @@ namespace CodingPractice.Leetcode
 
 			return heap.Peek();
 		}
+
+		// #215. Kth Largest Element in an Array (counting sort)
+		// Time: O(n + m) m = max - min + 1
+		// Space: O(m)
+		public int FindKthLargestOptimized(int[] nums, int k) {
+			int min = int.MaxValue;
+			int max = int.MinValue;
+
+			foreach(int i in nums)
+			{
+				min = Math.Min(min, i);
+				max = Math.Max(max, i);
+			}
+
+			int[] countArr = new int[ max - min + 1 ];
+			foreach(int i in nums)
+			{
+				countArr[i - min]++;
+			}
+
+			int remain = k;
+			for (int i = countArr.Length - 1; i >= 0; i--)
+			{
+				remain -= countArr[i];
+				if (remain <= 0)
+				{
+					return i + min;
+				}
+			}
+
+			throw new Exception("Unepxected has occured!");
+		}
 	}
 }
