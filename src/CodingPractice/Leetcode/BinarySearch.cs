@@ -27,7 +27,7 @@ namespace CodingPractice.Leetcode
 					case 1:
 						left = nextGuess + 1;
 						break;
-					default: // 0 
+					default: // 0
 						return nextGuess;
 				}
 			}
@@ -37,6 +37,44 @@ namespace CodingPractice.Leetcode
 
 		private int guess(int guess) {
 			throw new NotImplementedException();
+		}
+
+		// #2300. Successful Pairs of Spells and Potions
+		// Time: O((n + m) log m)
+		// Space: O(log m) - space complexity for sorting
+		public int[] SuccessfulPairs(int[] spells, int[] potions, long success) {
+			int[] pairs = new int[spells.Length];
+
+			// Sort potions (m log m)
+			Array.Sort(potions);
+
+			for (int i = 0; i < spells.Length; i++) {
+
+				// Binary Search of each spell
+				int left = 0;
+				int right = potions.Length - 1;
+				int mid = 0;
+				bool found = false; // finding lower bound
+
+				while (left <= right) {
+					mid = (left + right) / 2;
+
+					if ((long) spells[i] * potions[mid] >= success) {
+						if (mid == 0 || (long) spells[i] * potions[mid - 1] < success) {
+							found = true;
+							break;
+						}
+						right = mid - 1;
+					}
+					else {
+						left = mid + 1;
+					}
+				}
+
+				pairs[i] = found ? potions.Length - mid : 0;
+			}
+
+			return pairs;
 		}
 	}
 }
