@@ -25,5 +25,29 @@ namespace CodingPractice.Leetcode
 
 			return ret;
 		}
+
+		// #62. Unique Paths
+		// Time: O(m * n)
+		// Space: O(n)
+		public int UniquePaths(int m, int n) {
+			if (m == 1 || n == 1) { return 1; }
+
+			if (m < n) { // ensure n <= m
+				int tmp = m;
+				m = n;
+				n = tmp;
+			}
+
+			int[] memo = new int[n];
+			Array.Fill(memo, 1);
+
+			for (int i = 1; i < m ; i++) {
+				for (int j = 1; j < n; j++) {
+					memo[j] += memo[j - 1];
+				}
+			}
+
+			return memo[n - 1];
+		}
 	}
 }
