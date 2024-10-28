@@ -54,5 +54,28 @@ namespace CodingPractice.Leetcode
 
 			return builder.ToString();
 		}
+
+		// #739. Daily Temperatures (Monotonic stack - descreasing order)
+		// Time: O(n)
+		// Space: O(n)
+		public int[] DailyTemperatures(int[] temperatures)
+		{
+			int[] ans = new int[ temperatures.Length ];
+			Stack<int> indices = new Stack<int>();
+			indices.Push(0);
+
+			for (int i = 1; i < temperatures.Length; i++)
+			{
+				while (indices.Count > 0 && temperatures[indices.Peek()] < temperatures[i])
+				{
+					int index = indices.Pop();
+					ans[index] = i - index;
+				}
+				
+				indices.Push(i);
+			}
+
+			return ans;
+		}
 	}
 }
