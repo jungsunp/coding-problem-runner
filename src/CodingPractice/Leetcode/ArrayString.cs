@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CodingPractice.Leetcode
@@ -84,6 +86,18 @@ namespace CodingPractice.Leetcode
 			} else {
 				return retBuilder.Length > 0 ?  $"{retBuilder} {wordBuilder}" : wordBuilder.ToString();
 			}
+		}
+
+		// #1431. Kids With the Greatest Number of Candies
+		// Time: O(n)
+		// Space: O(1)
+		public IList<bool> KidsWithCandies(int[] candies, int extraCandies) {
+			List<bool> ret = new List<bool>();
+			int max = candies.Max();
+			foreach (int candy in candies) {
+				ret.Add(candy + extraCandies >= max);
+			}
+			return ret;
 		}
 	}
 }
