@@ -121,5 +121,38 @@ namespace CodingPractice.Leetcode
 
 			return ret;
 		}
+
+		// #605. Can Place Flowers
+		// Time: O(n)
+		// Space: O(1)
+		public bool CanPlaceFlowers(int[] flowerbed, int n) {
+			 if (n == 0) {
+				return true;
+			}
+
+			int maxFlowerCnt = 0;
+			bool canPlace = true;
+ 
+			for (int i = 0; i < flowerbed.Length; i++) {
+				if (flowerbed[i] == 0) {
+					if (canPlace) {
+						if ((i + 1 == flowerbed.Length) || flowerbed[i + 1] == 0) {
+							if (++maxFlowerCnt >= n) { // we are done looking
+								return true;
+							} 
+							canPlace = false;
+						}
+					}
+					else {
+						canPlace = true;
+					}
+				}
+				else {  // spot == 1
+					canPlace = false;
+				}
+			}
+
+			return false;
+		}
 	}
 }
