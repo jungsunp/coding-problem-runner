@@ -154,5 +154,37 @@ namespace CodingPractice.Leetcode
 
 			return false;
 		}
+
+		// #345. Reverse Vowels of a String
+		// Time: O(n)
+		// Space: O(1)
+		public string ReverseVowels(string s) {
+			char[] vowels = ['a', 'e', 'i', 'o', 'u'];
+
+			StringBuilder sb = new StringBuilder(s);
+			int left = 0;
+			int right = sb.Length - 1;
+
+			while (left < right) {
+				while (left < sb.Length && !vowels.Contains(Char.ToLower(sb[left]))) {
+					left++;
+				}
+
+				while (right > 0 && !vowels.Contains(Char.ToLower(sb[right]))) {
+					right--;
+				}
+
+				if (left >= right) { break; }
+
+				char tmp = sb[left];
+				sb[left] = sb[right];
+				sb[right] = tmp;
+
+				left++;
+				right--;
+			}
+
+			return sb.ToString();
+		}
 	}
 }
