@@ -186,5 +186,31 @@ namespace CodingPractice.Leetcode
 
 			return sb.ToString();
 		}
+
+		// #334. Increasing Triplet Subsequence
+		// Time: O(n)
+		// Space: O(1)
+		public bool IncreasingTriplet(int[] nums) {
+			int min = int.MaxValue;
+			int secondMin = int.MaxValue;
+
+			foreach (int i in nums)
+			{
+				if (i <= min)
+				{
+					min = i;
+				}
+				else if (i <= secondMin)
+				{
+					secondMin = i;
+				}
+				else
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 	}
 }

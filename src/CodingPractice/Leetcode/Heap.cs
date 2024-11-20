@@ -25,7 +25,7 @@ namespace CodingPractice.Leetcode
 		}
 
 		// #215. Kth Largest Element in an Array (counting sort)
-		// Time: O(n + m) m = max - min + 1
+		// Time: O(n + m), m = max - min + 1
 		// Space: O(m)
 		public int FindKthLargestOptimized(int[] nums, int k) {
 			int min = int.MaxValue;
@@ -73,10 +73,9 @@ namespace CodingPractice.Leetcode
 		
 		// Time: O(log n)
 		public int PopSmallest() {
-		
-		if (this.hash.Count == 0) {
-			return this.currentMin++;
-		}
+			if (this.hash.Count == 0) {
+				return this.currentMin++;
+			}
 
 			int min = this.heap.Dequeue();
 			this.hash.Remove(min);

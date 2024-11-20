@@ -18,7 +18,7 @@ namespace CodingPractice
 			}
 
 			var strArr = str.ToCharArray(); // O(n)
-			Array.Sort(strArr);  // O(n log n)
+			Array.Sort(strArr); // O(n log n)
 
 			for (int i = 0; i < strArr.Length - 1; i++) // O(n)
 			{
