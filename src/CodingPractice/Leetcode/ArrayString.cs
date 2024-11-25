@@ -212,5 +212,39 @@ namespace CodingPractice.Leetcode
 
 			return false;
 		}
+
+		// #443. String Compression
+		// Time: O(n)
+		// Space: O(1)
+		public int Compress(char[] chars) {
+			char currentChar = chars[0];
+			int counter = 1;
+			int pointer = 1; // pointer to update chars
+
+			for (int i = 1; i < chars.Length; i++) {
+				if (chars[i] != currentChar) {
+					if (counter > 1) {
+						foreach (char c in counter.ToString()) {
+							chars[pointer++] = c;
+						}
+					}
+
+					chars[pointer++] = chars[i];
+					currentChar = chars[i];
+					counter = 1;
+				}
+				else {
+					counter++;
+				}
+			}
+
+			if (counter > 1) {
+				foreach (char c in counter.ToString()) {
+					chars[pointer++] = c;
+				}
+			}
+
+			return pointer;
+		}
 	}
 }
