@@ -51,5 +51,39 @@ namespace CodingPractice.Leetcode
 
 			return maxVowels;
 		}
+
+		// #1004. Max Consecutive Ones III
+		// Time: O(n)
+		// Space: O(1)
+		public int LongestOnes(int[] nums, int k) {
+			int i = 0;
+			int numZeros = 0;
+
+			// Set up initial sliding window
+			while (numZeros < k && i < nums.Length) {
+				if (nums[i++] == 0) {
+					numZeros++;
+				}
+			}
+
+			int numOnes = i;
+			int maxOnes = i;
+			for (int j = i; j < nums.Length; j++) {
+				if (nums[j] == 1) {
+					numOnes++;
+					maxOnes = Math.Max(numOnes, maxOnes);
+				}
+				else { //nums[j] == 0
+					if (nums[j - numOnes] == 1) {
+						int l = j - numOnes;
+						while (nums[l++] == 1) {
+							numOnes--;
+						}
+					}
+				}
+			}
+
+			return maxOnes;
+		}
 	}
 }
