@@ -86,5 +86,25 @@ namespace CodingPractice.Leetcode
 
 			return dict;
 		}
+
+		// #1207. Unique Number of Occurrences
+		// Time: O(n)
+		// Space: O(n)
+		public bool UniqueOccurrences(int[] arr) {
+			// Build hash map
+			var dict = new Dictionary<int, int>();
+			foreach (int num in arr) {
+				if (!dict.ContainsKey(num)) {
+					dict.Add(num, 1);
+				}
+				else {
+					dict[num]++;
+				}
+			}
+
+			// Compare length with hash set of occurences
+			var set = new HashSet<int>(dict.Values);
+			return dict.Values.Count == set.Count;
+		}
 	}
 }
