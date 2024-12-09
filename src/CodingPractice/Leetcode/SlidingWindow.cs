@@ -85,5 +85,29 @@ namespace CodingPractice.Leetcode
 
 			return maxOnes;
 		}
+
+		// #1493. Longest Subarray of 1's After Deleting One Element
+		// Time: O(n)
+		// Space: O(1)
+		public int LongestSubarray(int[] nums) {
+			int left = 0;
+			int right;
+			int numZeroInWindow = 0;
+
+			for (right = 0; right < nums.Length; right++) {
+				if (nums[right] == 0) {
+					numZeroInWindow++;
+				}
+
+				if (numZeroInWindow > 1) {
+					if (nums[left] == 0) {
+						numZeroInWindow--;
+					}
+					left++; // trick here is to not to reduce size of window even when window is invalid
+				}
+			}
+
+			return right - left - 1;
+		}
 	}
 }
