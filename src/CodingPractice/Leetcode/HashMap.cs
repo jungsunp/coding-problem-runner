@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace CodingPractice.Leetcode
 {
@@ -105,6 +106,32 @@ namespace CodingPractice.Leetcode
 			// Compare length with hash set of occurences
 			var set = new HashSet<int>(dict.Values);
 			return dict.Values.Count == set.Count;
+		}
+
+		// #2352. Equal Row and Column Pairs
+		// Time: O(n ^ 2)
+		// Space: O(n ^ 2)
+		public int EqualPairs(int[][] grid) {
+
+			// Build a hash map with row value
+			var rowDict = new Dictionary<string, int>();
+			foreach (int[] row in grid) {
+				var str = String.Join(",", row);
+				rowDict[str] = rowDict.TryGetValue(str, out int cnt) ? cnt + 1 : 1;
+			}
+
+			// Use the hash map to compare with col value
+			var retCount = 0;
+			for (int col = 0; col < grid.Length; col++) {
+				var builder = new StringBuilder(grid[0][col].ToString());
+				for (int row = 1; row < grid.Length; row++) {
+					builder.Append("," + grid[row][col]);
+				}
+
+				retCount += rowDict.TryGetValue(builder.ToString(), out var cnt) ? cnt : 0;
+			}
+
+			return retCount;
 		}
 	}
 }

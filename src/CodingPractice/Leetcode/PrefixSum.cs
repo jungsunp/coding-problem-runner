@@ -18,5 +18,28 @@ namespace CodingPractice.Leetcode
 
 			return max;
 		}
+
+		// #724. Find Pivot Index
+		// Time: O(n)
+		// Space: O(1)
+		// Note: LinQ's Array.Sum (i.e nums.Sum) is slow
+		public int PivotIndex(int[] nums) {
+			int leftSum = 0;
+			int sum = 0;
+
+			foreach (int num in nums) {
+				sum += num;
+			}
+
+			for (int i = 0; i < nums.Length; i++) {
+				if (leftSum == sum - leftSum - nums[i]) {
+					return i;
+				}
+
+				leftSum += nums[i];
+			}
+
+			return -1;
+		}
 	}
 }
