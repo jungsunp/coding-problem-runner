@@ -48,6 +48,44 @@ namespace CodingPractice.Leetcode
 			return nodeIsGoodCount + Dfs(node.left, max) + Dfs(node.right, max);
 		}
 
+		// #872. Leaf-Similar Trees (DFS)
+		// Time: O(n + m)
+		// Space: O(n + m)
+		public bool LeafSimilar(TreeNode root1, TreeNode root2) {
+			List<int> leafList1 = new List<int>();
+			List<int> leafList2 = new List<int>();
+
+			LeafDfs(root1, leafList1);
+			LeafDfs(root2, leafList2);
+
+			if (leafList1.Count != leafList2.Count) {
+				return false;
+			}
+
+			for (int i = 0; i < leafList1.Count; i++) {
+				if (leafList1[i] != leafList2[i]) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+
+		private static void LeafDfs(TreeNode node, List<int> leafList) {
+			if (node == null) {
+				return;
+			}
+
+			if (node.left == null && node.right == null) {
+				leafList.Add(node.val);
+				return;
+			}
+
+			LeafDfs(node.left, leafList);
+			LeafDfs(node.right, leafList);
+		}
+
 		// #199. Binary Tree Right Side View (BFS)
 		// Time: O(n)
 		// Space: O(d) - d is tree diameter
