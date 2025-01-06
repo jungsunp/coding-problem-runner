@@ -192,5 +192,37 @@ namespace CodingPractice.Leetcode
 					return -1;
 			}
 		}
+
+		// #1372. Longest ZigZag Path in a Binary Tree (DFS)
+		// Time: O(n) - node count
+		// Space: O(log n) - for balanaced tree (O(n) worst)
+
+		private int maxPath = 0;
+
+		public int LongestZigZag(TreeNode root) {
+
+			// Run DFS on each direction
+			this.ZigZagDfs(root.left, true, 1);
+			this.ZigZagDfs(root.right, false, 1);
+
+			return this.maxPath;
+		}
+
+		private void ZigZagDfs(TreeNode node, bool movedLeft, int path) {
+			if (node == null) {
+				return;
+			}
+
+			this.maxPath = Math.Max(this.maxPath, path);
+
+			if (movedLeft) {
+				ZigZagDfs(node.right, false, path  + 1);
+				ZigZagDfs(node.left, true, 1);
+			}
+			else { // moved right
+				ZigZagDfs(node.left, true, path + 1);
+				ZigZagDfs(node.right, false, 1);
+			}
+		}
 	}
 }
