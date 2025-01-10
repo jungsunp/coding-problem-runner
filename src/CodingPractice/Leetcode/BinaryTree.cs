@@ -289,5 +289,37 @@ namespace CodingPractice.Leetcode
 
 			return left != null ? left : right;
 		}
+
+		// # 1161. Maximum Level Sum of a Binary Tree (BFS)
+		// Time: O(n)
+		// Space: O(n) - width of tree at last level ~ n/2
+		public int MaxLevelSum(TreeNode root) {
+			var queue = new Queue<TreeNode>();
+			queue.Enqueue(root);
+
+			int maxSum = Int32.MinValue;
+			int maxLevel = 1;
+			int level = 1;
+
+			while (queue.Count > 0) {
+				int nodeCount = queue.Count;
+				int sum = 0; // calculate level sum
+				for (int i = 0; i < nodeCount; i++) {
+					TreeNode node = queue.Dequeue();
+					sum += node.val;
+					if (node.left != null) { queue.Enqueue(node.left); }
+					if (node.right != null) { queue.Enqueue(node.right); }
+				}
+
+				if (sum > maxSum) {
+					maxSum = sum;
+					maxLevel = level;
+				}
+
+				level++;
+			}
+
+			return maxLevel;
+		}
 	}
 }
