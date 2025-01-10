@@ -48,6 +48,53 @@ namespace CodingPractice.Leetcode
 			return nodeIsGoodCount + Dfs(node.left, max) + Dfs(node.right, max);
 		}
 
+		// #437. Path Sum III
+		// Time: O(n)
+		// Space: O(log n)
+		public int PathSum(TreeNode root, int targetSum) {
+			if (root == null) {
+				return 0;
+			}
+
+			Dictionary<long, int> hash = new Dictionary<long, int>(); // keeps track of partial sums in paths
+			return PathSumDfs(root, targetSum, 0, hash);
+		}
+
+		private static int PathSumDfs(TreeNode node, int targetSum, long currSum, Dictionary<long, int> hash) {
+			if (node == null) {
+				return 0;
+			}
+
+			// Path all the way from the root
+			int validPathCnt = 0;
+			currSum += node.val;
+			if (currSum == (long)targetSum) {
+				validPathCnt++;
+			}
+
+			// Path in middle that match targetSum
+			long diff = currSum - (long)targetSum;
+			if (hash.ContainsKey(diff)) {
+				validPathCnt += hash[diff];
+			}
+
+			// Store current sum into hash
+			if (hash.ContainsKey(currSum)) {
+				hash[currSum] += 1;
+			}
+			else {
+				hash.Add(currSum, 1);
+			}
+
+			// Calculate valid paths using recursion
+			int ret = validPathCnt + PathSumDfs(node.left, targetSum, currSum, hash) + PathSumDfs(node.right, targetSum, currSum, hash);
+
+			// Clean up hash after checking the node
+			hash[currSum] -= 1;
+
+			return ret;
+		}
+
 		// #872. Leaf-Similar Trees (DFS)
 		// Time: O(n + m)
 		// Space: O(n + m)
@@ -223,6 +270,24 @@ namespace CodingPractice.Leetcode
 				ZigZagDfs(node.left, true, path + 1);
 				ZigZagDfs(node.right, false, 1);
 			}
+		}
+
+		// #236. Lowest Common Ancestor of a Binary Tree (DFS)
+		// Time: O(n)
+		// Space: O(h)
+		public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+			if (root == null || root == p || root == q) {
+				return root;
+			}
+
+			TreeNode left = LowestCommonAncestor(root.left, p, q);
+			TreeNode right = LowestCommonAncestor(root.right, p, q);
+
+			if (left != null && right != null) {
+				return root;
+			}
+
+			return left != null ? left : right;
 		}
 	}
 }
