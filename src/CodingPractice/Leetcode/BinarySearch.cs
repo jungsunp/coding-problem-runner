@@ -3,11 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static CodingPractice.Leetcode.BinaryTree;
 
 namespace CodingPractice.Leetcode
 {
 	public class BinarySearch
 	{
+		// #700. Search in a Binary Search Tree
+		// Time: O(h) - height of BST (i.e O(log n) in average, O(n) worst)
+		// Space: O(h)
+		public TreeNode SearchBST(TreeNode root, int val) {
+			if (root == null) { return null; }
+			if (root.val == val) { return root; }
+			else if (root.val > val) { return SearchBST(root.left, val); }
+			else { return SearchBST(root.right, val); }
+		}
+
 		// #374. Guess Number Higher or Lower
 		// Time: O(log n)
 		// Space: O(1)
@@ -75,6 +86,57 @@ namespace CodingPractice.Leetcode
 			}
 
 			return pairs;
+		}
+
+		// #450. Delete Node in a BST
+		// Time: O(log n)
+		// Space: O(1)
+		public TreeNode DeleteNode(TreeNode root, int key) {
+			if (root == null) {
+				return null;
+			}
+
+			if (root.val == key) {
+				return DeleteNodeHelper(root);
+			}
+
+			var node = root;
+			while (node != null) {
+				if (node.val > key) {
+					if (node.left != null && node.left.val == key) {
+						node.left = DeleteNodeHelper(node.left);
+						break;
+					}
+					node = node.left;
+				}
+				else {
+					if (node.right != null && node.right.val == key) {
+						node.right = DeleteNodeHelper(node.right);
+						break;
+					}
+					node = node.right;
+				}
+			}
+
+			return root;
+		}
+
+		private static TreeNode DeleteNodeHelper(TreeNode node) {
+				if (node.left == null) {
+					return node.right;
+				}
+				else if (node.right == null) {
+					return node.left;
+				}
+				else {
+					// find right most node from left subtree and attach right subtree
+					var tmp = node.left;
+					while (tmp.right != null) {
+						tmp = tmp.right;
+					}
+					tmp.right = node.right;
+					return node.left;
+				}
 		}
 	}
 }
