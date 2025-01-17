@@ -5,7 +5,7 @@ namespace CodingPractice.Leetcode
 {
 	public class Graph
 	{
-		// #841. Keys and Rooms
+		// #841. Keys and Rooms (BFS)
 		// Time: O(n + e) - e is total number of keys
 		// Space: O(n)
 		public bool CanVisitAllRooms(IList<IList<int>> rooms) {
@@ -32,7 +32,7 @@ namespace CodingPractice.Leetcode
 			return visitedRooms.Count == rooms.Count;
 		}
 
-		// #547. Number of Provinces
+		// #547. Number of Provinces (DFS)
 		// Time: O(n^2)
 		// Space: O(n)
 		public int FindCircleNum(int[][] isConnected) {
@@ -69,7 +69,7 @@ namespace CodingPractice.Leetcode
 			return numProvinces;
 		}
 
-		// #1926. Nearest Exit from Entrance in Maze
+		// #1926. Nearest Exit from Entrance in Maze (BFS)
 		// Time: O(m * n)
 		// Space: O(m * n)
 		public int NearestExit(char[][] maze, int[] entrance) {
@@ -106,6 +106,76 @@ namespace CodingPractice.Leetcode
 			}
 
 			return -1;
+		}
+
+		//# 1466. Reorder Routes to Make All Paths Lead to the City Zero (DFS)
+		// Time: O(n)
+		// Space: O(n)
+		public int MinReorder(int n, int[][] connections) {
+
+			// Build hash map with connections
+			Dictionary<int, List<ConnectedCity>> map = new Dictionary<int, List<ConnectedCity>>();
+			foreach(int[] connection in connections)
+			{
+				int origin = connection[0];
+				int destination = connection[1];
+
+				// Add original direction
+				if (map.ContainsKey(origin))
+				{
+					map[origin].Add(new ConnectedCity(destination, true));
+				}
+				else
+				{
+					map[origin] = new List<ConnectedCity> { new ConnectedCity(destination, true) };
+				}
+
+				// Add reverse direction
+				if (map.ContainsKey(destination))
+				{
+					map[destination].Add(new ConnectedCity(origin, false));
+				}
+				else
+				{
+					map[destination] = new List<ConnectedCity> { new ConnectedCity(origin, false) };
+				}
+			}
+
+			// Run DFS
+			Stack<int> toVisit = new Stack<int>();
+			HashSet<int> visited = new HashSet<int>();
+			int reorder = 0;
+			toVisit.Push(0); // it's guranteed all cities are connected. can just start with 0 and run bi-directional DFS
+
+			while (toVisit.Count > 0)
+			{
+				int city = toVisit.Pop();
+				visited.Add(city);
+
+				List<ConnectedCity> connectedCities = map[city]; // guranteed to be connected.
+				foreach (ConnectedCity cc in connectedCities)
+				{
+					if (!visited.Contains(cc.city)) // visiting new city
+					{
+						toVisit.Push(cc.city);
+						if (cc.origDir) { // if reached with original direction, need to reverse it
+							reorder++;
+						}
+					}
+				}
+			}
+
+			return reorder;
+		}
+
+		private readonly struct ConnectedCity {
+			public readonly int city;
+			public readonly bool origDir; // original direction (i.e no need to reorder)
+
+			public ConnectedCity(int city, bool origDir) {
+				this.city = city;
+				this.origDir = origDir;
+			}
 		}
 	}
 }
