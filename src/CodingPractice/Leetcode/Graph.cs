@@ -107,5 +107,82 @@ namespace CodingPractice.Leetcode
 
 			return -1;
 		}
+
+		// #399. Evaluate Division
+		// Time: O(m * n) - m: number of queries, n: number of equations
+		// Space: O(n)
+		public double[] CalcEquation(IList<IList<string>> equations, double[] values, IList<IList<string>> queries) {
+
+			// Build hash map with graph edges
+			Dictionary<string, IList<Edge>> map = new Dictionary<string, IList<Edge>>();
+			for(int i = 0; i < equations.Count; i++) {
+				string numerator = equations[i][0];
+				string denominator = equations[i][1];
+
+				// Add original direction edge
+				if (!map.ContainsKey(numerator)) {
+					map.Add(numerator, new List<Edge>());
+				}
+				map[numerator].Add(new Edge(denominator, values[i]));
+
+				// Add reverse direction edge
+				if (!map.ContainsKey(denominator)) {
+					map.Add(denominator, new List<Edge>());
+				}
+				map[denominator].Add(new Edge(numerator, 1 / values[i])); // add edge weight as 1 / value
+			}
+
+			// Calculate queries
+			double[] ret = new double[queries.Count];
+			for (int i = 0; i < queries.Count; i++) {
+				string numerator = queries[i][0];
+				string denominator = queries[i][1];
+				ret[i] = -1; // default - unable to calculate
+
+				if (!map.ContainsKey(numerator)) {
+					continue;
+				}
+				else if (string.Equals(numerator, denominator)) {
+					ret[i] = 1;
+					continue;
+				}
+
+				// Run DFS (Note: this can also be done with backtracking)
+				Stack<Edge> edgeStack = new Stack<Edge>();
+				HashSet<string> visited = new HashSet<string>();
+				edgeStack.Push(new Edge(numerator, 1));
+				while (edgeStack.Count > 0) {
+					Edge edge = edgeStack.Pop();
+					string variable = edge.denominator;
+					visited.Add(variable);
+
+					IList<Edge> edgeList = map[variable];
+					foreach (Edge nextEdge in edgeList) {
+						if (!visited.Contains(nextEdge.denominator)) {
+							if (nextEdge.denominator == denominator) {
+								ret[i] = edge.value * nextEdge.value;
+								edgeStack = new Stack<Edge>();
+								break;
+							}
+
+							edgeStack.Push(new Edge(nextEdge.denominator, edge.value * nextEdge.value));
+						}
+					}
+				}
+
+			}
+
+			return ret;
+		}
+
+		private class Edge {
+			public string denominator; 
+			public double value;
+
+			public Edge (string denominator, double value) {
+				this.denominator = denominator;
+				this.value = value;
+			}
+		}
 	}
 }
