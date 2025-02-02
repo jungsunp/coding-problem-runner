@@ -246,13 +246,74 @@ namespace CodingPractice.Leetcode
 		}
 
 		private class Edge {
-			public string denominator; 
+			public string denominator;
 			public double value;
 
 			public Edge (string denominator, double value) {
 				this.denominator = denominator;
 				this.value = value;
 			}
+		}
+
+		// #994. Rotting Oranges
+		// Time: O(m * n)
+		// Space: O(m * n)
+		public int OrangesRotting(int[][] grid) {
+			// Find rotten Oranges
+			Queue<int[]> rottenQueue = new Queue<int[]>();
+			int freshCnt = 0;
+			for (int i = 0; i < grid.Length; i++) {
+				for (int j = 0; j < grid[0].Length; j++) {
+					if (grid[i][j] == 2) {
+						rottenQueue.Enqueue([i, j]);
+					} else if (grid[i][j] == 1) {
+						freshCnt++;
+					}
+				}
+			}
+
+			if (freshCnt == 0) { // no fresh orange
+				return 0;
+			}
+
+			// Run BFS with rotten Oranges
+			int numMins = -1;
+			while (rottenQueue.Count > 0) {
+				int rottenCnt = rottenQueue.Count;
+				for (int i = 0; i < rottenCnt; i++) {
+					int[] rottenOrange = rottenQueue.Dequeue();
+					int row = rottenOrange[0];
+					int col = rottenOrange[1];
+
+					if (row < grid.Length - 1 && grid[row + 1][col] == 1) {
+						grid[row + 1][col] = 2;
+						rottenQueue.Enqueue([row + 1, col]);
+						freshCnt--;
+					}
+					if (row > 0 && grid[row - 1][col] == 1) {
+						grid[row - 1][col] = 2;
+						rottenQueue.Enqueue([row - 1, col]);
+						freshCnt--;
+					}
+					if (col < grid[0].Length - 1 && grid[row][col + 1] == 1) {
+						grid[row][col + 1] = 2;
+						rottenQueue.Enqueue([row, col + 1]);
+						freshCnt--;
+					}
+					if (col > 0 && grid[row][col - 1] == 1) {
+						grid[row][col - 1] = 2;
+						rottenQueue.Enqueue([row, col - 1]);
+						freshCnt--;
+					}
+				}
+				numMins++;
+			}
+
+			if (freshCnt > 0) { // at least 1 orage remained fresh after BFS
+				return -1;
+			}
+
+			return numMins;
 		}
 	}
 }
