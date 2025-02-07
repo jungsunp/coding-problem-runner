@@ -123,34 +123,4 @@ namespace CodingPractice.Leetcode
 			this.hash.Add(num);
 		}
 	}
-
-	// #2542. Maximum Subsequence Score
-	// Time: O(n log n)
-	// Space: O(n)
-	public long MaxScore(int[] nums1, int[] nums2, int k) {
-		// Sort both arrays based on nums2 value in desc order
-		int[] indices = Enumerable.Range(0, nums1.Length).ToArray();
-		Array.Sort(indices, (a, b) => nums2[b] - nums2[a]); // desc order
-		nums1 = indices.Select(i => nums1[i]).ToArray();
-		nums2 = indices.Select(i => nums2[i]).ToArray();
-
-		// Calculate initial max using sorted array
-		long sum = 0;
-		PriorityQueue<int, int> minHeap = new PriorityQueue<int, int>();
-		for (int i = 0; i < k; i++) {
-			minHeap.Enqueue(nums1[i], nums1[i]);
-			sum += nums1[i];
-		}
-		long max = sum * nums2[k - 1];
-
-		// Iterate nums2 and maintain k largest value in min-heap
-		for (int i = k; i < nums1.Length; i ++) {
-			int min = minHeap.Dequeue();
-			minHeap.Enqueue(nums1[i], nums1[i]);
-			sum += nums1[i] - min;
-			max = Math.Max(max, sum * nums2[i]); // nums2[i] is min since nums2 is sorted desc
-		}
-
-		return max;
-	}
 }
