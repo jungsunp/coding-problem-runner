@@ -55,6 +55,47 @@ namespace CodingPractice.Leetcode
 
 			throw new Exception("Unepxected has occured!");
 		}
+
+		// #2462. Total Cost to Hire K Workers
+		// Time: O( (k + c) * log c)  - c: number of canidates
+		// Space: O(c)
+		public long TotalCost(int[] costs, int k, int candidates) {
+			// Put candidates in min-heap
+			Comparer<int> comparer = Comparer<int>.Create((x,y) => {
+				if (costs[x] == costs[y]) return x - y;
+				return costs[x] - costs[y];
+			});
+			PriorityQueue<int, int> heap = new PriorityQueue<int, int>(comparer);
+			int left = candidates - 1;
+			int right = Math.Max(candidates, costs.Length - candidates);
+			for (int i = 0; i <= left; i ++) {
+				heap.Enqueue(i, i);
+			}
+			for (int i = right; i < costs.Length; i++) {
+				heap.Enqueue(i, i);
+			}
+
+			// Run sessions and calculate total cost
+			long totalCost = 0;
+			for (int i = 0; i < k; i++) {
+				int idx = heap.Dequeue();
+				totalCost += costs[idx];
+
+				// Insert more candidates
+				if (left + 1 < right) {
+					if (idx <= left) {
+						left++;
+						heap.Enqueue(left, left);
+					}
+					else {
+						right--;
+						heap.Enqueue(right, right);
+					}
+				}
+			}
+
+			return totalCost;
+		}
 	}
 
 	// #2336. Smallest Number in Infinite Set
