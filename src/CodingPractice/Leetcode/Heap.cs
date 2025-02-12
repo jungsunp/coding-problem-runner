@@ -1,5 +1,6 @@
 using System;
-using System.Collections.Generic; // Add this using directive for the PriorityQueue class
+using System.Collections.Generic;
+using System.Linq; // Add this using directive for the PriorityQueue class
 
 namespace CodingPractice.Leetcode
 {
@@ -56,6 +57,7 @@ namespace CodingPractice.Leetcode
 			throw new Exception("Unepxected has occured!");
 		}
 
+<<<<<<< HEAD
 		// #2462. Total Cost to Hire K Workers
 		// Time: O( (k + c) * log c)  - c: number of canidates
 		// Space: O(c)
@@ -95,6 +97,36 @@ namespace CodingPractice.Leetcode
 			}
 
 			return totalCost;
+=======
+		// #2542. Maximum Subsequence Score
+		// Time: O(n log n)
+		// Space: O(n)
+		public long MaxScore(int[] nums1, int[] nums2, int k) {
+			// Sort both arrays based on nums2 value in desc order
+			int[] indices = Enumerable.Range(0, nums1.Length).ToArray();
+			Array.Sort(indices, (a, b) => nums2[b] - nums2[a]); // desc order
+			nums1 = indices.Select(i => nums1[i]).ToArray();
+			nums2 = indices.Select(i => nums2[i]).ToArray();
+
+			// Calculate initial max using sorted array
+			long sum = 0;
+			PriorityQueue<int, int> minHeap = new PriorityQueue<int, int>();
+			for (int i = 0; i < k; i++) {
+				minHeap.Enqueue(nums1[i], nums1[i]);
+				sum += nums1[i];
+			}
+			long max = sum * nums2[k - 1];
+
+			// Iterate nums2 and maintain k largest value in min-heap
+			for (int i = k; i < nums1.Length; i ++) {
+				int min = minHeap.Dequeue();
+				minHeap.Enqueue(nums1[i], nums1[i]);
+				sum += nums1[i] - min;
+				max = Math.Max(max, sum * nums2[i]); // nums2[i] is min since nums2 is sorted desc
+			}
+
+			return max;
+>>>>>>> 36e65d33d0e28a58389bc562b21382f83d81f9bc
 		}
 	}
 
@@ -111,7 +143,7 @@ namespace CodingPractice.Leetcode
 			this.hash = new HashSet<int>();
 			this.currentMin = 1;
 		}
-		
+
 		// Time: O(log n)
 		public int PopSmallest() {
 			if (this.hash.Count == 0) {
