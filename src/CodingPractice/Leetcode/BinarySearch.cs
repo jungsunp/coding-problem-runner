@@ -47,7 +47,7 @@ namespace CodingPractice.Leetcode
 		}
 
 		private int guess(int guess) {
-			throw new NotImplementedException();
+			throw new NotImplementedException(); // implemented from leetcode.com only
 		}
 
 		// #2300. Successful Pairs of Spells and Potions
@@ -137,6 +137,29 @@ namespace CodingPractice.Leetcode
 					tmp.right = node.right;
 					return node.left;
 				}
+		}
+
+		// #162. Find Peak Element
+		// Time: O(log n)
+		// Space: O(1)
+		public int FindPeakElement(int[] nums) {
+			int left = 0;
+			int right = nums.Length - 1;
+			int mid;
+
+			while (left < right) {
+				mid = mid = left + (right - left) / 2;
+				if (nums[mid] > nums[mid + 1]) {
+					// Mid is in desc sequence => Peak is guranteed on left subtree
+					right = mid;
+				}
+				else {
+					// Mid is is asc desquence => Peak is guranteed on right subtree
+					left = mid + 1;
+				}
+			}
+
+			return left;
 		}
 	}
 }
