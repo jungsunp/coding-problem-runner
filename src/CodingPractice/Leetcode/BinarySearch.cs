@@ -148,7 +148,7 @@ namespace CodingPractice.Leetcode
 			int mid;
 
 			while (left < right) {
-				mid = mid = left + (right - left) / 2;
+				mid = left + (right - left) / 2;
 				if (nums[mid] > nums[mid + 1]) {
 					// Mid is in desc sequence => Peak is guranteed on left subtree
 					right = mid;
@@ -160,6 +160,40 @@ namespace CodingPractice.Leetcode
 			}
 
 			return left;
+		}
+
+		// #875. Koko Eating Bananas
+		// Time: O(n log k) - n: number of piles, k: max bananas in a pile
+		// Space: O(1);
+		public int MinEatingSpeed(int[] piles, int h) {
+			int left = 1; // min speed: 1 banana per hour
+			int right = 0; // max speed: max bananas per hour
+			foreach (int pile in piles) {
+				right = Math.Max(right, pile); // NOTE: this is faster than using Linq's piles.Max();
+			}
+
+			// Run binary search with speed
+			while (left < right) {
+				int mid = left + (right - left) / 2;
+				int hour = GetHoursWithSpeed(piles, mid);
+
+				if (hour > h) {
+					left = mid + 1;
+				}
+				else {
+					right = mid;
+				}
+			}
+
+			return left;
+		}
+
+		private static int GetHoursWithSpeed(int[] piles, int s) {
+			int h = 0;
+			foreach (int pile in piles) {
+				h += (int)Math.Ceiling((double)pile / s);
+			}
+			return h;
 		}
 	}
 }
