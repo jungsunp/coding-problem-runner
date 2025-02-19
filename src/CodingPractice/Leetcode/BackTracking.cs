@@ -45,5 +45,31 @@ namespace CodingPractice.Leetcode
 
 			return ret;
 		}
+
+		// #216. Combination Sum III
+		// Time: O(K * C(9,K))
+		// Space: O(k)
+		public IList<IList<int>> CombinationSum3(int k, int n) {
+			List<IList<int>> ret = new List<IList<int>>();
+			CombinationSum3Helper(k, n, 1, new List<int>(), ret); // Backtracking
+			return ret;
+		}
+
+		private static void CombinationSum3Helper(int k, int n, int min, IList<int> current, IList<IList<int>> combList) {
+			if (n < 0 || min > 10 || current.Count > k) {
+				return;
+			}
+
+			if (n == 0 && current.Count == k) {
+				combList.Add(current.ToList());
+				return;
+			}
+
+			for (int i = min; i < 10; i++) {
+				current.Add(i);
+				CombinationSum3Helper(k, n - i, i + 1, current, combList);
+				current.RemoveAt(current.Count - 1);
+			}
+		}
 	}
 }
