@@ -61,7 +61,7 @@ namespace CodingPractice.Leetcode
 			}
 
 			if (n == 0 && current.Count == k) {
-				combList.Add(current.ToList());
+				combList.Add(current.ToList()); // creates deep copy
 				return;
 			}
 
