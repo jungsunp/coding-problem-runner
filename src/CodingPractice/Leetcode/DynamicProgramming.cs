@@ -57,5 +57,23 @@ namespace CodingPractice.Leetcode
 			}
 			return Math.Min(cost[cost.Length - 2], cost[cost.Length - 1]);
 		}
+
+		// #198. House Robber
+		// Time: O(n)
+		// Space: O(1)
+		public int Rob(int[] nums) {
+			if (nums.Length == 1) { return nums[0]; }
+
+			if (nums.Length > 2) {
+				nums[2] += nums[0]; // base case for at least 3 elements array
+			}
+
+			// Run DP - dynamically update with max amount
+			for (int i = 3; i < nums.Length; i++) {
+				nums[i] += Math.Max(nums[i - 3], nums[i - 2]);
+			}
+
+			return Math.Max(nums[nums.Length - 2], nums[nums.Length - 1]);
+		}
 	}
 }
