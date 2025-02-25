@@ -75,5 +75,32 @@ namespace CodingPractice.Leetcode
 
 			return Math.Max(nums[nums.Length - 2], nums[nums.Length - 1]);
 		}
+
+		// #790. Domino and Tromino Tiling
+		// Time: O(n)
+		// Space: O(1)
+		private const int MOD = 1000000007; // 10 ^ 9 + 7
+		public int NumTilings(int n) {
+			if (n < 3) { return n; }
+
+			// f: full covered tiling & p: partially covered tiling
+			long fn1 = 2; // base case for f(n-1)
+			long fn2 = 1; // base case for f(n-2)
+			long pn1 = 1; // base case for p(n-1)
+			long fn = fn1;
+			long pn = pn1;
+
+			// Run DP with following formula
+			// f(n) = f(n-1) + f(n-2) + 2 * p(n-1)
+			// p(n) = p(n-1) + f(n-2)
+			for (int i = 3; i <= n; i++) {
+				fn = (fn1 + fn2 + 2 * pn1) % MOD;
+				pn = (pn1 + fn2) % MOD;
+
+				(fn1, fn2, pn1) = (fn, fn1, pn);
+			}
+
+			return (int) fn1;
+		}
 	}
 }
