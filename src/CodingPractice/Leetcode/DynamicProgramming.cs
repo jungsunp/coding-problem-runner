@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace CodingPractice.Leetcode
 {
@@ -101,6 +102,66 @@ namespace CodingPractice.Leetcode
 			}
 
 			return (int) fn1;
+		}
+
+		 // #1143. Longest Common Subsequence (with memoization)
+		// Time: O(m * n)
+		// Space: O(m * n)
+		private Dictionary<(int, int), int> memo = new Dictionary<(int, int), int>();
+		public int LongestCommonSubsequenceWithMemo(string text1, string text2) {
+			return LcsDpWithMemo(text1, text2, text1.Length - 1, text2.Length - 1);
+		}
+
+		private int LcsDpWithMemo(string text1, string text2, int index1, int index2) {
+			if (index1 < 0 || index2 < 0) {
+				return 0;
+			}
+
+			if (memo.ContainsKey((index1, index2))) {
+				return memo[(index1, index2)];
+			}
+
+			int ret;
+			if (text1[index1] == text2[index2]) {
+				ret = 1 + LcsDpWithMemo(text1, text2, index1 - 1, index2 - 1);
+			}
+			else {
+				ret = Math.Max(LcsDpWithMemo(text1, text2, index1 - 1, index2), LcsDpWithMemo(text1, text2, index1, index2 - 1));
+			}
+
+			memo.Add((index1, index2), ret);
+			return ret;
+		}
+
+		// #1143. Longest Common Subsequence (DP optimized)
+		// Time: O(m * n)
+		// Space: Min(m, n)
+		public int LongestCommonSubsequence(string text1, string text2) {
+			if (text1.Length < text2.Length) {
+				// ensure text2 is shorter string
+				(text1, text2) = (text2, text1);
+			}
+
+			// Initially start with 2D array and optimize to 1D for space optimization
+			// use shorter string for space optimization
+			// add extra of zero for ease of implemenation
+			int[] memo = new int[text2.Length + 1];
+
+			// Run DP
+			for (int i = text1.Length - 1; i >= 0; i--) {
+				int prev = 0; // temp var to store (i + 1, j + 1) case
+				for (int j = text2.Length - 1; j >= 0; j--) {
+					if (text1[i] == text2[j]) {
+						(memo[j], prev) = (1 + prev, memo[j]);
+					}
+					else {
+						prev = memo[j];
+						memo[j] = Math.Max(memo[j], memo[j + 1]);
+					}
+				}
+			}
+
+			return memo[0];
 		}
 	}
 }
