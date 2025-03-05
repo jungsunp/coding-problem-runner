@@ -163,5 +163,23 @@ namespace CodingPractice.Leetcode
 
 			return memo[0];
 		}
+
+		// #714. Best Time to Buy and Sell Stock with Transaction Fee
+		// Time: O(n)
+		// Space: O(n) - Note: you can further optimize to O(1) by replacing 2 arrays with variables
+		public int MaxProfit(int[] prices, int fee) {
+			int n = prices.Length;
+			int[] maxOwnProfits = new int[n]; // max profit for owning stock at the end of kth day
+			int[] maxNotOwnProfits = new int[n]; // max profit for not-owning stock at the end of kth day
+
+			// Run DP
+			maxOwnProfits[0] = -prices[0]; // must purchase on day 0 for this conidtion
+			for (int k = 1; k < n; k++) {
+				maxOwnProfits[k] = Math.Max(maxOwnProfits[k - 1], maxNotOwnProfits[k - 1] - prices[k]);
+				maxNotOwnProfits[k] = Math.Max(maxOwnProfits[k - 1] + prices[k] - fee, maxNotOwnProfits[k - 1]); 
+			}
+
+			return Math.Max(maxOwnProfits[n - 1], maxNotOwnProfits[n - 1]);
+		}
 	}
 }
