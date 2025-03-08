@@ -176,10 +176,84 @@ namespace CodingPractice.Leetcode
 			maxOwnProfits[0] = -prices[0]; // must purchase on day 0 for this conidtion
 			for (int k = 1; k < n; k++) {
 				maxOwnProfits[k] = Math.Max(maxOwnProfits[k - 1], maxNotOwnProfits[k - 1] - prices[k]);
-				maxNotOwnProfits[k] = Math.Max(maxOwnProfits[k - 1] + prices[k] - fee, maxNotOwnProfits[k - 1]); 
+				maxNotOwnProfits[k] = Math.Max(maxOwnProfits[k - 1] + prices[k] - fee, maxNotOwnProfits[k - 1]);
 			}
 
 			return Math.Max(maxOwnProfits[n - 1], maxNotOwnProfits[n - 1]);
+		}
+
+
+		// #72. Edit Distance (with Memo)
+		// Time: O(m * n)
+		// Space: O(m * n)
+	 	Dictionary<(int, int), int> memoDp = new Dictionary<(int, int), int>();
+
+		public int MinDistanceWithMemo(string word1, string word2) {
+			return MinDistanceDp(word1, word2, 0, 0);
+		}
+
+		private int MinDistanceDp(string word1, string word2, int index1, int index2) {
+			if (memoDp.ContainsKey((index1, index2))) {
+				return memoDp[(index1, index2)];
+			}
+
+			if (index1 >= word1.Length || index2 >= word2.Length) {
+				int ret = Math.Max(word1.Length - index1, word2.Length - index2);
+				memoDp.Add((index1, index2), ret);
+				return ret;
+			}
+
+			if (word1[index1] == word2[index2]) {
+				int ret = MinDistanceDp(word1, word2, index1 + 1, index2 + 1); // same char => no step
+				memoDp.Add((index1, index2), ret);
+				return ret;
+			}
+
+			int repDistance = MinDistanceDp(word1, word2, index1 + 1, index2 + 1); // replace a char
+			int addDistance = MinDistanceDp(word1, word2, index1, index2 + 1); // add a char
+			int delDistance = MinDistanceDp(word1, word2, index1 + 1, index2); // delete a char
+
+			int dist = Math.Min(Math.Min(repDistance, addDistance), delDistance) + 1;
+			memoDp.Add((index1, index2), dist);
+			return dist;
+		}
+
+
+		// #72. Edit Distance - DP Optimized
+		// Time: O(m * n)
+		// Space: O(Min(m, n))
+		public int MinDistance(string word1, string word2) {
+			if (word2.Length > word1.Length) {
+				(word1, word2) = (word2, word1); // make sure word2 is shorter for space optimization
+			}
+
+			if (word2.Length == 0) {
+				return word1.Length;
+			}
+
+			// set up base case
+			int[] memo = new int[word2.Length + 1]; // number of step to insert chars
+			for (int i = 0; i <= word2.Length; i++) {
+				memo[i] = i;
+			}
+
+			// Run DP
+			int[] current = new int[word2.Length + 1];
+			for (int i = 1; i <= word1.Length; i++) {
+				current[0] = i; // cost of deleting i characters to get empty string
+
+				for (int j = 1; j <= word2.Length; j++) {
+					int addSteps = current[j - 1] + 1;
+					int delSteps = memo[j] + 1;
+					int repSteps = word1[i - 1] == word2[j - 1] ? memo[j - 1] : memo[j - 1] + 1;
+					current[j] = Math.Min(Math.Min(addSteps, delSteps), repSteps);
+				}
+
+				// Swap arrays for next iteration
+				(memo, current) = (current, memo);
+			}
+
+			return memo[word2.Length];
 		}
 	}
 }
