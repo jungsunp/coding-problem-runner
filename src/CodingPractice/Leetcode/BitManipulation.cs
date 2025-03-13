@@ -13,10 +13,7 @@ namespace CodingPractice.Leetcode
 		// Space: O(1)
 		public int[] CountBits(int n) {
 			int[] ret = new int[n + 1];
-			ret[0] = 0;
 
-			if (n == 0) { return ret; }
-        
 			int i = 1;
 			while (i <= n) {
 				ret[i] = 1;
@@ -28,6 +25,17 @@ namespace CodingPractice.Leetcode
 				i *= 2;
 			}
 
+			return ret;
+		}
+
+		// #136. Single Number
+		// Time: O(n)
+		// Space: O(1)
+		public int SingleNumber(int[] nums) {
+			int ret = nums[0];
+			for(int i = 1; i < nums.Length; i++) {
+				ret = ret ^ nums[i]; // use XOR operation
+			}
 			return ret;
 		}
 	}
