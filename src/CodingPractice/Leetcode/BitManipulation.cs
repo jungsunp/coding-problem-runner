@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace CodingPractice.Leetcode
 {
+	/*
+	Bit wise operators
+	- ~ : Not (e.x 010 => 101)
+	- &
+	- |
+	- ^ : XOR
+	- >> or << : right or left shift
+		- e.x) 3 << 2 (i.e 101 => 10100)
+
+	*/
 	public class BitManipulation
 	{
 		// #338. Counting Bits
@@ -37,6 +47,38 @@ namespace CodingPractice.Leetcode
 				ret = ret ^ nums[i]; // use XOR operation
 			}
 			return ret;
+		}
+
+		// #1318. Minimum Flips to Make a OR b Equal to c
+		// Time: O(log n)
+		// Space: O(1)
+		public int MinFlips(int a, int b, int c) {
+			int flip = 0;
+			while (a > 0 || b > 0 || c > 0) {
+				int bitA = a % 2;
+				int bitB = b % 2;
+				int bitC = c % 2;
+
+				if ((bitA | bitB) != bitC) {
+					if (bitC == 1) {
+						flip++;
+					}
+					else { // bitC == 0
+						if (bitA == bitB) { // both 1
+							flip += 2;
+						}
+						else {
+							flip++;
+						}
+					}
+				}
+
+				a = a / 2; // we can also do a >>= 1;
+				b = b / 2;
+				c = c / 2;
+			}
+
+			return flip;
 		}
 	}
 }
