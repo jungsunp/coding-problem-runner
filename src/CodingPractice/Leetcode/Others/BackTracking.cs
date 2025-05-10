@@ -18,32 +18,33 @@ namespace CodingPractice.Leetcode
 			{ '8' , new string[3] {"t", "u", "v"} },
 			{ '9' , new string[4] {"w", "x", "y", "z"} }
 		};
+		private readonly IList<string> combinations = [];
 
 		// #17. Letter Combinations of a Phone Number
-		// Time: O(n * 4 ^ n)
+		// Time: O(n * 4^n)
 		// Space: O(n)
 		public IList<string> LetterCombinations(string digits) {
-			var ret = new List<string>();
-
-			if (digits.Length == 0) {
-				return ret;
+			if (digits.Length > 0) {
+				Backtrack(0, digits, new StringBuilder());
 			}
 
-			if (digits.Length == 1) {
-				foreach (var str in this.numberMap[digits[0]]) {
-					ret.Add(str);
-				}
-			}
-			else {
-				var list = LetterCombinations(digits.Substring(1));
-				foreach (var subStr in list) {
-					foreach (var str in this.numberMap[digits[0]]) {
-						ret.Add(str + subStr);
-					}
-				}
+			return this.combinations;
+		}
+
+		private void Backtrack(int index, string digits, StringBuilder path) {
+			// Reached at the end of string
+			if (path.Length == digits.Length) {
+				this.combinations.Add(path.ToString());
+				return;
 			}
 
-			return ret;
+			// Run backtracking
+			var digit = digits[index];
+			foreach (string letter in this.numberMap[digit]) {
+				path.Append(letter);
+				Backtrack(index + 1, digits, path);
+				path.Remove(path.Length - 1, 1);
+			}
 		}
 
 		// #216. Combination Sum III
