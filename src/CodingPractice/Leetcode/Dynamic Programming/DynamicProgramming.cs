@@ -37,16 +37,16 @@ namespace CodingPractice.Leetcode
 				(n, m) = (m, n);
 			}
 
-			int[] memo = new int[n];
-			Array.Fill(memo, 1);
+			int[] dp = new int[n];
+			Array.Fill(dp, 1);
 
 			for (int i = 1; i < m ; i++) {
 				for (int j = 1; j < n; j++) {
-					memo[j] += memo[j - 1];
+					dp[j] += dp[j - 1];
 				}
 			}
 
-			return memo[n - 1];
+			return dp[n - 1];
 		}
 
 		// #746. Min Cost Climbing Stairs
@@ -145,23 +145,23 @@ namespace CodingPractice.Leetcode
 			// Initially start with 2D array and optimize to 1D for space optimization
 			// use shorter string for space optimization
 			// add extra of zero for ease of implemenation
-			int[] memo = new int[text2.Length + 1];
+			int[] dp = new int[text2.Length + 1];
 
 			// Run DP
 			for (int i = text1.Length - 1; i >= 0; i--) {
 				int prev = 0; // temp var to store (i + 1, j + 1) case
 				for (int j = text2.Length - 1; j >= 0; j--) {
 					if (text1[i] == text2[j]) {
-						(memo[j], prev) = (1 + prev, memo[j]);
+						(dp[j], prev) = (1 + prev, dp[j]);
 					}
 					else {
-						prev = memo[j];
-						memo[j] = Math.Max(memo[j], memo[j + 1]);
+						prev = dp[j];
+						dp[j] = Math.Max(dp[j], dp[j + 1]);
 					}
 				}
 			}
 
-			return memo[0];
+			return dp[0];
 		}
 
 		// #714. Best Time to Buy and Sell Stock with Transaction Fee
@@ -169,17 +169,17 @@ namespace CodingPractice.Leetcode
 		// Space: O(n) - Note: you can further optimize to O(1) by replacing 2 arrays with variables
 		public int MaxProfit(int[] prices, int fee) {
 			int n = prices.Length;
-			int[] maxOwnProfits = new int[n]; // max profit for owning stock at the end of kth day
-			int[] maxNotOwnProfits = new int[n]; // max profit for not-owning stock at the end of kth day
+			int[] hold = new int[n]; // max profit for owning stock at the end of kth day
+			int[] free = new int[n]; // max profit for not-owning stock at the end of kth day
 
 			// Run DP
-			maxOwnProfits[0] = -prices[0]; // must purchase on day 0 for this conidtion
+			hold[0] = -prices[0]; // must purchase on day 0 for this conidtion
 			for (int k = 1; k < n; k++) {
-				maxOwnProfits[k] = Math.Max(maxOwnProfits[k - 1], maxNotOwnProfits[k - 1] - prices[k]);
-				maxNotOwnProfits[k] = Math.Max(maxOwnProfits[k - 1] + prices[k] - fee, maxNotOwnProfits[k - 1]);
+				hold[k] = Math.Max(hold[k - 1], free[k - 1] - prices[k]);
+				free[k] = Math.Max(hold[k - 1] + prices[k] - fee, free[k - 1]);
 			}
 
-			return Math.Max(maxOwnProfits[n - 1], maxNotOwnProfits[n - 1]);
+			return Math.Max(hold[n - 1], free[n - 1]);
 		}
 
 
@@ -231,9 +231,9 @@ namespace CodingPractice.Leetcode
 			}
 
 			// set up base case
-			int[] memo = new int[word2.Length + 1]; // number of step to insert chars
+			int[] dp = new int[word2.Length + 1]; // number of step to insert chars
 			for (int i = 0; i <= word2.Length; i++) {
-				memo[i] = i;
+				dp[i] = i;
 			}
 
 			// Run DP
@@ -243,16 +243,16 @@ namespace CodingPractice.Leetcode
 
 				for (int j = 1; j <= word2.Length; j++) {
 					int addSteps = current[j - 1] + 1;
-					int delSteps = memo[j] + 1;
-					int repSteps = word1[i - 1] == word2[j - 1] ? memo[j - 1] : memo[j - 1] + 1;
+					int delSteps = dp[j] + 1;
+					int repSteps = word1[i - 1] == word2[j - 1] ? dp[j - 1] : dp[j - 1] + 1;
 					current[j] = Math.Min(Math.Min(addSteps, delSteps), repSteps);
 				}
 
 				// Swap arrays for next iteration
-				(memo, current) = (current, memo);
+				(dp, current) = (current, dp);
 			}
 
-			return memo[word2.Length];
+			return dp[word2.Length];
 		}
 	}
 }
