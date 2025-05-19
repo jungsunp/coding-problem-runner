@@ -127,4 +127,81 @@ namespace CodingPractice.Leetcode
 			return max;
 		}
 	}
+
+	// #146. LRU Cache
+	public class LRUCache {
+		private Dictionary<int, LRUNode> dict;
+		private LRUNode head; // tracks least recently used
+		private LRUNode tail; // track most recently used
+		private int capacity;
+
+		public LRUCache(int capacity) {
+			this.dict = new Dictionary<int, LRUNode>();
+			this.capacity = capacity;
+			this.head = new LRUNode(-1, -1); // dummy nodes
+			this.tail = new LRUNode(-1, -1);
+			this.head.next = this.tail;
+			this.tail.prev = this.head;
+		}
+
+		// Time: O(1)
+		public int Get(int key) {
+			if (!dict.ContainsKey(key)) {
+				return -1;
+			}
+
+			// move the used node to tail
+			LRUNode node = this.dict[key];
+			node.prev.next = node.next;
+			node.next.prev = node.prev;
+			this.tail.prev.next = node;
+			node.prev = this.tail.prev;
+			node.next = this.tail;
+			this.tail.prev = node;
+
+			return this.dict[key].val;
+		}
+
+		// Time: O(1)
+		public void Put(int key, int value) {
+			LRUNode node = new LRUNode(key, value);
+
+			// replace with new node if it already exists
+			if (this.dict.ContainsKey(key)) {
+				LRUNode nodeToDel = this.dict[key];
+				nodeToDel.prev.next = nodeToDel.next;
+				nodeToDel.next.prev = nodeToDel.prev;
+				this.dict[key] = node;
+			}
+			// if reached capacity, remove head node (i.e least recently used) and insert new one
+			else if (this.dict.Keys.Count == this.capacity) {
+				this.dict.Remove(this.head.next.key);
+				this.dict.Add(key, node);
+				this.head.next = this.head.next.next;
+				this.head.next.prev = this.head;
+			}
+			else {
+				this.dict.Add(key, node);
+			}
+
+			// Put new node at the end of list (one before dummy node)
+			this.tail.prev.next = node;
+			node.prev = this.tail.prev;
+			node.next = this.tail;
+			this.tail.prev = node;
+		}
+
+		// doubly linked list node
+		private class LRUNode {
+			public int key;
+			public int val;
+			public LRUNode prev;
+			public LRUNode next;
+
+			public LRUNode (int key, int val) {
+				this.key = key;
+				this.val = val;
+			}
+		}
+	}
 }
