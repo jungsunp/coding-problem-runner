@@ -4,6 +4,7 @@ namespace CodingPractice.Leetcode
 {
 	public class PrefixSum {
 
+		// #1732. Find the Highest Altitude
 		// Time: O(n)
 		// Space: O(1)
 		public int LargestAltitude(int[] gain) {
@@ -40,6 +41,28 @@ namespace CodingPractice.Leetcode
 			}
 
 			return -1;
+		}
+
+		// #238. Product of Array Except Self
+		// Time: O(n)
+		// Space: O(1)
+		public int[] ProductExceptSelf(int[] nums) {
+			int [] ret = new int[nums.Length];
+			ret[nums.Length - 1] = 1;
+
+			// calculate postfix products and store into ret to save memory
+			for (int i = nums.Length - 2; i >= 0; i--) {
+				ret[i] = nums[i + 1] * ret[i + 1];
+			}
+
+			// calculate prefix product and store into a variable
+			int prefix = 1;
+			for (int i = 0; i < nums.Length; i++) {
+				ret[i] = prefix * ret[i]; // prefix * suffix
+				prefix *= nums[i];
+			}
+
+			return ret;
 		}
 	}
 
