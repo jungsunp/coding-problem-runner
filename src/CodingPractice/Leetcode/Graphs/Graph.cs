@@ -315,5 +315,57 @@ namespace CodingPractice.Leetcode
 
 			return numMins;
 		}
+
+		// #200. Number of Islands
+		// Time: O(m * n)
+		// Space: O(m * n)
+		public int NumIslands(char[][] grid) {
+			int numIslands = 0;
+
+			for (int i = 0; i < grid.Length; i++) {
+				for (int j = 0; j < grid[i].Length; j++) {
+
+					if (grid[i][j] != '1') { continue; }
+
+					numIslands++; // new island found!
+
+					// Run DFS
+					this.IslandDfs(grid, i, j);
+				}
+			}
+
+			return numIslands;
+		}
+
+		private void IslandDfs(char[][] grid, int i, int j) {
+			Stack<(int, int)> stack = new Stack<(int, int)>();
+			stack.Push((i, j));
+
+			while (stack.Count > 0) {
+				(int row, int col) = stack.Pop();
+
+				grid[row][col] = 'v'; // mark visited
+
+				// Move down
+				if (row < grid.Length - 1 && grid[row + 1][col] == '1') {
+					stack.Push((row + 1, col));
+				}
+
+				// Move up
+				if (row > 0 && grid[row - 1][col] == '1') {
+					stack.Push((row - 1, col));
+				}
+
+				// Move right
+				if (col < grid[i].Length - 1 && grid[row][col + 1] == '1') {
+					stack.Push((row, col + 1));
+				}
+
+				// Move left
+				if (col > 0 && grid[row][col - 1] == '1') {
+					stack.Push((row, col - 1));
+				}
+			}
+		}
 	}
 }
