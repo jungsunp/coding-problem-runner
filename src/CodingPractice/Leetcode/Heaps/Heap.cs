@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Linq; // Add this using directive for the PriorityQueue class
+using System.Linq;
+using System.Text; // Add this using directive for the PriorityQueue class
 
 namespace CodingPractice.Leetcode
 {
@@ -126,6 +127,69 @@ namespace CodingPractice.Leetcode
 			}
 
 			return totalCost;
+		}
+
+		// #767. Reorganize String
+		// Time: O(n log k)
+		// Space: O(k) = O(1) - k: unique characters <=26
+		public string ReorganizeString(string s) {
+
+			Dictionary<char, int> hash = new Dictionary<char, int>();
+			int maxCnt = 1;
+
+			foreach (char c in s) {
+				if (!hash.ContainsKey(c)) {
+					hash.Add(c, 1);
+				}
+				else {
+					hash[c]++;
+					maxCnt = Math.Max(maxCnt, hash[c]);
+				}
+			}
+
+			if (maxCnt == 1) {
+				// all separate characters. no need to rearrange
+				return s;
+			}
+
+			if (maxCnt > (s.Length + 1) / 2) { 
+				// most common character is more than half of string => return impossible
+				return "";
+			}
+
+			// Create max heap to track the next best character to place
+			PriorityQueue<char, int> heap = new PriorityQueue<char, int>();
+			foreach(char c in hash.Keys) {
+				heap.Enqueue(c, -hash[c]); // character with high count will have the highest priority
+			}
+
+			// Build output string using max heap
+			StringBuilder builder = new StringBuilder();
+			while (heap.Count > 1) {
+				char c1 = heap.Dequeue(); // most common char
+				char c2 = heap.Dequeue(); // second most char
+
+				builder.Append(c1);
+				builder.Append(c2);
+
+				hash[c1]--;
+				hash[c2]--;
+
+				if (hash[c1] > 0) {
+					heap.Enqueue(c1, -hash[c1]);
+				}
+
+				if (hash[c2] > 0) {
+					 heap.Enqueue(c2, -hash[c2]);
+				}
+			}
+
+			if (heap.Count > 0) { // if last 1 remaining
+				char c = heap.Dequeue();
+				builder.Append(c); // assuming last character left
+			}
+
+			return builder.ToString();
 		}
 	}
 
