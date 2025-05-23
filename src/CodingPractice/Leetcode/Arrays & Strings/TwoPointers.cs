@@ -67,6 +67,33 @@ namespace CodingPractice.Leetcode {
 			return max;
 		}
 
+		// #42. Trapping Rain Water (HARD)
+		// Time: O(n)
+		// Space: O(1)
+		public int Trap(int[] height) {
+			int left = 0;
+			int right = height.Length - 1;
+			int totalSum = 0;
+			int leftMax = 0;
+			int rightMax = 0 ;
+
+			while (left < right) {
+				// Move pointer with smaller height (water is boud by smaller height)
+				if (height[left] < height[right]) {
+					leftMax = Math.Max(leftMax, height[left]);
+					totalSum += leftMax - height[left];
+					left++;
+				}
+				else {
+					rightMax = Math.Max(rightMax, height[right]);
+					totalSum += rightMax - height[right];
+					right--;
+				}
+			}
+
+			return totalSum;
+		}
+
 		// #392. Is Subsequence
 		// Time: O(n)
 		// Space: O(1)
@@ -78,7 +105,7 @@ namespace CodingPractice.Leetcode {
 				if (s[ps] == t[pt]) {
 					ps++;
 				}
- 
+
 				pt++;
 			}
 
