@@ -126,6 +126,55 @@ namespace CodingPractice.Leetcode
 
 			return max;
 		}
+
+		// #138. Copy List with Random Pointer
+		// Time: O(n)
+		// Space: O(1)
+		public class RandomNode {
+			public int val;
+			public RandomNode next;
+			public RandomNode random;
+
+			public RandomNode(int _val) {
+				val = _val;
+				next = null;
+				random = null;
+			}
+		}
+
+		public RandomNode CopyRandomList(RandomNode head) {
+			if (head == null) { return null; }
+
+			// Create an interweaved list with deep copy nodes
+			RandomNode current = head;
+			while (current != null) {
+				RandomNode temp = current.next;
+				current.next = new RandomNode(current.val);
+				current.next.next = temp;
+				current = current.next.next;
+			}
+			RandomNode copyHead = head.next;
+
+			// First make random connections from the interweaved list
+			current = head;
+			while (current != null) {
+				if (current.random != null) {
+					current.next.random = current.random.next;
+				}
+				current = current.next.next;
+			}
+
+			// Fix connections from the interweaved list
+			current = head;
+			while (current != null) {
+				RandomNode temp = current.next.next;
+				current.next.next = temp != null ? temp.next : null;
+				current.next = temp;
+				current = current.next;
+			}
+
+			return copyHead;
+		}
 	}
 
 	// #146. LRU Cache
