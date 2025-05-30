@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace CodingPractice.Leetcode
 {
@@ -44,6 +45,31 @@ namespace CodingPractice.Leetcode
 			}
 
 			return ret;
+		}
+
+		// #56. Merge Intervals
+		// Time: O(n log n)
+		// Space: O(log n)
+		public int[][] Merge(int[][] intervals) {
+			// Sort intervals by start value
+			Array.Sort(intervals, (itv1, itv2) => itv1[0].CompareTo(itv2[0]));
+
+			// Iterate and build merged intervals
+			int index = 0;
+			List<int[]> ret = new List<int[]>();
+			while (index < intervals.Length) {
+				int start = intervals[index][0];
+				int end = intervals[index][1];
+
+				while (index + 1 < intervals.Length && end >= intervals[index + 1][0]) {
+					end = Math.Max(end, intervals[++index][1]);
+				}
+
+				ret.Add([start, end]);
+				index++;
+			}
+
+			return ret.ToArray();
 		}
 	}
 }

@@ -64,44 +64,6 @@ namespace CodingPractice.Leetcode
 
 			return ret;
 		}
-
-		// #3434. Maximum Frequency After Subarray Operation
-		// Time: O(n)
-		// Space: O(1)
-		public int MaxFrequency(int[] nums, int k) {
-			int kCount = 0;
-			int min = 1;
-			int max = 50;
-
-			// count K occurences
-			foreach (int num in nums) {
-				if (num == k) {
-					kCount++;
-				}
-				else {
-					min = Math.Min(min, num);
-					max = Math.Max(max, num);
-				}
-			}
-
-			// iterate and perform Kadane's Algorithm
-			// 1 - if == i, -1 if == k, 0 otherwise
-			int maxFreq = 0;
-			for (int i = min; i <= max; i++) {
-				if (i == k) { continue; }
-				int currSum = 0;
-				foreach (int num in nums) {
-					int point = 0;
-					if (num == i) { point = 1; }
-					else if (num == k) { point = -1; }
-
-					currSum = Math.Max(currSum + point, point);
-					maxFreq = Math.Max(maxFreq, currSum);
-				}
-			}
-
-			return maxFreq + kCount;
-		}
 	}
 
 	// 303. Range Sum Query - Immutable
