@@ -367,5 +367,64 @@ namespace CodingPractice.Leetcode
 				}
 			}
 		}
+
+		// #210. Course Schedule II
+		// Time: O(n + m) - n: number of courses, m: number of prerequisites
+		// Space: O(n + m)
+		public int[] FindOrder(int numCourses, int[][] prerequisites) {
+			// Build prereq map
+			Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
+			foreach (int[] prereq in prerequisites) {
+				if (!map.ContainsKey(prereq[0])) {
+					map.Add(prereq[0], new List<int>());
+				}
+				map[prereq[0]].Add(prereq[1]);
+			}
+
+			// Run Topological Sort via DFS
+			Stack<int> sortStack = new Stack<int>();
+			int[] courseStatus = new int[numCourses]; // 0 = not taken, 1 = taking, 2 = taken
+			for (int i = 0; i < numCourses; i++) {
+				if (courseStatus[i] == 0) {
+					if (!this.topologicalSortDfs(i, map, sortStack, courseStatus)) {
+						return []; // cylce detected from DFS
+					}
+				}
+			}
+
+			// Topological Sorting Success
+			int[] ret = new int[numCourses];
+			for (int i = numCourses - 1; i >= 0; i--) {
+				ret[i] = sortStack.Pop();
+			}
+			return ret;
+		}
+
+		private bool topologicalSortDfs(
+			int course,
+			Dictionary<int, List<int>> map,
+			Stack<int> sortStack,
+			int[] courseStatus
+		) {
+			courseStatus[course] = 1; // taking
+
+			if (map.ContainsKey(course)) {
+				foreach (int prereq in map[course]) {
+					if (courseStatus[prereq] == 0) {
+						if (!topologicalSortDfs(prereq, map, sortStack, courseStatus)) {
+							return false; // cycle detected
+						}
+					}
+					else if (courseStatus[prereq] == 1) {
+						// cycle detected
+						return false;
+					}
+				}
+			}
+
+			courseStatus[course] = 2; // taken
+			sortStack.Push(course);
+			return true;
+		}
 	}
 }
