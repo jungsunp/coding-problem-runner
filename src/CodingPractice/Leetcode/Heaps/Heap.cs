@@ -152,7 +152,7 @@ namespace CodingPractice.Leetcode
 				return s;
 			}
 
-			if (maxCnt > (s.Length + 1) / 2) { 
+			if (maxCnt > (s.Length + 1) / 2) {
 				// most common character is more than half of string => return impossible
 				return "";
 			}
@@ -190,6 +190,36 @@ namespace CodingPractice.Leetcode
 			}
 
 			return builder.ToString();
+		}
+
+		// #347. Top K Frequent Elements
+		// Time: O(n log k)
+		// Space: O(n)
+		public int[] TopKFrequent(int[] nums, int k) {
+			// count frequency of element in hash map
+			Dictionary<int, int> hash = new Dictionary<int, int>();
+			foreach (int num in nums) {
+				if (!hash.ContainsKey(num)) {
+					hash[num] = 0;
+				}
+				hash[num]++;
+			}
+
+			// use priority queue to insert element based on its frequency
+			PriorityQueue<int, int> heap = new PriorityQueue<int, int>();
+			foreach (int num in hash.Keys) {
+				heap.Enqueue(num, hash[num]);
+				if (heap.Count > k) {
+					heap.Dequeue(); // keep heap to size k
+				}
+			}
+
+			int[] ret = new int[k];
+			for(int i = k - 1; i >= 0; i--) {
+				ret[i] = heap.Dequeue();
+			}
+
+			return ret;
 		}
 	}
 
