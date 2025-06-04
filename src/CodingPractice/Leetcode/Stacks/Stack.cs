@@ -4,19 +4,24 @@ using System.Text;
 
 namespace CodingPractice.Leetcode
 {
-	public class Stack {
+	public class Stack
+	{
 
 		// #2390. Removing Stars From a String
 		// Time: O(n)
 		// Space: O(n)
 		// Note: not stack question?
-		public string RemoveStars(string s) {
+		public string RemoveStars(string s)
+		{
 			var builder = new StringBuilder();
-			for (int i = 0; i < s.Length; i++) {
-				if (s[i] == '*') {
+			for (int i = 0; i < s.Length; i++)
+			{
+				if (s[i] == '*')
+				{
 					builder.Remove(builder.Length - 1, 1);
 				}
-				else {
+				else
+				{
 					builder.Append(s[i]);
 				}
 			}
@@ -27,32 +32,40 @@ namespace CodingPractice.Leetcode
 		// #735. Asteroid Collision
 		// Time: O(n)
 		// Space: O(n)
-		public int[] AsteroidCollision(int[] asteroids) {
+		public int[] AsteroidCollision(int[] asteroids)
+		{
 			var stack = new Stack<int>();
 
 			// Simulate Collision
-			for(int i = 0; i < asteroids.Length; i++) {
+			for (int i = 0; i < asteroids.Length; i++)
+			{
 
-				if (stack.Count > 0 && stack.Peek() > 0 && asteroids[i] < 0) { // collide
-					while (stack.Count > 0 && stack.Peek() > 0 && stack.Peek() < Math.Abs(asteroids[i])) {
+				if (stack.Count > 0 && stack.Peek() > 0 && asteroids[i] < 0)
+				{ // collide
+					while (stack.Count > 0 && stack.Peek() > 0 && stack.Peek() < Math.Abs(asteroids[i]))
+					{
 						stack.Pop();
 					}
 
-					if (stack.Count == 0 || stack.Peek() < 0) {
+					if (stack.Count == 0 || stack.Peek() < 0)
+					{
 						stack.Push(asteroids[i]);
 					}
-					else if (stack.Peek() == Math.Abs(asteroids[i])) { // same size collision
+					else if (stack.Peek() == Math.Abs(asteroids[i]))
+					{ // same size collision
 						stack.Pop();
 					}
 				}
-				else {
+				else
+				{
 					stack.Push(asteroids[i]);
 				}
 			}
 
 			// Move remaining asteroids in stack to array
 			var ret = new int[stack.Count];
-			for(int i = stack.Count - 1; i >= 0; i--) {
+			for (int i = stack.Count - 1; i >= 0; i--)
+			{
 				ret[i] = stack.Pop();
 			}
 
@@ -63,17 +76,22 @@ namespace CodingPractice.Leetcode
 		// Time: O(n)
 		// Space: O(n)
 		// Note: Check Leetcode for different view on time & space complexityies
-		public string DecodeString(string s) {
+		public string DecodeString(string s)
+		{
 
 			// Use stack to decode all repeats
 			var stack = new Stack<string>();
-			foreach (var ch in s) {
-				if (ch != ']') {
+			foreach (var ch in s)
+			{
+				if (ch != ']')
+				{
 					stack.Push(ch.ToString());
 				}
-				else {
+				else
+				{
 					var strBuilder = new StringBuilder();
-					while (stack.Peek()[0] != '[') {
+					while (stack.Peek()[0] != '[')
+					{
 						strBuilder.Insert(0, stack.Pop());
 					}
 					var subStr = strBuilder.ToString();
@@ -81,12 +99,14 @@ namespace CodingPractice.Leetcode
 					stack.Pop(); // Remove '[' from stack
 
 					var cntBuilder = new StringBuilder();
-					while (stack.Count > 0 && Char.IsNumber(stack.Peek()[0])) {
+					while (stack.Count > 0 && Char.IsNumber(stack.Peek()[0]))
+					{
 						cntBuilder.Insert(0, stack.Pop());
 					}
 					int cnt = Int32.Parse(cntBuilder.ToString());
 
-					for (int i = 0; i < cnt - 1; i++) {
+					for (int i = 0; i < cnt - 1; i++)
+					{
 						strBuilder.Append(subStr);
 					}
 
@@ -96,7 +116,8 @@ namespace CodingPractice.Leetcode
 
 			// Use stack to generate return string
 			var builder = new StringBuilder();
-			while (stack.Count > 0) {
+			while (stack.Count > 0)
+			{
 				builder.Insert(0, stack.Pop());
 			}
 
@@ -108,7 +129,7 @@ namespace CodingPractice.Leetcode
 		// Space: O(n)
 		public int[] DailyTemperatures(int[] temperatures)
 		{
-			int[] ans = new int[ temperatures.Length ];
+			int[] ans = new int[temperatures.Length];
 			Stack<int> indices = new Stack<int>();
 			indices.Push(0);
 
@@ -125,16 +146,50 @@ namespace CodingPractice.Leetcode
 
 			return ans;
 		}
+
+		// #20. Valid Parentheses
+		// Time: O(n)
+		// Space: O(n)
+		public bool IsValid(string s)
+		{
+			Stack<char> stack = new Stack<char>();
+			foreach (char bracket in s)
+			{
+				if (bracket == '(' || bracket == '{' || bracket == '[')
+				{
+					stack.Push(bracket);
+				}
+				else
+				{
+					if (stack.Count < 1)
+					{
+						return false;
+					}
+
+					char openBracket = stack.Pop();
+					if ((bracket == ')' && openBracket != '(') ||
+						(bracket == '}' && openBracket != '{') ||
+						(bracket == ']' && openBracket != '['))
+					{
+						return false; //invalid bracket match
+					}
+				}
+			}
+
+			return stack.Count > 0 ? false : true;
+		}
 	}
 
 	// #901. Online Stock Span
 	// Time: O(1)
 	// Space: O(n)
-	public class StockSpanner {
+	public class StockSpanner
+	{
 		private int day;
 		private Stack<Stock> monoStack;
 
-		public StockSpanner() {
+		public StockSpanner()
+		{
 			this.day = 0;
 			this.monoStack = new Stack<Stock>();
 
@@ -143,10 +198,12 @@ namespace CodingPractice.Leetcode
 			this.monoStack.Push(stock);
 		}
 
-		public int Next(int price) {
+		public int Next(int price)
+		{
 
 			// Keep decreasing order mono stack
-			while (this.monoStack.Peek().price <= price) {
+			while (this.monoStack.Peek().price <= price)
+			{
 				this.monoStack.Pop();
 			}
 
@@ -155,11 +212,19 @@ namespace CodingPractice.Leetcode
 			return ret;
 		}
 
-		private class Stock {
-			public int day { get; private set; }
-			public int price { get; private set; }
+		private class Stock
+		{
+			public int day
+			{
+				get; private set;
+			}
+			public int price
+			{
+				get; private set;
+			}
 
-			public Stock (int day, int price) {
+			public Stock(int day, int price)
+			{
 				this.day = day;
 				this.price = price;
 			}
