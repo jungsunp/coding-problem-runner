@@ -1,12 +1,15 @@
 using System;
 
-namespace CodingPractice.Leetcode {
-	public class TwoPointers {
+namespace CodingPractice.Leetcode
+{
+	public class TwoPointers
+	{
 
 		// #283. Move Zeroes
 		// Time: O(n)
 		// Space: O(1)
-		public void MoveZeroes(int[] nums) {
+		public void MoveZeroes(int[] nums)
+		{
 			if (nums.Length < 2) { return; }
 
 			int j = 0;
@@ -41,7 +44,8 @@ namespace CodingPractice.Leetcode {
 		// #11. Container With Most Water
 		// Time: O(n)
 		// Space: O(1)
-		public int MaxArea(int[] height) {
+		public int MaxArea(int[] height)
+		{
 			int left = 0;
 			int right = height.Length - 1;
 			int max = 0;
@@ -70,21 +74,25 @@ namespace CodingPractice.Leetcode {
 		// #42. Trapping Rain Water (HARD)
 		// Time: O(n)
 		// Space: O(1)
-		public int Trap(int[] height) {
+		public int Trap(int[] height)
+		{
 			int left = 0;
 			int right = height.Length - 1;
 			int totalSum = 0;
 			int leftMax = 0;
-			int rightMax = 0 ;
+			int rightMax = 0;
 
-			while (left < right) {
+			while (left < right)
+			{
 				// Move pointer with smaller height (water is boud by smaller height)
-				if (height[left] < height[right]) {
+				if (height[left] < height[right])
+				{
 					leftMax = Math.Max(leftMax, height[left]);
 					totalSum += leftMax - height[left];
 					left++;
 				}
-				else {
+				else
+				{
 					rightMax = Math.Max(rightMax, height[right]);
 					totalSum += rightMax - height[right];
 					right--;
@@ -97,12 +105,15 @@ namespace CodingPractice.Leetcode {
 		// #392. Is Subsequence
 		// Time: O(n)
 		// Space: O(1)
-		public bool IsSubsequence(string s, string t) {
+		public bool IsSubsequence(string s, string t)
+		{
 			int ps = 0; // pointer s
 			int pt = 0; // pointer t
 
-			while (ps < s.Length && pt < t.Length) {
-				if (s[ps] == t[pt]) {
+			while (ps < s.Length && pt < t.Length)
+			{
+				if (s[ps] == t[pt])
+				{
 					ps++;
 				}
 
@@ -117,23 +128,28 @@ namespace CodingPractice.Leetcode {
 		// Time: O(n log n)
 		// Space: O (log n)
 		// Note: there is diff solution to use hash map with O(n) time and space
-		public int MaxOperations(int[] nums, int k) {
+		public int MaxOperations(int[] nums, int k)
+		{
 			Array.Sort(nums);
 
 			int left = 0;
 			int right = nums.Length - 1;
 			int count = 0;
 
-			while (left < right) {
+			while (left < right)
+			{
 				int sum = nums[left] + nums[right];
 
-				if (sum < k) {
+				if (sum < k)
+				{
 					left++;
 				}
-				else if (sum > k) {
+				else if (sum > k)
+				{
 					right--;
 				}
-				else {
+				else
+				{
 					count++;
 					left++;
 					right--;
@@ -141,6 +157,32 @@ namespace CodingPractice.Leetcode {
 			}
 
 			return count;
+		}
+
+		// #88. Merge Sorted Array
+		// Time: O(m + n)
+		// Space: O(1)
+		public void Merge(int[] nums1, int m, int[] nums2, int n)
+		{
+			if (n == 0) { return; }
+
+			int p1 = m - 1; // pointer for nums1
+			int p2 = n - 1; // pointer for nums2
+
+			// Iterate from right side
+			for (int i = m + n - 1; i >= 0; i--)
+			{
+				if (p2 < 0) { break; } // we are done
+
+				if (p1 >= 0 && nums1[p1] > nums2[p2])
+				{
+					nums1[i] = nums1[p1--];
+				}
+				else
+				{
+					nums1[i] = nums2[p2--];
+				}
+			}
 		}
 	}
 }
