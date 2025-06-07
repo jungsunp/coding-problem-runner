@@ -170,5 +170,32 @@ namespace CodingPractice.Leetcode
 
 			return maxProfit;
 		}
+
+		// #45. Jump Game II
+		// Time: O(n)
+		// Space: O(n)
+		// Note: There is a greedy solution with O(1) space
+		public int Jump(int[] nums)
+		{
+			// Run DP
+			int n = nums.Length;
+			int[] dp = new int[n]; // keep track of min jumps
+			int pointer = 1; // keep track where to fill in dp array
+			for (int i = 0; i < n; i++)
+			{
+				while (pointer < n && pointer <= i + nums[i])
+				{
+					dp[pointer] = dp[i] + 1;
+					pointer++;
+				}
+
+				if (pointer == n)
+				{
+					return dp[n - 1];
+				}
+			}
+
+			return dp[n - 1];
+		}
 	}
 }
