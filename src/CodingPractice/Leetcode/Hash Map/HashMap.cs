@@ -10,21 +10,26 @@ namespace CodingPractice.Leetcode
 		// #2215. Find the Difference of Two Arrays
 		// Time: O(m + n)
 		// Space: O(m + n)
-		public IList<IList<int>> FindDifference(int[] nums1, int[] nums2) {
+		public IList<IList<int>> FindDifference(int[] nums1, int[] nums2)
+		{
 			var set1 = new HashSet<int>(nums1);
 			var set2 = new HashSet<int>(nums2);
 
 			var result1 = new List<int>(set1.Count);
 			var result2 = new List<int>(set2.Count);
 
-			foreach (var num in set1) {
-				if (!set2.Contains(num)) {
+			foreach (var num in set1)
+			{
+				if (!set2.Contains(num))
+				{
 					result1.Add(num);
 				}
 			}
 
-			foreach (var num in set2) {
-				if (!set1.Contains(num)) {
+			foreach (var num in set2)
+			{
+				if (!set1.Contains(num))
+				{
 					result2.Add(num);
 				}
 			}
@@ -35,7 +40,8 @@ namespace CodingPractice.Leetcode
 		// #1657. Determine if Two Strings Are Close
 		// Time: O(n)
 		// Space: O(1)
-		public bool CloseStrings(string word1, string word2) {
+		public bool CloseStrings(string word1, string word2)
+		{
 			if (word1.Length != word2.Length)
 			{
 				return false;
@@ -73,7 +79,7 @@ namespace CodingPractice.Leetcode
 		{
 			var dict = new Dictionary<char, int>();
 
-			foreach(char character in word)
+			foreach (char character in word)
 			{
 				if (!dict.ContainsKey(character))
 				{
@@ -91,14 +97,18 @@ namespace CodingPractice.Leetcode
 		// #1207. Unique Number of Occurrences
 		// Time: O(n)
 		// Space: O(n)
-		public bool UniqueOccurrences(int[] arr) {
+		public bool UniqueOccurrences(int[] arr)
+		{
 			// Build hash map
 			var dict = new Dictionary<int, int>();
-			foreach (int num in arr) {
-				if (!dict.ContainsKey(num)) {
+			foreach (int num in arr)
+			{
+				if (!dict.ContainsKey(num))
+				{
 					dict.Add(num, 1);
 				}
-				else {
+				else
+				{
 					dict[num]++;
 				}
 			}
@@ -111,20 +121,24 @@ namespace CodingPractice.Leetcode
 		// #2352. Equal Row and Column Pairs
 		// Time: O(n ^ 2)
 		// Space: O(n ^ 2)
-		public int EqualPairs(int[][] grid) {
+		public int EqualPairs(int[][] grid)
+		{
 
 			// Build a hash map with row value
 			var rowDict = new Dictionary<string, int>();
-			foreach (int[] row in grid) {
+			foreach (int[] row in grid)
+			{
 				var str = String.Join(",", row);
 				rowDict[str] = rowDict.TryGetValue(str, out int cnt) ? cnt + 1 : 1;
 			}
 
 			// Use the hash map to compare with col value
 			var retCount = 0;
-			for (int col = 0; col < grid.Length; col++) {
+			for (int col = 0; col < grid.Length; col++)
+			{
 				var builder = new StringBuilder(grid[0][col].ToString());
-				for (int row = 1; row < grid.Length; row++) {
+				for (int row = 1; row < grid.Length; row++)
+				{
 					builder.Append("," + grid[row][col]);
 				}
 
@@ -137,7 +151,8 @@ namespace CodingPractice.Leetcode
 		// #3. Longest Substring Without Repeating Characters
 		// Time: O(n)
 		// Space: O(k) - k: number of unique chars
-		public int LengthOfLongestSubstring(string s) {
+		public int LengthOfLongestSubstring(string s)
+		{
 			if (s.Length <= 1) { return s.Length; }
 
 			int left = 0;
@@ -145,8 +160,10 @@ namespace CodingPractice.Leetcode
 			int maxLength = 0;
 			Dictionary<char, int> hash = new Dictionary<char, int>();
 
-			while (right < s.Length) {
-				if (hash.ContainsKey(s[right]) && hash[s[right]] >= left) {
+			while (right < s.Length)
+			{
+				if (hash.ContainsKey(s[right]) && hash[s[right]] >= left)
+				{
 					left = hash[s[right]] + 1; // move left to one next to repeating char
 				}
 
@@ -156,6 +173,47 @@ namespace CodingPractice.Leetcode
 			}
 
 			return maxLength;
+		}
+
+		public class Solution
+		{
+			// #49. Group Anagrams
+			// Time: O(n * k)
+			// Space: O(n * k) - k is max length of string
+			public IList<IList<string>> GroupAnagrams(string[] strs)
+			{
+				Dictionary<string, List<string>> hash = new();
+				foreach (string str in strs)
+				{
+
+					// Less optimal solution using Sort
+					// char[] chArr = str.ToCharArray();
+					// Array.Sort(chArr);
+					// string key = new String(chArr);
+
+					int[] countArr = new int[26]; // lower case english
+					foreach (char ch in str)
+					{
+						countArr[ch - 'a']++;
+					}
+					string key = String.Join(',', countArr);
+
+					if (!hash.ContainsKey(key))
+					{
+						hash.Add(key, new List<string>());
+					}
+
+					hash[key].Add(str);
+				}
+
+				IList<IList<string>> ret = new List<IList<string>>();
+				foreach (List<string> strList in hash.Values)
+				{
+					ret.Add(strList);
+				}
+
+				return ret;
+			}
 		}
 	}
 }
