@@ -3,39 +3,13 @@ using System.Collections.Generic;
 
 namespace CodingPractice.Leetcode
 {
-	public class Graph
+	public class Graph_DFS
 	{
-		// #841. Keys and Rooms (BFS)
-		// Time: O(n + e) - e is total number of keys
-		// Space: O(n)
-		public bool CanVisitAllRooms(IList<IList<int>> rooms) {
-			Queue<int> roomsToVisit = new Queue<int>();
-			HashSet<int> visitedRooms = new HashSet<int>();
-
-			// Start with keys from room 0
-			roomsToVisit.Enqueue(0);
-			visitedRooms.Add(0);
-
-			while (roomsToVisit.Count > 0) // run BFS
-			{
-				int room = roomsToVisit.Dequeue();
-				foreach(int key in rooms[room])
-				{
-					if (!visitedRooms.Contains(key))
-					{
-						visitedRooms.Add(key);
-						roomsToVisit.Enqueue(key);
-					}
-				}
-			}
-
-			return visitedRooms.Count == rooms.Count;
-		}
-
 		// #547. Number of Provinces (DFS)
 		// Time: O(n^2)
 		// Space: O(n)
-		public int FindCircleNum(int[][] isConnected) {
+		public int FindCircleNum(int[][] isConnected)
+		{
 			int numCities = isConnected.Length;
 			HashSet<int> visited = new HashSet<int>();
 			int numProvinces = 0;
@@ -69,53 +43,15 @@ namespace CodingPractice.Leetcode
 			return numProvinces;
 		}
 
-		// #1926. Nearest Exit from Entrance in Maze (BFS)
-		// Time: O(m * n)
-		// Space: O(m * n)
-		public int NearestExit(char[][] maze, int[] entrance) {
-			int rowCount = maze.Length;
-			int colCount = maze[0].Length;
-
-			Queue<int[]> toVisit = new Queue<int[]>();
-			toVisit.Enqueue([entrance[0], entrance[1], 0]); // coodrinates & number of steps
-
-			while(toVisit.Count > 0) // Run BFS
-			{
-				int[] current = toVisit.Dequeue();
-				int row = current[0];
-				int col = current[1];
-				int steps = current[2];
-
-				if (row < 0 || col < 0 || row >= rowCount || col >= colCount || maze[row][col] == '+')
-				{
-					continue;
-				}
-
-				// check if exit
-				if ((row == 0 || col == 0 || row == rowCount - 1  || col == colCount - 1) && steps > 0)
-				{
-					return steps;
-				}
-
-				maze[row][col] = '+'; // mark as visited (replace in place to reduce additional space)
-
-				toVisit.Enqueue([row - 1, col, steps + 1]); // move top
-				toVisit.Enqueue([row, col - 1, steps + 1]); // move left
-				toVisit.Enqueue([row + 1, col, steps + 1]); // move bottom
-				toVisit.Enqueue([row, col + 1, steps + 1]); // move right
-			}
-
-			return -1;
-		}
-
 		//# 1466. Reorder Routes to Make All Paths Lead to the City Zero (DFS)
 		// Time: O(n)
 		// Space: O(n)
-		public int MinReorder(int n, int[][] connections) {
+		public int MinReorder(int n, int[][] connections)
+		{
 
 			// Build hash map with connections
 			Dictionary<int, List<ConnectedCity>> map = new Dictionary<int, List<ConnectedCity>>();
-			foreach(int[] connection in connections)
+			foreach (int[] connection in connections)
 			{
 				int origin = connection[0];
 				int destination = connection[1];
@@ -158,7 +94,8 @@ namespace CodingPractice.Leetcode
 					if (!visited.Contains(cc.city)) // visiting new city
 					{
 						toVisit.Push(cc.city);
-						if (cc.origDir) { // if reached with original direction, need to reverse it
+						if (cc.origDir)
+						{ // if reached with original direction, need to reverse it
 							reorder++;
 						}
 					}
@@ -168,35 +105,41 @@ namespace CodingPractice.Leetcode
 			return reorder;
 		}
 
-		private readonly struct ConnectedCity {
+		private readonly struct ConnectedCity
+		{
 			public readonly int city;
 			public readonly bool origDir; // original direction (i.e no need to reorder)
 
-			public ConnectedCity(int city, bool origDir) {
+			public ConnectedCity(int city, bool origDir)
+			{
 				this.city = city;
 				this.origDir = origDir;
 			}
 		}
 
-		// #399. Evaluate Division
+		// #399. Evaluate Division (DFS)
 		// Time: O(m * n) - m: number of queries, n: number of equations
 		// Space: O(n)
-		public double[] CalcEquation(IList<IList<string>> equations, double[] values, IList<IList<string>> queries) {
+		public double[] CalcEquation(IList<IList<string>> equations, double[] values, IList<IList<string>> queries)
+		{
 
 			// Build hash map with graph edges
 			Dictionary<string, IList<Edge>> map = new Dictionary<string, IList<Edge>>();
-			for(int i = 0; i < equations.Count; i++) {
+			for (int i = 0; i < equations.Count; i++)
+			{
 				string numerator = equations[i][0];
 				string denominator = equations[i][1];
 
 				// Add original direction edge
-				if (!map.ContainsKey(numerator)) {
+				if (!map.ContainsKey(numerator))
+				{
 					map.Add(numerator, new List<Edge>());
 				}
 				map[numerator].Add(new Edge(denominator, values[i]));
 
 				// Add reverse direction edge
-				if (!map.ContainsKey(denominator)) {
+				if (!map.ContainsKey(denominator))
+				{
 					map.Add(denominator, new List<Edge>());
 				}
 				map[denominator].Add(new Edge(numerator, 1 / values[i])); // add edge weight as 1 / value
@@ -204,15 +147,18 @@ namespace CodingPractice.Leetcode
 
 			// Calculate queries
 			double[] ret = new double[queries.Count];
-			for (int i = 0; i < queries.Count; i++) {
+			for (int i = 0; i < queries.Count; i++)
+			{
 				string numerator = queries[i][0];
 				string denominator = queries[i][1];
 				ret[i] = -1; // default - unable to calculate
 
-				if (!map.ContainsKey(numerator)) {
+				if (!map.ContainsKey(numerator))
+				{
 					continue;
 				}
-				else if (string.Equals(numerator, denominator)) {
+				else if (string.Equals(numerator, denominator))
+				{
 					ret[i] = 1;
 					continue;
 				}
@@ -221,15 +167,19 @@ namespace CodingPractice.Leetcode
 				Stack<Edge> edgeStack = new Stack<Edge>();
 				HashSet<string> visited = new HashSet<string>();
 				edgeStack.Push(new Edge(numerator, 1));
-				while (edgeStack.Count > 0) {
+				while (edgeStack.Count > 0)
+				{
 					Edge edge = edgeStack.Pop();
 					string variable = edge.denominator;
 					visited.Add(variable);
 
 					IList<Edge> edgeList = map[variable];
-					foreach (Edge nextEdge in edgeList) {
-						if (!visited.Contains(nextEdge.denominator)) {
-							if (nextEdge.denominator == denominator) {
+					foreach (Edge nextEdge in edgeList)
+					{
+						if (!visited.Contains(nextEdge.denominator))
+						{
+							if (nextEdge.denominator == denominator)
+							{
 								ret[i] = edge.value * nextEdge.value;
 								edgeStack = new Stack<Edge>();
 								break;
@@ -245,87 +195,34 @@ namespace CodingPractice.Leetcode
 			return ret;
 		}
 
-		private class Edge {
+		private class Edge
+		{
 			public string denominator;
 			public double value;
 
-			public Edge (string denominator, double value) {
+			public Edge(string denominator, double value)
+			{
 				this.denominator = denominator;
 				this.value = value;
 			}
 		}
 
-		// #994. Rotting Oranges
+		// #200. Number of Islands (DFS)
 		// Time: O(m * n)
 		// Space: O(m * n)
-		public int OrangesRotting(int[][] grid) {
-			// Find rotten Oranges
-			Queue<int[]> rottenQueue = new Queue<int[]>();
-			int freshCnt = 0;
-			for (int i = 0; i < grid.Length; i++) {
-				for (int j = 0; j < grid[0].Length; j++) {
-					if (grid[i][j] == 2) {
-						rottenQueue.Enqueue([i, j]);
-					} else if (grid[i][j] == 1) {
-						freshCnt++;
-					}
-				}
-			}
-
-			if (freshCnt == 0) { // no fresh orange
-				return 0;
-			}
-
-			// Run BFS with rotten Oranges
-			int numMins = -1;
-			while (rottenQueue.Count > 0) {
-				int rottenCnt = rottenQueue.Count;
-				for (int i = 0; i < rottenCnt; i++) {
-					int[] rottenOrange = rottenQueue.Dequeue();
-					int row = rottenOrange[0];
-					int col = rottenOrange[1];
-
-					if (row < grid.Length - 1 && grid[row + 1][col] == 1) {
-						grid[row + 1][col] = 2;
-						rottenQueue.Enqueue([row + 1, col]);
-						freshCnt--;
-					}
-					if (row > 0 && grid[row - 1][col] == 1) {
-						grid[row - 1][col] = 2;
-						rottenQueue.Enqueue([row - 1, col]);
-						freshCnt--;
-					}
-					if (col < grid[0].Length - 1 && grid[row][col + 1] == 1) {
-						grid[row][col + 1] = 2;
-						rottenQueue.Enqueue([row, col + 1]);
-						freshCnt--;
-					}
-					if (col > 0 && grid[row][col - 1] == 1) {
-						grid[row][col - 1] = 2;
-						rottenQueue.Enqueue([row, col - 1]);
-						freshCnt--;
-					}
-				}
-				numMins++;
-			}
-
-			if (freshCnt > 0) { // at least 1 orage remained fresh after BFS
-				return -1;
-			}
-
-			return numMins;
-		}
-
-		// #200. Number of Islands
-		// Time: O(m * n)
-		// Space: O(m * n)
-		public int NumIslands(char[][] grid) {
+		public int NumIslands(char[][] grid)
+		{
 			int numIslands = 0;
 
-			for (int i = 0; i < grid.Length; i++) {
-				for (int j = 0; j < grid[i].Length; j++) {
+			for (int i = 0; i < grid.Length; i++)
+			{
+				for (int j = 0; j < grid[i].Length; j++)
+				{
 
-					if (grid[i][j] != '1') { continue; }
+					if (grid[i][j] != '1')
+					{
+						continue;
+					}
 
 					numIslands++; // new island found!
 
@@ -337,45 +234,54 @@ namespace CodingPractice.Leetcode
 			return numIslands;
 		}
 
-		private void IslandDfs(char[][] grid, int i, int j) {
+		private void IslandDfs(char[][] grid, int i, int j)
+		{
 			Stack<(int, int)> stack = new Stack<(int, int)>();
 			stack.Push((i, j));
 
-			while (stack.Count > 0) {
+			while (stack.Count > 0)
+			{
 				(int row, int col) = stack.Pop();
 
 				grid[row][col] = 'v'; // mark visited
 
 				// Move down
-				if (row < grid.Length - 1 && grid[row + 1][col] == '1') {
+				if (row < grid.Length - 1 && grid[row + 1][col] == '1')
+				{
 					stack.Push((row + 1, col));
 				}
 
 				// Move up
-				if (row > 0 && grid[row - 1][col] == '1') {
+				if (row > 0 && grid[row - 1][col] == '1')
+				{
 					stack.Push((row - 1, col));
 				}
 
 				// Move right
-				if (col < grid[i].Length - 1 && grid[row][col + 1] == '1') {
+				if (col < grid[i].Length - 1 && grid[row][col + 1] == '1')
+				{
 					stack.Push((row, col + 1));
 				}
 
 				// Move left
-				if (col > 0 && grid[row][col - 1] == '1') {
+				if (col > 0 && grid[row][col - 1] == '1')
+				{
 					stack.Push((row, col - 1));
 				}
 			}
 		}
 
-		// #210. Course Schedule II
+		// #210. Course Schedule II (DFS)
 		// Time: O(n + m) - n: number of courses, m: number of prerequisites
 		// Space: O(n + m)
-		public int[] FindOrder(int numCourses, int[][] prerequisites) {
+		public int[] FindOrder(int numCourses, int[][] prerequisites)
+		{
 			// Build prereq map
 			Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
-			foreach (int[] prereq in prerequisites) {
-				if (!map.ContainsKey(prereq[0])) {
+			foreach (int[] prereq in prerequisites)
+			{
+				if (!map.ContainsKey(prereq[0]))
+				{
 					map.Add(prereq[0], new List<int>());
 				}
 				map[prereq[0]].Add(prereq[1]);
@@ -384,9 +290,12 @@ namespace CodingPractice.Leetcode
 			// Run Topological Sort via DFS
 			Stack<int> sortStack = new Stack<int>();
 			int[] courseStatus = new int[numCourses]; // 0 = not taken, 1 = taking, 2 = taken
-			for (int i = 0; i < numCourses; i++) {
-				if (courseStatus[i] == 0) {
-					if (!this.topologicalSortDfs(i, map, sortStack, courseStatus)) {
+			for (int i = 0; i < numCourses; i++)
+			{
+				if (courseStatus[i] == 0)
+				{
+					if (!this.topologicalSortDfs(i, map, sortStack, courseStatus))
+					{
 						return []; // cylce detected from DFS
 					}
 				}
@@ -394,7 +303,8 @@ namespace CodingPractice.Leetcode
 
 			// Topological Sorting Success
 			int[] ret = new int[numCourses];
-			for (int i = numCourses - 1; i >= 0; i--) {
+			for (int i = numCourses - 1; i >= 0; i--)
+			{
 				ret[i] = sortStack.Pop();
 			}
 			return ret;
@@ -405,17 +315,23 @@ namespace CodingPractice.Leetcode
 			Dictionary<int, List<int>> map,
 			Stack<int> sortStack,
 			int[] courseStatus
-		) {
+		)
+		{
 			courseStatus[course] = 1; // taking
 
-			if (map.ContainsKey(course)) {
-				foreach (int prereq in map[course]) {
-					if (courseStatus[prereq] == 0) {
-						if (!topologicalSortDfs(prereq, map, sortStack, courseStatus)) {
+			if (map.ContainsKey(course))
+			{
+				foreach (int prereq in map[course])
+				{
+					if (courseStatus[prereq] == 0)
+					{
+						if (!topologicalSortDfs(prereq, map, sortStack, courseStatus))
+						{
 							return false; // cycle detected
 						}
 					}
-					else if (courseStatus[prereq] == 1) {
+					else if (courseStatus[prereq] == 1)
+					{
 						// cycle detected
 						return false;
 					}
@@ -424,6 +340,73 @@ namespace CodingPractice.Leetcode
 
 			courseStatus[course] = 2; // taken
 			sortStack.Push(course);
+			return true;
+		}
+
+
+		// #207. Course Schedule (DFS)
+		// Time: O(m + n)  - m: number of prereqs/edges, n: numCourses
+		// Space: O(m + n)
+		// Note: you can also solve this using BFS(Kahn's algorithm)
+		public bool CanFinish(int numCourses, int[][] prerequisites)
+		{
+			// Build course map
+			Dictionary<int, List<int>> map = new();
+			foreach (int[] prereq in prerequisites)
+			{
+				if (!map.ContainsKey(prereq[0]))
+				{
+					map.Add(prereq[0], new List<int>());
+				}
+				map[prereq[0]].Add(prereq[1]);
+			}
+
+			// Keep track of course status
+			// 0 - not taken, 1 - taken, 2 - taking
+			int[] courseStatus = new int[numCourses];
+
+			// Run DFS to check if it has cycle
+			for (int i = 0; i < numCourses; i++)
+			{
+				if (courseStatus[i] == 0)
+				{
+					if (!CourseScheduleDfs(i, map, courseStatus))
+					{
+						return false; // cycle detected
+					}
+				}
+			}
+
+			return true;
+		}
+
+		// return false it cylce detected. true otherwise
+		private bool CourseScheduleDfs(int course, Dictionary<int, List<int>> map, int[] courseStatus)
+		{
+			if (courseStatus[course] == 1)
+			{ // taken
+				return true;
+			}
+			if (courseStatus[course] == 2)
+			{ // taking
+				return false; // cycle detected
+			}
+
+			courseStatus[course] = 2; // mark taking
+
+			// attemp to take all prereqs
+			if (map.ContainsKey(course))
+			{
+				foreach (int prereq in map[course])
+				{
+					if (!CourseScheduleDfs(prereq, map, courseStatus))
+					{
+						return false;
+					}
+				}
+			}
+
+			courseStatus[course] = 1; // mark taken
 			return true;
 		}
 	}
