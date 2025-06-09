@@ -254,5 +254,61 @@ namespace CodingPractice.Leetcode
 
 			return s.Substring(maxStart, maxLength);
 		}
+
+		// #1139. Largest 1-Bordered Square
+		// Time: O(n ^ 3)
+		// Space: O(n ^ 2)
+		public int Largest1BorderedSquare(int[][] grid)
+		{
+			int n = grid.Length;
+			int m = grid[0].Length;
+			int[,] dpHor = new int[n, m]; // keep track of horizontally consecutive 1s
+			int[,] dpVer = new int[n, m]; // keep track of vertically consecutive 1s
+
+			// Count horizontally consec 1s
+			for (int i = 0; i < n; i++)
+			{
+				dpHor[i, 0] = grid[i][0];
+				for (int j = 1; j < m; j++)
+				{
+					if (grid[i][j] == 0) { continue; }
+					dpHor[i, j] = dpHor[i, j - 1] + 1;
+				}
+			}
+
+			// Count vertically consec 1s
+			for (int j = 0; j < m; j++)
+			{
+				dpVer[0, j] = grid[0][j];
+				for (int i = 1; i < n; i++)
+				{
+					if (grid[i][j] == 0) { continue; }
+					dpVer[i, j] = dpVer[i - 1, j] + 1;
+				}
+			}
+
+			// Check every square in the grid
+			for (int k = Math.Min(n, m); k > 0; k--)
+			{
+				for (int i = 0; i <= n - k; i++)
+				{
+					for (int j = 0; j <= m - k; j++)
+					{
+
+						int top = dpHor[i, j + k - 1];
+						int bottom = dpHor[i + k - 1, j + k - 1];
+						int left = dpVer[i + k - 1, j];
+						int right = dpVer[i + k - 1, j + k - 1];
+
+						if (top >= k && bottom >= k && left >= k && right >= k)
+						{
+							return k * k;
+						}
+					}
+				}
+			}
+
+			return 0;
+		}
 	}
 }

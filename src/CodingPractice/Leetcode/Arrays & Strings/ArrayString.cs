@@ -5,12 +5,14 @@ using System.Text;
 
 namespace CodingPractice.Leetcode
 {
-	public class ArrayString {
+	public class ArrayString
+	{
 
 		// #1768. Merge Strings Alternately
 		// Time: O(m + n)
 		// Space: O(m + n)
-		public string MergeAlternately(string word1, string word2) {
+		public string MergeAlternately(string word1, string word2)
+		{
 			int minLength = Math.Min(word1.Length, word2.Length);
 			var builder = new StringBuilder();
 
@@ -36,8 +38,10 @@ namespace CodingPractice.Leetcode
 		// #1071. Greatest Common Divisor of Strings
 		// Time: O(m + n)
 		// Space: O(1)
-		public string GcdOfStrings(string str1, string str2) {
-			if (str1 + str2 != str2 + str1) {
+		public string GcdOfStrings(string str1, string str2)
+		{
+			if (str1 + str2 != str2 + str1)
+			{
 				return "";
 			}
 
@@ -46,11 +50,14 @@ namespace CodingPractice.Leetcode
 			return gcd > 0 ? str1.Substring(0, gcd) : "";
 		}
 
-		public int Gcd(int j, int k) {
+		public int Gcd(int j, int k)
+		{
 			int min = Math.Min(j, k);
 
-			for (int i = min; i > 0; i--) {
-				if (j % i == 0 && k % i == 0) {
+			for (int i = min; i > 0; i--)
+			{
+				if (j % i == 0 && k % i == 0)
+				{
 					return i;
 				}
 			}
@@ -61,19 +68,28 @@ namespace CodingPractice.Leetcode
 		// #151. Reverse Words in a String
 		// Time: O(n)
 		// Space: O(n)
-		public string ReverseWords(string s) {
+		public string ReverseWords(string s)
+		{
 			StringBuilder retBuilder = new StringBuilder();
 			StringBuilder wordBuilder = new StringBuilder();
 
-			for (int i = s.Length - 1; i >= 0; i--) {
-				if (s[i] != ' ') {
+			for (int i = s.Length - 1; i >= 0; i--)
+			{
+				if (s[i] != ' ')
+				{
 					wordBuilder.Insert(0, s[i]);
-				} else {
-					if (wordBuilder.Length != 0) {
+				}
+				else
+				{
+					if (wordBuilder.Length != 0)
+					{
 						string word = wordBuilder.ToString();
-						if (retBuilder.Length > 0) {
+						if (retBuilder.Length > 0)
+						{
 							retBuilder.Append($" {word}");
-						} else {
+						}
+						else
+						{
 							retBuilder.Append(word);
 						}
 						wordBuilder.Clear();
@@ -81,20 +97,25 @@ namespace CodingPractice.Leetcode
 				}
 			}
 
-			if (wordBuilder.Length == 0) {
+			if (wordBuilder.Length == 0)
+			{
 				return retBuilder.ToString();
-			} else {
-				return retBuilder.Length > 0 ?  $"{retBuilder} {wordBuilder}" : wordBuilder.ToString();
+			}
+			else
+			{
+				return retBuilder.Length > 0 ? $"{retBuilder} {wordBuilder}" : wordBuilder.ToString();
 			}
 		}
 
 		// #1431. Kids With the Greatest Number of Candies
 		// Time: O(n)
 		// Space: O(1)
-		public IList<bool> KidsWithCandies(int[] candies, int extraCandies) {
+		public IList<bool> KidsWithCandies(int[] candies, int extraCandies)
+		{
 			List<bool> ret = new List<bool>();
 			int max = candies.Max();
-			foreach (int candy in candies) {
+			foreach (int candy in candies)
+			{
 				ret.Add(candy + extraCandies >= max);
 			}
 			return ret;
@@ -103,29 +124,38 @@ namespace CodingPractice.Leetcode
 		// #605. Can Place Flowers
 		// Time: O(n)
 		// Space: O(1)
-		public bool CanPlaceFlowers(int[] flowerbed, int n) {
-			 if (n == 0) {
+		public bool CanPlaceFlowers(int[] flowerbed, int n)
+		{
+			if (n == 0)
+			{
 				return true;
 			}
 
 			int maxFlowerCnt = 0;
 			bool canPlace = true;
 
-			for (int i = 0; i < flowerbed.Length; i++) {
-				if (flowerbed[i] == 0) {
-					if (canPlace) {
-						if ((i + 1 == flowerbed.Length) || flowerbed[i + 1] == 0) {
-							if (++maxFlowerCnt >= n) { // we are done looking
+			for (int i = 0; i < flowerbed.Length; i++)
+			{
+				if (flowerbed[i] == 0)
+				{
+					if (canPlace)
+					{
+						if ((i + 1 == flowerbed.Length) || flowerbed[i + 1] == 0)
+						{
+							if (++maxFlowerCnt >= n)
+							{ // we are done looking
 								return true;
 							}
 							canPlace = false;
 						}
 					}
-					else {
+					else
+					{
 						canPlace = true;
 					}
 				}
-				else {  // spot == 1
+				else
+				{  // spot == 1
 					canPlace = false;
 				}
 			}
@@ -136,19 +166,23 @@ namespace CodingPractice.Leetcode
 		// #345. Reverse Vowels of a String
 		// Time: O(n)
 		// Space: O(1)
-		public string ReverseVowels(string s) {
+		public string ReverseVowels(string s)
+		{
 			char[] vowels = ['a', 'e', 'i', 'o', 'u'];
 
 			StringBuilder sb = new StringBuilder(s);
 			int left = 0;
 			int right = sb.Length - 1;
 
-			while (left < right) {
-				while (left < sb.Length && !vowels.Contains(Char.ToLower(sb[left]))) {
+			while (left < right)
+			{
+				while (left < sb.Length && !vowels.Contains(Char.ToLower(sb[left])))
+				{
 					left++;
 				}
 
-				while (right > 0 && !vowels.Contains(Char.ToLower(sb[right]))) {
+				while (right > 0 && !vowels.Contains(Char.ToLower(sb[right])))
+				{
 					right--;
 				}
 
@@ -168,7 +202,8 @@ namespace CodingPractice.Leetcode
 		// #334. Increasing Triplet Subsequence
 		// Time: O(n)
 		// Space: O(1)
-		public bool IncreasingTriplet(int[] nums) {
+		public bool IncreasingTriplet(int[] nums)
+		{
 			int min = int.MaxValue;
 			int secondMin = int.MaxValue;
 
@@ -194,15 +229,20 @@ namespace CodingPractice.Leetcode
 		// #443. String Compression
 		// Time: O(n)
 		// Space: O(1)
-		public int Compress(char[] chars) {
+		public int Compress(char[] chars)
+		{
 			char currentChar = chars[0];
 			int counter = 1;
 			int pointer = 1; // pointer to update chars
 
-			for (int i = 1; i < chars.Length; i++) {
-				if (chars[i] != currentChar) {
-					if (counter > 1) {
-						foreach (char c in counter.ToString()) {
+			for (int i = 1; i < chars.Length; i++)
+			{
+				if (chars[i] != currentChar)
+				{
+					if (counter > 1)
+					{
+						foreach (char c in counter.ToString())
+						{
 							chars[pointer++] = c;
 						}
 					}
@@ -211,18 +251,46 @@ namespace CodingPractice.Leetcode
 					currentChar = chars[i];
 					counter = 1;
 				}
-				else {
+				else
+				{
 					counter++;
 				}
 			}
 
-			if (counter > 1) {
-				foreach (char c in counter.ToString()) {
+			if (counter > 1)
+			{
+				foreach (char c in counter.ToString())
+				{
 					chars[pointer++] = c;
 				}
 			}
 
 			return pointer;
+		}
+
+		// #48. Rotate Image
+		// Time: O(n ^ 2)
+		// Space: O(1)
+		// Note: This is more elgant solution. Easier approach is to rotate by layer
+		public void Rotate(int[][] matrix)
+		{
+			// Transpose Matrix (reverse around main diagnol)
+			int n = matrix.Length;
+			for (int i = 0; i < n; i++)
+			{
+				for (int j = i + 1; j < n; j++)
+				{
+					int tmp = matrix[j][i];
+					matrix[j][i] = matrix[i][j];
+					matrix[i][j] = tmp;
+				}
+			}
+
+			// Reverse each row
+			for (int i = 0; i < n; i++)
+			{
+				Array.Reverse(matrix[i]);
+			}
 		}
 	}
 }
