@@ -175,45 +175,92 @@ namespace CodingPractice.Leetcode
 			return maxLength;
 		}
 
-		public class Solution
+		// #49. Group Anagrams
+		// Time: O(n * k)
+		// Space: O(n * k) - k is max length of string
+		public IList<IList<string>> GroupAnagrams(string[] strs)
 		{
-			// #49. Group Anagrams
-			// Time: O(n * k)
-			// Space: O(n * k) - k is max length of string
-			public IList<IList<string>> GroupAnagrams(string[] strs)
+			Dictionary<string, List<string>> hash = new();
+			foreach (string str in strs)
 			{
-				Dictionary<string, List<string>> hash = new();
-				foreach (string str in strs)
+
+				// Less optimal solution using Sort
+				// char[] chArr = str.ToCharArray();
+				// Array.Sort(chArr);
+				// string key = new String(chArr);
+
+				int[] countArr = new int[26]; // lower case english
+				foreach (char ch in str)
 				{
+					countArr[ch - 'a']++;
+				}
+				string key = String.Join(',', countArr);
 
-					// Less optimal solution using Sort
-					// char[] chArr = str.ToCharArray();
-					// Array.Sort(chArr);
-					// string key = new String(chArr);
-
-					int[] countArr = new int[26]; // lower case english
-					foreach (char ch in str)
-					{
-						countArr[ch - 'a']++;
-					}
-					string key = String.Join(',', countArr);
-
-					if (!hash.ContainsKey(key))
-					{
-						hash.Add(key, new List<string>());
-					}
-
-					hash[key].Add(str);
+				if (!hash.ContainsKey(key))
+				{
+					hash.Add(key, new List<string>());
 				}
 
-				IList<IList<string>> ret = new List<IList<string>>();
-				foreach (List<string> strList in hash.Values)
-				{
-					ret.Add(strList);
-				}
-
-				return ret;
+				hash[key].Add(str);
 			}
+
+			IList<IList<string>> ret = new List<IList<string>>();
+			foreach (List<string> strList in hash.Values)
+			{
+				ret.Add(strList);
+			}
+
+			return ret;
+		}
+
+		// #3572. Maximize Y‑Sum by Picking a Triplet of Distinct X‑Values
+		// Time: O(n)
+		// Space: O(n)
+		public int MaxSumDistinctTriplet(int[] x, int[] y)
+		{
+			// Store to hash with x value as a key & max y as value
+			Dictionary<int, int> hash = new();
+			for (int i = 0; i < x.Length; i++)
+			{
+				if (!hash.ContainsKey(x[i]))
+				{
+					hash[x[i]] = y[i];
+				}
+				else
+				{
+					hash[x[i]] = Math.Max(hash[x[i]], y[i]);
+				}
+			}
+
+			if (hash.Values.Count < 3)
+			{
+				return -1; // return valid
+			}
+
+			// Iterate hash values for max triplet (you can also use PQ)
+			int first = int.MinValue;
+			int second = int.MinValue;
+			int third = int.MinValue;
+
+			foreach (int yVal in hash.Values)
+			{
+				if (yVal > first)
+				{
+					(second, third) = (first, second);
+					first = yVal;
+				}
+				else if (yVal > second)
+				{
+					third = second;
+					second = yVal;
+				}
+				else if (yVal > third)
+				{
+					third = yVal;
+				}
+			}
+
+			return first + second + third;
 		}
 	}
 }
