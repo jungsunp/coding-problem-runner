@@ -150,5 +150,48 @@ namespace CodingPractice.Leetcode.Graphs
 
 			return numMins;
 		}
+
+		// #733. Flood Fill (BFS)
+		// Time: O(m * n)
+		// Space: O(m * n) 
+		// Note: can also be solved with DFS
+		public int[][] FloodFill(int[][] image, int sr, int sc, int color)
+		{
+
+			// Check if target color is same with color from start index
+			int origColor = image[sr][sc];
+			if (color == origColor)
+			{
+				return image;
+			}
+
+			// Run BFS using queue
+			Queue<(int, int)> bfsQueue = new();
+			bfsQueue.Enqueue((sr, sc));
+			while (bfsQueue.Count > 0)
+			{
+				(int row, int col) = bfsQueue.Dequeue();
+				image[row][col] = color;
+
+				if (row > 0 && image[row - 1][col] == origColor)
+				{ // bottom
+					bfsQueue.Enqueue((row - 1, col));
+				}
+				if (row < image.Length - 1 && image[row + 1][col] == origColor)
+				{ // top
+					bfsQueue.Enqueue((row + 1, col));
+				}
+				if (col > 0 && image[row][col - 1] == origColor)
+				{ // left
+					bfsQueue.Enqueue((row, col - 1));
+				}
+				if (col < image[0].Length - 1 && image[row][col + 1] == origColor)
+				{ // right
+					bfsQueue.Enqueue((row, col + 1));
+				}
+			}
+
+			return image;
+		}
 	}
 }
