@@ -109,5 +109,32 @@ namespace CodingPractice.Leetcode
 
 			return right - left - 1;
 		}
+
+		// #424. Longest Repeating Character Replacement
+		// Time: O(n)
+		// Space: O(1) - hash length of 26 is constant
+		public int CharacterReplacement(string s, int k) {
+			int[] hash = new int[26]; // upper case english Character
+			char mostFreqChar = s[0];
+
+			// Sliding window (expand-contract style)
+			int left = 0;
+			int right = 0;
+			while (right < s.Length) {
+				if (++hash[s[right] - 'A'] > hash[mostFreqChar - 'A']) {
+					mostFreqChar = s[right];
+				}
+
+				// Check if window is invalid
+				if (right - left + 1 - hash[mostFreqChar - 'A'] > k) {
+					--hash[s[left] - 'A']; // Note: most frequent char can be stale but it's ok
+					left++; // trick: move left pointer but don't ever shrink window size
+				}
+
+				right++;
+			}
+
+			return right - left;
+		}
 	}
 }
