@@ -184,5 +184,60 @@ namespace CodingPractice.Leetcode
 				}
 			}
 		}
+
+		// #31. Next Permutation (Lexicographic Ordering)
+		// Time: O(n)
+		// Space: O(1)
+		// Note: This is hard.
+		//  Start with  Brute force - generate all permutations and sort lexicographically
+		public void NextPermutation(int[] nums)
+		{
+			int n = nums.Length;
+
+			// Step-1: Find largest k such that nums[k] < nums[k+1]
+			int k = n - 2;
+			while (k >= 0)
+			{
+				if (nums[k] < nums[k + 1])
+				{
+					break; // found our k
+				}
+				k--;
+			}
+
+			if (k < 0)
+			{
+				// end of permutations. reverse the whole array and return.
+				this.ReverseArray(nums, 0, n - 1);
+				return;
+			}
+
+			// Step-2: Find larget l such that nums[k] < nums[l]
+			int l = n - 1;
+			while (l > k)
+			{
+				if (nums[k] < nums[l])
+				{
+					break; // found our l;
+				}
+				l--;
+			}
+
+			// Step-3: Swap k & l
+			(nums[k], nums[l]) = (nums[l], nums[k]);
+
+			// Step-4: Reverse from (k+1) .... (n-1)
+			this.ReverseArray(nums, k + 1, n - 1);
+		}
+
+		private void ReverseArray(int[] nums, int left, int right)
+		{
+			while (left < right)
+			{
+				(nums[left], nums[right]) = (nums[right], nums[left]); // swap
+				left++;
+				right--;
+			}
+		}
 	}
 }
