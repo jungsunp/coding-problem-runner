@@ -171,6 +171,20 @@ namespace CodingPractice.Leetcode
 			return maxProfit;
 		}
 
+		// #122. Best Time to Buy and Sell Stock II
+		// Time: O(n)
+		// Space: O(1)
+		// Note: Simple variation to Peak Valley Appraoch
+		public int MaxProfit2(int[] prices)
+		{
+			int res = 0;
+			for (int i = 1; i < prices.Length; i++)
+			{
+				res += Math.Max(prices[i] - prices[i - 1], 0);
+			}
+			return res;
+		}
+
 		// #45. Jump Game II
 		// Time: O(n)
 		// Space: O(n)
