@@ -211,5 +211,45 @@ namespace CodingPractice.Leetcode
 
 			return dp[n - 1];
 		}
+
+		// #322. Coin Change
+		// Time: O(S * n)
+		// Space: O(S) - S = amount of coin
+		// Note: There is also simpler DP solution.
+		public int CoinChange(int[] coins, int amount)
+		{
+			if (amount == 0) return 0;
+
+			// Define initial dp array and queeu for BFS
+			int[] dp = new int[amount + 1]; // 0, 1, 2, .... , amount
+			Queue<int> bfsQueue = new(); // stores indexes in dp
+			bfsQueue.Enqueue(0);
+
+			// Run BFS
+			while (bfsQueue.Count > 0)
+			{
+				int levelCnt = bfsQueue.Count;
+				for (int i = 0; i < levelCnt; i++)
+				{
+					int prevAmount = bfsQueue.Dequeue();
+					foreach (int coin in coins)
+					{
+						int nextAmount = prevAmount + coin;
+						if (nextAmount == amount)
+						{
+							return dp[prevAmount] + 1; // found target
+						}
+
+						if (nextAmount < dp.Length && dp[nextAmount] == 0)
+						{
+							dp[nextAmount] = dp[prevAmount] + 1;
+							bfsQueue.Enqueue(nextAmount);
+						}
+					}
+				}
+			}
+
+			return -1; // invalid
+		}
 	}
 }
