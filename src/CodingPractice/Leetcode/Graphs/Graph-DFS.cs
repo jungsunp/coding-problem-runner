@@ -409,5 +409,62 @@ namespace CodingPractice.Leetcode
 			courseStatus[course] = 1; // mark taken
 			return true;
 		}
+
+		// #323. Number of Connected Components in an Undirected Graph (DFS)
+		// Time: O(n)
+		// Space: O(n + m) - m: number of edges
+		// Note: There is faster approach usign Union-Find approach
+		//  but stick with DFS for follow up convo.
+		public int CountComponents(int n, int[][] edges)
+		{
+			// Build connection map
+			Dictionary<int, List<int>> map = new();
+			foreach (int[] edge in edges)
+			{
+				foreach (int node in edge)
+				{ // set up for both directions
+					if (!map.ContainsKey(node))
+					{
+						map[node] = new List<int>();
+					}
+				}
+				map[edge[0]].Add(edge[1]);
+				map[edge[1]].Add(edge[0]);
+			}
+
+			// Run DFS for each node
+			int res = 0;
+			Stack<int> dfsStack = new();
+			HashSet<int> visited = new();
+
+			for (int i = 0; i < n; i++)
+			{
+				if (visited.Contains(i))
+				{
+					continue;
+				}
+
+				res++; // new component
+				dfsStack.Push(i);
+				while (dfsStack.Count > 0)
+				{
+					int node = dfsStack.Pop();
+					if (visited.Contains(node)) { continue; }
+					visited.Add(node);
+					if (map.ContainsKey(node))
+					{
+						foreach (int neighbor in map[node])
+						{
+							if (!visited.Contains(neighbor))
+							{
+								dfsStack.Push(neighbor);
+							}
+						}
+					}
+				}
+			}
+
+			return res;
+		}
 	}
 }
