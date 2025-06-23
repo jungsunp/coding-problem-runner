@@ -17,7 +17,7 @@ To get started with this project, follow these steps:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/jungsunp/coding-problem-runner.git
+   git clone https://github.com/jungsunp/dsa-problem-runner.git
    ```
 
 2. Install the required dependencies:
@@ -33,7 +33,7 @@ To get started with this project, follow these steps:
 The project is organized into different directories, each representing a specific category or topic of coding problems. Here's an example structure:
 
 ```
-coding-problem-runner/
+dsa-problem-runner/
 ├── arrays/
 │   ├── problem1.cs
 │   ├── problem2.cs
