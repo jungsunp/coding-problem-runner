@@ -1,4 +1,4 @@
-# coding-problem-runner
+# dsa-problem-runner
 
 ## C# Coding Practice
 
