@@ -334,6 +334,31 @@ namespace CodingPractice.Leetcode
 
 			return maxPattern.Split(',');
 		}
+
+		// #12. Integer to Roman
+		// Time: O(1)
+		// Space: O(1)
+		public string IntToRoman(int num)
+		{
+			Dictionary<int, string> romanMap = new() {
+			{1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"},
+			{100, "C"}, {90, "XC"}, {50, "L"}, {40, "XL"},
+			{10, "X"}, {9, "IX"}, {5, "V"}, {4, "IV"}, {1, "I"}
+		};
+
+			StringBuilder result = new StringBuilder();
+
+			foreach (var kvp in romanMap)
+			{
+				while (num >= kvp.Key)
+				{
+					result.Append(kvp.Value);
+					num -= kvp.Key;
+				}
+			}
+
+			return result.ToString();
+		}
 	}
 
 	// #380. Insert Delete GetRandom O(1)
