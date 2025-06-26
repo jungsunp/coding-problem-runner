@@ -186,7 +186,10 @@ namespace CodingPractice.Leetcode
 					right--;
 				}
 
-				if (left >= right) { break; }
+				if (left >= right)
+				{
+					break;
+				}
 
 				char tmp = sb[left];
 				sb[left] = sb[right];
@@ -291,6 +294,56 @@ namespace CodingPractice.Leetcode
 			{
 				Array.Reverse(matrix[i]);
 			}
+		}
+
+		// 8. String to Integer (atoi)
+		// Time: O(n)
+		// Space: O(1)
+		public int MyAtoi(string s)
+		{
+			long res = 0;
+			int pos = 0;
+			int n = s.Length;
+
+			// Step 1 - white space
+			while (pos < n && s[pos] == ' ')
+			{
+				pos++;
+			}
+
+			if (pos == n)
+			{
+				return (int)res;
+			}
+
+			// Step 2 - + or -
+			bool isPositive = true;
+			if (s[pos] == '+')
+			{
+				pos++;
+			}
+			else if (s[pos] == '-')
+			{
+				isPositive = false;
+				pos++;
+			}
+
+			// Step 3 - read digits
+			while (pos < n && char.IsDigit(s[pos]))
+			{
+				res = res * 10 + s[pos] - '0';
+				if (isPositive && res > int.MaxValue)
+				{
+					return int.MaxValue;
+				}
+				else if (!isPositive && -res < int.MinValue)
+				{
+					return int.MinValue;
+				}
+				pos++;
+			}
+
+			return isPositive ? (int)res : (int)-res;
 		}
 	}
 }
