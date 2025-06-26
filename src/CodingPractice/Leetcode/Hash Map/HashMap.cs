@@ -262,6 +262,78 @@ namespace CodingPractice.Leetcode
 
 			return first + second + third;
 		}
+
+		// #1152. Analyze User Website Visit Pattern
+		// Time: O(n^3)
+		// Space: O(n + p) - p: # of unique pattersn
+		public IList<string> MostVisitedPattern(string[] username, int[] timestamp, string[] website)
+		{
+			// Sort arrays based on timestamp
+			int[] indices = Enumerable.Range(0, timestamp.Length).OrderBy(i => timestamp[i]).ToArray();
+			username = indices.Select(i => username[i]).ToArray();
+			website = indices.Select(i => website[i]).ToArray();
+
+			// Store list of websites each user visited
+			Dictionary<string, List<string>> userHistory = new();
+			for (int i = 0; i < username.Length; i++)
+			{
+				if (!userHistory.ContainsKey(username[i]))
+				{
+					userHistory[username[i]] = new List<string>();
+				}
+				userHistory[username[i]].Add(website[i]);
+			}
+
+			// For each user, count number of unique patterns visited
+			Dictionary<string, int> patternCnt = new();
+			foreach (string user in userHistory.Keys)
+			{
+				List<string> websiteList = userHistory[user];
+				HashSet<string> visited = new(); // keeps track of visited websites for the user
+
+				for (int i = 0; i < websiteList.Count; i++)
+				{
+					for (int j = i + 1; j < websiteList.Count; j++)
+					{
+						for (int k = j + 1; k < websiteList.Count; k++)
+						{
+							string pattern = $"{websiteList[i]},{websiteList[j]},{websiteList[k]}";
+							if (visited.Contains(pattern))
+							{
+								continue;
+							}
+							if (!patternCnt.ContainsKey(pattern))
+							{
+								patternCnt[pattern] = 0;
+							}
+							patternCnt[pattern]++;
+							visited.Add(pattern);
+						}
+					}
+				}
+			}
+
+			// Find max pattern using pattern hash
+			int maxCnt = 0;
+			string maxPattern = "";
+			foreach (string pattern in patternCnt.Keys)
+			{
+				if (patternCnt[pattern] > maxCnt)
+				{
+					maxPattern = pattern;
+					maxCnt = patternCnt[pattern];
+				}
+				else if (patternCnt[pattern] == maxCnt)
+				{
+					if (maxPattern.CompareTo(pattern) > 0)
+					{ // lexicographical check
+						maxPattern = pattern;
+					}
+				}
+			}
+
+			return maxPattern.Split(',');
+		}
 	}
 
 	// #380. Insert Delete GetRandom O(1)
