@@ -148,33 +148,6 @@ namespace CodingPractice.Leetcode
 			return retCount;
 		}
 
-		// #3. Longest Substring Without Repeating Characters
-		// Time: O(n)
-		// Space: O(k) - k: number of unique chars
-		public int LengthOfLongestSubstring(string s)
-		{
-			if (s.Length <= 1) { return s.Length; }
-
-			int left = 0;
-			int right = 0;
-			int maxLength = 0;
-			Dictionary<char, int> hash = new Dictionary<char, int>();
-
-			while (right < s.Length)
-			{
-				if (hash.ContainsKey(s[right]) && hash[s[right]] >= left)
-				{
-					left = hash[s[right]] + 1; // move left to one next to repeating char
-				}
-
-				hash[s[right]] = right;
-				maxLength = Math.Max(maxLength, right - left + 1);
-				right++;
-			}
-
-			return maxLength;
-		}
-
 		// #49. Group Anagrams
 		// Time: O(n * k)
 		// Space: O(n * k) - k is max length of string
