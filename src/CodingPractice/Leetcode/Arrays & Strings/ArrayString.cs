@@ -70,41 +70,20 @@ namespace CodingPractice.Leetcode
 		// Space: O(n)
 		public string ReverseWords(string s)
 		{
-			StringBuilder retBuilder = new StringBuilder();
-			StringBuilder wordBuilder = new StringBuilder();
-
-			for (int i = s.Length - 1; i >= 0; i--)
+			s = s.Trim(); // remove leading + trailing spaces
+			string[] words = s.Split(' ');
+			Array.Reverse(words);
+			StringBuilder res = new();
+			foreach (string word in words)
 			{
-				if (s[i] != ' ')
+				if (word.Length == 0) continue; // handle empty word
+				if (res.Length > 0)
 				{
-					wordBuilder.Insert(0, s[i]);
+					res.Append(" ");
 				}
-				else
-				{
-					if (wordBuilder.Length != 0)
-					{
-						string word = wordBuilder.ToString();
-						if (retBuilder.Length > 0)
-						{
-							retBuilder.Append($" {word}");
-						}
-						else
-						{
-							retBuilder.Append(word);
-						}
-						wordBuilder.Clear();
-					}
-				}
+				res.Append(word);
 			}
-
-			if (wordBuilder.Length == 0)
-			{
-				return retBuilder.ToString();
-			}
-			else
-			{
-				return retBuilder.Length > 0 ? $"{retBuilder} {wordBuilder}" : wordBuilder.ToString();
-			}
+			return res.ToString();
 		}
 
 		// #1431. Kids With the Greatest Number of Candies
