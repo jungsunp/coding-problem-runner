@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 namespace CodingPractice.Leetcode
 {
-	public class SlidingWindow {
+	public class SlidingWindow
+	{
 
 		// #643. Maximum Average Subarray I
 		// Time: O(n)
 		// Space: O(1)
-		public double FindMaxAverage(int[] nums, int k) {
+		public double FindMaxAverage(int[] nums, int k)
+		{
 			int sum = 0;
 			for (int i = 0; i < k; i++)
 			{
@@ -25,15 +27,16 @@ namespace CodingPractice.Leetcode
 				}
 			}
 
-			return (double) max / k;
+			return (double)max / k;
 		}
 
 		// #1456. Maximum Number of Vowels in a Substring of Given Length
 		// Time: O(n)
 		// Space: O(1)
-		private readonly HashSet<char> vowelHash = new HashSet<char> () { 'a', 'e', 'i', 'o', 'u' };
+		private readonly HashSet<char> vowelHash = new HashSet<char>() { 'a', 'e', 'i', 'o', 'u' };
 
-		public int MaxVowels(string s, int k) {
+		public int MaxVowels(string s, int k)
+		{
 			int numVowels = 0;
 			for (int i = 0; i < k; i++)
 			{
@@ -45,7 +48,7 @@ namespace CodingPractice.Leetcode
 			{
 				if (maxVowels == k) { return k; } // maxVowels is always less than equal to k
 				numVowels += vowelHash.Contains(s[i]) ? 1 : 0;
-				numVowels -= vowelHash.Contains(s[i-k]) ? 1 : 0;
+				numVowels -= vowelHash.Contains(s[i - k]) ? 1 : 0;
 				maxVowels = Math.Max(numVowels, maxVowels);
 			}
 
@@ -55,28 +58,36 @@ namespace CodingPractice.Leetcode
 		// #1004. Max Consecutive Ones III
 		// Time: O(n)
 		// Space: O(1)
-		public int LongestOnes(int[] nums, int k) {
+		public int LongestOnes(int[] nums, int k)
+		{
 			int i = 0;
 			int numZeros = 0;
 
 			// Set up initial sliding window
-			while (numZeros < k && i < nums.Length) {
-				if (nums[i++] == 0) {
+			while (numZeros < k && i < nums.Length)
+			{
+				if (nums[i++] == 0)
+				{
 					numZeros++;
 				}
 			}
 
 			int numOnes = i;
 			int maxOnes = i;
-			for (int j = i; j < nums.Length; j++) {
-				if (nums[j] == 1) {
+			for (int j = i; j < nums.Length; j++)
+			{
+				if (nums[j] == 1)
+				{
 					numOnes++;
 					maxOnes = Math.Max(numOnes, maxOnes);
 				}
-				else { //nums[j] == 0
-					if (nums[j - numOnes] == 1) {
+				else
+				{ //nums[j] == 0
+					if (nums[j - numOnes] == 1)
+					{
 						int l = j - numOnes;
-						while (nums[l++] == 1) {
+						while (nums[l++] == 1)
+						{
 							numOnes--;
 						}
 					}
@@ -89,18 +100,23 @@ namespace CodingPractice.Leetcode
 		// #1493. Longest Subarray of 1's After Deleting One Element
 		// Time: O(n)
 		// Space: O(1)
-		public int LongestSubarray(int[] nums) {
+		public int LongestSubarray(int[] nums)
+		{
 			int left = 0;
 			int right;
 			int numZeroInWindow = 0;
 
-			for (right = 0; right < nums.Length; right++) {
-				if (nums[right] == 0) {
+			for (right = 0; right < nums.Length; right++)
+			{
+				if (nums[right] == 0)
+				{
 					numZeroInWindow++;
 				}
 
-				if (numZeroInWindow > 1) {
-					if (nums[left] == 0) {
+				if (numZeroInWindow > 1)
+				{
+					if (nums[left] == 0)
+					{
 						numZeroInWindow--;
 					}
 					left++; // trick here is to not to reduce size of window even when window is invalid
@@ -113,20 +129,24 @@ namespace CodingPractice.Leetcode
 		// #424. Longest Repeating Character Replacement
 		// Time: O(n)
 		// Space: O(1) - hash length of 26 is constant
-		public int CharacterReplacement(string s, int k) {
+		public int CharacterReplacement(string s, int k)
+		{
 			int[] hash = new int[26]; // upper case english Character
 			char mostFreqChar = s[0];
 
 			// Sliding window (expand-contract style)
 			int left = 0;
 			int right = 0;
-			while (right < s.Length) {
-				if (++hash[s[right] - 'A'] > hash[mostFreqChar - 'A']) {
+			while (right < s.Length)
+			{
+				if (++hash[s[right] - 'A'] > hash[mostFreqChar - 'A'])
+				{
 					mostFreqChar = s[right];
 				}
 
 				// Check if window is invalid
-				if (right - left + 1 - hash[mostFreqChar - 'A'] > k) {
+				if (right - left + 1 - hash[mostFreqChar - 'A'] > k)
+				{
 					--hash[s[left] - 'A']; // Note: most frequent char can be stale but it's ok
 					left++; // trick: move left pointer but don't ever shrink window size
 				}
@@ -135,6 +155,59 @@ namespace CodingPractice.Leetcode
 			}
 
 			return right - left;
+		}
+
+		// #3234. Count the Number of Substrings With Dominant Ones
+		// Time: O(n * sqrt(n))
+		// Space: O(n)
+		// Note: pretty difficult skipping logic
+		public int NumberOfSubstrings(string s)
+		{
+			int n = s.Length;
+			int[] prefix = new int[n]; // count num of 1s in 0 ... k
+			prefix[0] = s[0] == '1' ? 1 : 0;
+			for (int i = 1; i < n; i++)
+			{
+				prefix[i] = s[i] == '1' ? prefix[i - 1] + 1 : prefix[i - 1];
+			}
+
+			int res = 0;
+			for (int i = 0; i < n; i++)
+			{
+				int j = i;
+				while (j < n)
+				{
+					int numOne = i == 0 ? prefix[j] : prefix[j] - prefix[i - 1];
+					int numZero = (j - i + 1) - numOne;
+
+					if (numOne < numZero * numZero)
+					{ // non-dominant
+						j += numZero * numZero - numOne; // skip ahead by difference
+					}
+					else if (numOne == numZero * numZero)
+					{ // exact match dominant
+						res++;
+						j++;
+					}
+					else
+					{ // dominant
+						int diff = (int)Math.Sqrt(numOne) - numZero;
+
+						if (j + diff < n)
+						{
+							res += diff + 1;
+						}
+						else
+						{
+							res += n - j;
+						}
+
+						j += diff + 1;
+					}
+				}
+			}
+
+			return res;
 		}
 	}
 }
