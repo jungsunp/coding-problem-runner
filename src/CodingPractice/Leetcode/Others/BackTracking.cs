@@ -120,5 +120,33 @@ namespace CodingPractice.Leetcode
 				strBuilder.Remove(strBuilder.Length - 1, 1);
 			}
 		}
+
+		// #46. Permutations
+		// Time:O(n * n!)
+		// Space: O(n)
+		public IList<IList<int>> Permute(int[] nums)
+		{
+			List<IList<int>> ans = new();
+			BackTrackPermute(new List<int>(), ans, nums);
+			return ans;
+		}
+
+		private void BackTrackPermute(List<int> current, List<IList<int>> ans, int[] nums)
+		{
+			if (current.Count == nums.Length)
+			{
+				ans.Add(new List<int>(current));
+				return;
+			}
+
+			foreach (int num in nums)
+			{
+				if (current.Contains(num))
+					continue;
+				current.Add(num);
+				BackTrackPermute(current, ans, nums);
+				current.RemoveAt(current.Count - 1);
+			}
+		}
 	}
 }
