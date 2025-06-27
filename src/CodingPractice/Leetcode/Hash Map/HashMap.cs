@@ -359,6 +359,28 @@ namespace CodingPractice.Leetcode
 
 			return result.ToString();
 		}
+
+		// #1. Two Sum
+		// Time: O(n)
+		// Space: O(n)
+		// Note: Easy but can be used to solve ohters.
+		// 	You can also solve this problem using sorting and two pointers, but it will be O(n log n) time.
+		public int[] TwoSum(int[] nums, int target)
+		{
+			Dictionary<int, int> hash = new();
+			for (int i = 0; i < nums.Length; i++)
+			{
+				int diff = target - nums[i];
+				if (hash.ContainsKey(diff) && hash[diff] != i)
+				{
+					return [i, hash[diff]];
+				}
+
+				hash[nums[i]] = i;
+			}
+
+			return null;
+		}
 	}
 
 	// #380. Insert Delete GetRandom O(1)
