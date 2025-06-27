@@ -46,14 +46,14 @@ namespace CodingPractice.Leetcode
 				int nextGuess = left + (right - left) / 2;
 				switch (guess(nextGuess))
 				{
-					case -1:
-						right = nextGuess - 1;
-						break;
-					case 1:
-						left = nextGuess + 1;
-						break;
-					default: // 0
-						return nextGuess;
+				case -1:
+				right = nextGuess - 1;
+				break;
+				case 1:
+				left = nextGuess + 1;
+				break;
+				default: // 0
+				return nextGuess;
 				}
 			}
 
@@ -201,44 +201,40 @@ namespace CodingPractice.Leetcode
 		}
 
 		// #875. Koko Eating Bananas
-		// Time: O(n log k) - n: number of piles, k: max bananas in a pile
-		// Space: O(1);
+		// Time: O(n * log m) - m: maxium piles
+		// Space: O(1) 
 		public int MinEatingSpeed(int[] piles, int h)
 		{
-			int left = 1; // min speed: 1 banana per hour
-			int right = 0; // max speed: max bananas per hour
-			foreach (int pile in piles)
-			{
-				right = Math.Max(right, pile); // NOTE: this is faster than using Linq's piles.Max();
-			}
+			int left = 1; // min speed 1 banana per hour
+			int right = piles.Max(); // max babana per hour
 
-			// Run binary search with speed
+			// Run Binary Search with speed
 			while (left < right)
 			{
 				int mid = left + (right - left) / 2;
-				int hour = GetHoursWithSpeed(piles, mid);
+				int hours = HoursTakenToEat(piles, mid);
 
-				if (hour > h)
+				if (hours <= h)
 				{
-					left = mid + 1;
+					right = mid;
 				}
 				else
 				{
-					right = mid;
+					left = mid + 1;
 				}
 			}
 
 			return left;
 		}
 
-		private static int GetHoursWithSpeed(int[] piles, int s)
+		private int HoursTakenToEat(int[] piles, int k)
 		{
-			int h = 0;
+			int res = 0;
 			foreach (int pile in piles)
 			{
-				h += (int)Math.Ceiling((double)pile / s);
+				res += (pile + k - 1) / k; // Math.Ceiling
 			}
-			return h;
+			return res;
 		}
 
 		// #74. Search a 2D Matrix
