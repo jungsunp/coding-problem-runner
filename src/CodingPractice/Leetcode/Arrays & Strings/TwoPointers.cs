@@ -239,5 +239,32 @@ namespace CodingPractice.Leetcode
 				right--;
 			}
 		}
+
+		// #680. Valid Palindrome II
+		// Time: O(n)
+		// Space: O(1)
+		public bool ValidPalindrome(string s)
+		{
+			return ValidPalindromeHelper(s, 0, s.Length - 1, 1);
+		}
+
+		private bool ValidPalindromeHelper(string s, int left, int right, int k)
+		{
+			if (k < 0) return false; // not valid palindrome
+
+			while (left < right)
+			{
+				if (s[left] != s[right])
+				{
+					return ValidPalindromeHelper(s, left, right - 1, k - 1) ||
+						 ValidPalindromeHelper(s, left + 1, right, k - 1);
+				}
+
+				left++;
+				right--;
+			}
+
+			return true;
+		}
 	}
 }
