@@ -243,21 +243,26 @@ namespace CodingPractice.Leetcode
 		// #408. Valid Word Abbreviation
 		// Time: O(m + n)
 		// Space: O(1)
-		public bool ValidWordAbbreviation(string word, string abbr) {
+		public bool ValidWordAbbreviation(string word, string abbr)
+		{
 			if (abbr.Length > word.Length) return false;
 
 			int i = 0;
 			int j = 0;
-			while (i < word.Length && j < abbr.Length) {
-				if (char.IsDigit(abbr[j])) {
+			while (i < word.Length && j < abbr.Length)
+			{
+				if (char.IsDigit(abbr[j]))
+				{
 					int count = abbr[j] - '0';
 					if (count == 0) return false; // leading zero
-					while (++j < abbr.Length && char.IsDigit(abbr[j])) {
+					while (++j < abbr.Length && char.IsDigit(abbr[j]))
+					{
 						count = count * 10 + (abbr[j] - '0');
 					}
 					i += count;
 				}
-				else {
+				else
+				{
 					if (word[i] != abbr[j]) return false;
 					i++;
 					j++;
@@ -265,6 +270,33 @@ namespace CodingPractice.Leetcode
 			}
 
 			return i == word.Length && j == abbr.Length;
+		}
+
+		// #680. Valid Palindrome II
+		// Time: O(n)
+		// Space: O(1)
+		public bool ValidPalindrome(string s)
+		{
+			return ValidPalindromeHelper(s, 0, s.Length - 1, 1);
+		}
+
+		private bool ValidPalindromeHelper(string s, int left, int right, int k)
+		{
+			if (k < 0) return false; // not valid palindrome
+
+			while (left < right)
+			{
+				if (s[left] != s[right])
+				{
+					return ValidPalindromeHelper(s, left, right - 1, k - 1) ||
+						 ValidPalindromeHelper(s, left + 1, right, k - 1);
+				}
+
+				left++;
+				right--;
+			}
+
+			return true;
 		}
 	}
 }

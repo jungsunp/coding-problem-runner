@@ -155,6 +155,59 @@ namespace CodingPractice.Leetcode
 
 			return stack.Count > 0 ? false : true;
 		}
+
+		// #227. Basic Calculator II
+		// Time: O(n)
+		// Space: O(n)
+		// Note: you can further optimize space using O(1)
+		//  Review this!!
+		public int Calculate(string s)
+		{
+			Stack<int> stack = new();
+			int currentNum = 0;
+			char operation = '+';
+
+			// Iterate string and put numbers to stack
+			for (int i = 0; i < s.Length; i++)
+			{
+				if (char.IsDigit(s[i]))
+				{
+					currentNum = currentNum * 10 + (s[i] - '0');
+				}
+
+				if (i == s.Length - 1 || (!char.IsDigit(s[i]) && s[i] != ' '))
+				{
+					if (operation == '+')
+					{
+						stack.Push(currentNum);
+					}
+					else if (operation == '-')
+					{
+						stack.Push(-currentNum);
+					}
+					else if (operation == '*')
+					{
+						stack.Push(stack.Pop() * currentNum);
+					}
+					else if (operation == '/')
+					{
+						stack.Push(stack.Pop() / currentNum);
+					}
+
+					operation = s[i]; // reset to next operation
+					currentNum = 0;
+				}
+			}
+
+			// Run additions from stack
+			int res = 0;
+			while (stack.Count > 0)
+			{
+				res += stack.Pop();
+			}
+
+			return res;
+		}
 	}
 
 	// #155. Min Stack
