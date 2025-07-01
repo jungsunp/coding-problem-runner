@@ -76,7 +76,8 @@ namespace CodingPractice.Leetcode
 			StringBuilder res = new();
 			foreach (string word in words)
 			{
-				if (word.Length == 0) continue; // handle empty word
+				if (word.Length == 0)
+					continue; // handle empty word
 				if (res.Length > 0)
 				{
 					res.Append(" ");
@@ -323,6 +324,76 @@ namespace CodingPractice.Leetcode
 			}
 
 			return isPositive ? (int)res : (int)-res;
+		}
+
+		// #1249. Minimum Remove to Make Valid Parentheses
+		// Time: O(n)
+		// Space: O(n)
+		// Note: alternate approach is to identify index to remove (by checking balance)
+		//  Then, iterate string to only append char not in indiciesToRemove hash set
+		public string MinRemoveToMakeValid(string s)
+		{
+			int leftCnt = 0;
+			int rightCnt = 0;
+			Queue<char> queue = new();
+			StringBuilder res = new();
+
+			for (int i = 0; i < s.Length; i++)
+			{
+				if (s[i] == '(')
+				{
+					queue.Enqueue(s[i]);
+					leftCnt++;
+				}
+				else if (s[i] == ')')
+				{
+					if (leftCnt == 0)
+					{ // invalid move on
+						continue;
+					}
+
+					queue.Enqueue(s[i]);
+					rightCnt++;
+					if (leftCnt == rightCnt)
+					{
+						while (queue.Count > 0)
+						{
+							res.Append(queue.Dequeue());
+						}
+						leftCnt = 0;
+						rightCnt = 0;
+					}
+				}
+				else
+				{
+					if (queue.Count > 0)
+					{
+						queue.Enqueue(s[i]);
+					}
+					else
+					{
+						res.Append(s[i]);
+					}
+				}
+			}
+
+			while (queue.Count > 0)
+			{
+				char ch = queue.Dequeue();
+				if (ch == '(')
+				{
+					if (rightCnt-- > 0)
+					{
+						res.Append(ch);
+					}
+				}
+				else
+				{
+					res.Append(ch);
+				}
+			}
+
+			return res.ToString();
 		}
 	}
 }

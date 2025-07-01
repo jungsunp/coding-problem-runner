@@ -240,6 +240,38 @@ namespace CodingPractice.Leetcode
 			}
 		}
 
+		// #408. Valid Word Abbreviation
+		// Time: O(m + n)
+		// Space: O(1)
+		public bool ValidWordAbbreviation(string word, string abbr)
+		{
+			if (abbr.Length > word.Length) return false;
+
+			int i = 0;
+			int j = 0;
+			while (i < word.Length && j < abbr.Length)
+			{
+				if (char.IsDigit(abbr[j]))
+				{
+					int count = abbr[j] - '0';
+					if (count == 0) return false; // leading zero
+					while (++j < abbr.Length && char.IsDigit(abbr[j]))
+					{
+						count = count * 10 + (abbr[j] - '0');
+					}
+					i += count;
+				}
+				else
+				{
+					if (word[i] != abbr[j]) return false;
+					i++;
+					j++;
+				}
+			}
+
+			return i == word.Length && j == abbr.Length;
+		}
+
 		// #680. Valid Palindrome II
 		// Time: O(n)
 		// Space: O(1)
