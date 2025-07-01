@@ -449,7 +449,10 @@ namespace CodingPractice.Leetcode
 				while (dfsStack.Count > 0)
 				{
 					int node = dfsStack.Pop();
-					if (visited.Contains(node)) { continue; }
+					if (visited.Contains(node))
+					{
+						continue;
+					}
 					visited.Add(node);
 					if (map.ContainsKey(node))
 					{
@@ -464,6 +467,34 @@ namespace CodingPractice.Leetcode
 				}
 			}
 
+			return res;
+		}
+
+		// #339. Nested List Weight Sum
+		// Time: O(n)
+		// Space: O(d) - d: max depth < n (depth is bound by number of elements)
+		public int DepthSum(IList<NestedInteger> nestedList)
+		{
+			int res = 0;
+			foreach (var item in nestedList)
+			{
+				res += DepthSumHelper(item, 1);
+			}
+			return res;
+		}
+
+		private int DepthSumHelper(NestedInteger nestedInteger, int depth)
+		{
+			if (nestedInteger.IsInteger())
+			{
+				return nestedInteger.GetInteger() * depth;
+			}
+
+			int res = 0;
+			foreach (NestedInteger item in nestedInteger.GetList())
+			{
+				res += DepthSumHelper(item, depth + 1);
+			}
 			return res;
 		}
 	}
