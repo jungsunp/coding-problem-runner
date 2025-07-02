@@ -1,26 +1,13 @@
+using CodingPractice.Leetcode.Trees.Custom;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Linq;
 
 namespace CodingPractice.Leetcode
 {
 	public class BinaryTree
 	{
-		/*
-		* Definition for a binary tree node.
-		*/
-		public class TreeNode
-		{
-			public int val;
-			public TreeNode left;
-			public TreeNode right;
-			public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
-			{
-				this.val = val;
-				this.left = left;
-				this.right = right;
-			}
-		}
 
 		// 104. Maximum Depth of Binary Tree (DFS)
 		// Time: O(n)
@@ -428,6 +415,36 @@ namespace CodingPractice.Leetcode
 				res.Add(hash[i]);
 			}
 			return res;
+		}
+
+		// #1650. Lowest Common Ancestor of a Binary Tree III
+		// Time: O(h)
+		// Space: O(h) - h: height of tree.
+		// Note: h = O(log n) for balanced tree
+		//  h = O(n) for unbalanced tree
+		// Note: There is also 2 pointer solution with O(1) Space
+		public Node LowestCommonAncestor(Node p, Node q)
+		{
+			HashSet<Node> hash = new(); // record parents of P
+
+			// Iterate p => root and record parents
+			while (p != null)
+			{
+				hash.Add(p);
+				p = p.parent;
+			}
+
+			// Iterate q => root to check LCA
+			while (q != null)
+			{
+				if (hash.Contains(q))
+				{
+					return q;
+				}
+				q = q.parent;
+			}
+
+			return null; // invalid
 		}
 	}
 }
