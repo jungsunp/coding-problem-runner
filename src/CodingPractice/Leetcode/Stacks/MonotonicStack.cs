@@ -29,6 +29,29 @@ namespace CodingPractice.Leetcode
 
 			return ans;
 		}
+
+		// #1762. Buildings With an Ocean View
+		// Time: O(n)
+		// Space: O(n)
+		public int[] FindBuildings(int[] heights)
+		{
+			int max = 0;
+			Stack<int> stack = new();
+			for (int i = heights.Length - 1; i >= 0; i--)
+			{
+				if (heights[i] > max)
+					stack.Push(i);
+				max = Math.Max(max, heights[i]);
+			}
+
+			int[] res = new int[stack.Count];
+			int idx = 0;
+			while (stack.Count > 0)
+			{
+				res[idx++] = stack.Pop();
+			}
+			return res;
+		}
 	}
 
 	// #901. Online Stock Span
