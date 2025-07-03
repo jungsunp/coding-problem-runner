@@ -105,6 +105,50 @@ namespace CodingPractice.Leetcode
 
 			return res;
 		}
+
+		// #528. Random Pick with Weight
+		// Time: O(n)
+		// Space: O(n)
+		private Random rnd;
+		private int[] prefixSums;
+		private int totSum;
+		public void Solution(int[] w) // Note: constructor. void is only added as workaround for now
+		{
+			rnd = new();
+			prefixSums = new int[w.Length];
+			int current = 0;
+			for (int i = 0; i < w.Length; i++)
+			{
+				current += w[i];
+				prefixSums[i] = current;
+			}
+			totSum = current;
+		}
+
+		// Time: O(log n)
+		// Space: O(1)
+		public int PickIndex()
+		{
+			int target = rnd.Next(1, totSum + 1); // Tricky! - all weights are positive.
+
+			// Binary Search
+			int left = 0;
+			int right = prefixSums.Length - 1;
+			while (left < right)
+			{
+				int mid = left + (right - left) / 2;
+				if (target > prefixSums[mid])
+				{
+					left = mid + 1;
+				}
+				else
+				{
+					right = mid;
+				}
+			}
+
+			return left;
+		}
 	}
 
 	// 303. Range Sum Query - Immutable
