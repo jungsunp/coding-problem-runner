@@ -208,6 +208,48 @@ namespace CodingPractice.Leetcode
 
 			return res;
 		}
+
+		// #71. Simplify Path
+		// Time: O(n)
+		// Space: O(n)
+		public string SimplifyPath(string path)
+		{
+			string[] names = path.Split('/');
+			Stack<string> stack = new();
+
+			foreach (string name in names)
+			{
+				if (string.IsNullOrEmpty(name))
+					continue;
+
+				if (name == ".")
+				{
+					// do nothing
+				}
+				else if (name == "..")
+				{
+					if (stack.Count > 0)
+					{
+						stack.Pop();
+					}
+				}
+				else
+				{
+					stack.Push(name);
+				}
+			}
+
+			if (stack.Count == 0)
+				return "/";
+
+			StringBuilder res = new();
+			while (stack.Count > 0)
+			{
+				res.Insert(0, $"/{stack.Pop()}");
+			}
+
+			return res.ToString();
+		}
 	}
 
 	// #155. Min Stack
