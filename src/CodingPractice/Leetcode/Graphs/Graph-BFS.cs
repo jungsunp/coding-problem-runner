@@ -153,7 +153,7 @@ namespace CodingPractice.Leetcode.Graphs
 
 		// #733. Flood Fill (BFS)
 		// Time: O(m * n)
-		// Space: O(m * n) 
+		// Space: O(m * n)
 		// Note: can also be solved with DFS
 		public int[][] FloodFill(int[][] image, int sr, int sc, int color)
 		{
@@ -192,6 +192,62 @@ namespace CodingPractice.Leetcode.Graphs
 			}
 
 			return image;
+		}
+
+		// #1091. Shortest Path in Binary Matrix
+		// Time: O(N)
+		// Space: O(N) - N: total number of cells i.e n^2
+		// Note: A* has O(N log N) time but perform well in practice
+		public int ShortestPathBinaryMatrix(int[][] grid)
+		{
+			int n = grid.Length;
+			if (grid[0][0] != 0 || grid[n - 1][n - 1] != 0) return -1;
+
+			int[][] directions = new int[][] {
+			[0, -1], [1, -1], [1,0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1]
+		};
+
+			// Run BFS
+			Queue<(int, int)> queue = new();
+			bool[,] visited = new bool[n, n]; // NOTE!! bool matrix is more efficient than hashset
+			queue.Enqueue((0, 0));
+			visited[0, 0] = true;
+			int step = 0;
+			while (queue.Count > 0)
+			{
+				int cnt = queue.Count;
+				step++;
+				for (int i = 0; i < cnt; i++)
+				{
+					(int x, int y) = queue.Dequeue();
+
+					if (x == n - 1 && y == n - 1) return step; // reached end!
+
+					foreach (int[] direction in directions)
+					{
+						if (IsInRange(x, y, direction, n))
+						{
+							int nextX = x + direction[0];
+							int nextY = y + direction[1];
+							if (grid[nextX][nextY] == 0 && !visited[nextX, nextY])
+							{
+								queue.Enqueue((nextX, nextY));
+								visited[nextX, nextY] = true; // NOTE!! important to mark after enqueue to avoid duplicates & race conditions
+							}
+						}
+					}
+				}
+			}
+
+			return -1;
+		}
+
+		private bool IsInRange(int x, int y, int[] direction, int n)
+		{
+			x += direction[0];
+			y += direction[1];
+			if (x >= 0 && x < n && y >= 0 && y < n) return true;
+			return false;
 		}
 	}
 }
