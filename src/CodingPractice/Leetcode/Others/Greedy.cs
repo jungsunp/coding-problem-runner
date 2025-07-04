@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -42,6 +43,37 @@ namespace CodingPractice.Leetcode.Others
 			}
 
 			return builder.ToString();
+		}
+
+		// #670. Maximum Swap
+		// Time: O(n)
+		// Space: O(n)
+		public int MaximumSwap(int num)
+		{
+			string numStr = num.ToString();
+			char[] charArr = numStr.ToCharArray();
+			int[] rightIndices = new int[10]; // store right most index of each number 0..9
+			for (int i = 0; i < charArr.Length; i++)
+			{
+				int digit = charArr[i] - '0';
+				rightIndices[digit] = i;
+			}
+
+			for (int j = 0; j < charArr.Length; j++)
+			{
+				int digit = charArr[j] - '0';
+				for (int k = 9; k > digit; k--)
+				{
+					int rightIndex = rightIndices[k];
+					if (rightIndex > j)
+					{
+						(charArr[j], charArr[rightIndex]) = (charArr[rightIndex], charArr[j]);
+						return int.Parse(new String(charArr));
+					}
+				}
+			}
+
+			return num; // no swap needed
 		}
 	}
 }

@@ -86,41 +86,29 @@ namespace CodingPractice.Leetcode
 		// Space: O(1)
 		public int LongestOnes(int[] nums, int k)
 		{
-			int i = 0;
-			int numZeros = 0;
+			int left = 0;
+			int right = 0;
+			int kCnt = 0;
+			int max = 0;
 
-			// Set up initial sliding window
-			while (numZeros < k && i < nums.Length)
+			while (right < nums.Length)
 			{
-				if (nums[i++] == 0)
-				{
-					numZeros++;
-				}
-			}
+				if (nums[right] == 0) kCnt++;
 
-			int numOnes = i;
-			int maxOnes = i;
-			for (int j = i; j < nums.Length; j++)
-			{
-				if (nums[j] == 1)
+				while (kCnt > k)
 				{
-					numOnes++;
-					maxOnes = Math.Max(numOnes, maxOnes);
-				}
-				else
-				{ //nums[j] == 0
-					if (nums[j - numOnes] == 1)
+					if (nums[left] == 0)
 					{
-						int l = j - numOnes;
-						while (nums[l++] == 1)
-						{
-							numOnes--;
-						}
+						kCnt--;
 					}
+					left++;
 				}
+
+				max = Math.Max(max, right - left + 1);
+				right++;
 			}
 
-			return maxOnes;
+			return max;
 		}
 
 		// #1493. Longest Subarray of 1's After Deleting One Element

@@ -395,5 +395,38 @@ namespace CodingPractice.Leetcode
 
 			return res.ToString();
 		}
+
+		// #921. Minimum Add to Make Parentheses Valid
+		// Time: O(n)
+		// Space: O(1)
+		public int MinAddToMakeValid(string s)
+		{
+			int res = 0;
+			int open = 0;
+			int close = 0;
+
+			foreach (char c in s)
+			{
+				if (c == '(')
+				{
+					open++;
+				}
+				else if (c == ')')
+				{
+					close++;
+					if (close > open)
+					{ //invalid need to add open
+						res++;
+						open++;
+					}
+				}
+			}
+
+			if (open > close)
+			{
+				res += open - close;
+			}
+			return res;
+		}
 	}
 }
