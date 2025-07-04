@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CodingPractice.Leetcode.Graphs.Custom;
 
 namespace CodingPractice.Leetcode
 {
@@ -496,6 +497,48 @@ namespace CodingPractice.Leetcode
 				res += DepthSumHelper(item, depth + 1);
 			}
 			return res;
+		}
+
+		// #133. Clone Graph
+		// Time: O(n)
+		// Space: O(n)
+		public Node CloneGraph(Node node)
+		{
+			if (node == null) return null;
+
+			Queue<Node> queue = new();
+			Dictionary<Node, Node> mapping = new(); // map from original to copy
+			CloneNode(node, mapping);
+
+			// BFS
+			queue.Enqueue(node);
+			while (queue.Count > 0)
+			{
+				Node n = queue.Dequeue();
+				Node clone = mapping[n];
+				foreach (Node neighbor in n.neighbors)
+				{
+					if (mapping.ContainsKey(neighbor))
+					{
+						clone.neighbors.Add(mapping[neighbor]);
+					}
+					else
+					{
+						Node cloneNeighbor = CloneNode(neighbor, mapping);
+						clone.neighbors.Add(cloneNeighbor);
+						queue.Enqueue(neighbor);
+					}
+				}
+			}
+
+			return mapping[node];
+		}
+
+		private Node CloneNode(Node node, Dictionary<Node, Node> mapping)
+		{
+			Node clone = new Node(node.val, new List<Node>());
+			mapping[node] = clone;
+			return clone;
 		}
 	}
 }

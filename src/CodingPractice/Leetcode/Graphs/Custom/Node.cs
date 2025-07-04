@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CodingPractice.Leetcode
+namespace CodingPractice.Leetcode.Graphs.Custom
 {
 	// Needed for #133. Clone Graph
 	public class Node

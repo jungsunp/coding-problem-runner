@@ -2,8 +2,9 @@ using CodingPractice.Leetcode.Trees.Custom;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Node = CodingPractice.Leetcode.Trees.Custom.Node;
 
-namespace CodingPractice.Leetcode
+namespace CodingPractice.Leetcode.Trees
 {
 	public class TreeTraversal
 	{
