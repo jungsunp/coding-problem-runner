@@ -114,5 +114,39 @@ namespace CodingPractice.Leetcode.Trees
 				return root.val + RangeSumBST(root.left, low, high) + RangeSumBST(root.right, low, high);
 			}
 		}
+
+		// #270. Closest Binary Search Tree Value
+		// Time: O(h)
+		// Space: O(1) - h: height of tree
+		public int ClosestValue(TreeNode root, double target)
+		{
+			int res = root.val;
+
+			while (root != null)
+			{
+				if (root.val == target) return root.val; // can't get any closer
+
+				if (Math.Abs(root.val - target) < Math.Abs(res - target))
+				{
+					res = root.val;
+				}
+				else if (Math.Abs(root.val - target) == Math.Abs(res - target) && root.val < res)
+				{
+					// return smallest one possible
+					res = root.val;
+				}
+
+				if (root.val > target)
+				{
+					root = root.left;
+				}
+				else
+				{
+					root = root.right;
+				}
+			}
+
+			return res;
+		}
 	}
 }
