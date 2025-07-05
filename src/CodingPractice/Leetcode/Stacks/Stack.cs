@@ -250,49 +250,50 @@ namespace CodingPractice.Leetcode
 
 			return res.ToString();
 		}
-	}
 
-	// #155. Min Stack
-	// Time: O(1) for all functions
-	// Space: O(n)
-	// Note: Duplicate problem in Data Structures/StacksAndQueues
-	public class MinStack
-	{
-		private Stack<int> _baseStack;
-		private Stack<int> _minStack;
-
-		public MinStack()
+		// #636. Exclusive Time of Functions
+		// Time: O(n)
+		// Space: O(n)
+		public int[] ExclusiveTime(int n, IList<string> logs)
 		{
-			_baseStack = new();
-			_minStack = new();
-		}
+			Stack<int> callStack = new(); // function Id
+			int[] res = new int[n];
+			int prev = -1;
 
-		public void Push(int val)
-		{
-			_baseStack.Push(val);
-			if (_minStack.Count < 1 || _minStack.Peek() >= val)
+			// Read & parse logs
+			foreach (string log in logs)
 			{
-				_minStack.Push(val);
+				string[] logArr = log.Split(":");
+				int functionId = int.Parse(logArr[0]);
+				bool isStart = logArr[1] == "start";
+				int time = int.Parse(logArr[2]);
+
+				if (prev < 0)
+				{ // first log
+					callStack.Push(functionId);
+					prev = time;
+					continue;
+				}
+
+				if (isStart)
+				{
+					if (callStack.Count > 0)
+					{
+						int prevFuncId = callStack.Peek();
+						res[prevFuncId] += time - prev;
+					}
+					callStack.Push(functionId);
+					prev = time;
+				}
+				else
+				{ // end
+					res[functionId] += time - prev + 1;
+					callStack.Pop();
+					prev = time + 1;
+				}
 			}
-		}
 
-		public void Pop()
-		{
-			if (_baseStack.Peek() <= _minStack.Peek())
-			{
-				_minStack.Pop();
-			}
-			_baseStack.Pop();
-		}
-
-		public int Top()
-		{
-			return _baseStack.Peek();
-		}
-
-		public int GetMin()
-		{
-			return _minStack.Peek();
+			return res;
 		}
 	}
 }
